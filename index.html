@@ -8,6 +8,7 @@
 <title>MSI Financing Calculator</title>
 
 <style>
+
 *{
   box-sizing:border-box;
 }
@@ -410,7 +411,6 @@ footer strong{
 
 <div class="grid">
 
-
 <div>
 
 <label for="f_srp">
@@ -444,24 +444,29 @@ footer strong{
 
 </div>
 
-
 </div>
 
 </div>
 
 
 <!-- ============================================================
-     LOAN TERM
-     TR IS NOT DISPLAYED
+     TERM & RATE
 ============================================================ -->
 
 <div class="section">
+
+<div class="section-title">
+  Term &amp; Rate
+</div>
+
 
 <label for="f_term">
   Loan Term
 </label>
 
-<select id="f_term">
+<select
+  id="f_term"
+  onchange="loadForwardTR()">
 
   <option value="84">
     7 Years
@@ -489,8 +494,27 @@ footer strong{
 
 </select>
 
+
+<label for="f_tr">
+  Selected Term TR %
+</label>
+
+<input
+  id="f_tr"
+  type="number"
+  step="0.01"
+  value="57"
+>
+
+
+<div class="note">
+  TR is editable. Selecting another term automatically loads its corresponding default TR, which you can then edit if needed.
 </div>
 
+</div>
+
+
+<!-- EDITABLE CONSTANTS -->
 
 <div class="section">
 
@@ -500,7 +524,6 @@ footer strong{
 
 
 <div class="grid">
-
 
 <div>
 
@@ -533,11 +556,12 @@ footer strong{
 
 </div>
 
-
 </div>
 
 </div>
 
+
+<!-- DESIRED DP -->
 
 <div class="section">
 
@@ -570,12 +594,13 @@ footer strong{
 </div>
 
 
-<!-- CALCULATOR 1 RESULT -->
+<!-- ============================================================
+     CALCULATOR 1 RESULT
+============================================================ -->
 
 <div
   id="forwardResults"
-  class="results"
->
+  class="results">
 
 <h2>
   Estimated Monthly Amortization
@@ -605,6 +630,21 @@ footer strong{
 
 <span
   id="fr_term"
+  class="money">
+  —
+</span>
+
+</div>
+
+
+<div class="result">
+
+<span>
+  TR
+</span>
+
+<span
+  id="fr_tr"
   class="money">
   —
 </span>
@@ -705,7 +745,6 @@ footer strong{
 
 <div class="grid">
 
-
 <div>
 
 <label for="r_srp">
@@ -739,24 +778,29 @@ footer strong{
 
 </div>
 
-
 </div>
 
 </div>
 
 
 <!-- ============================================================
-     LOAN TERM
-     TR IS NOT DISPLAYED
+     TERM & RATE
 ============================================================ -->
 
 <div class="section">
+
+<div class="section-title">
+  Term &amp; Rate
+</div>
+
 
 <label for="r_term">
   Loan Term
 </label>
 
-<select id="r_term">
+<select
+  id="r_term"
+  onchange="loadReverseTR()">
 
   <option value="84">
     7 Years
@@ -784,8 +828,27 @@ footer strong{
 
 </select>
 
+
+<label for="r_tr">
+  Selected Term TR %
+</label>
+
+<input
+  id="r_tr"
+  type="number"
+  step="0.01"
+  value="57"
+>
+
+
+<div class="note">
+  TR is editable. Selecting another term automatically loads its corresponding default TR, which you can then edit if needed.
 </div>
 
+</div>
+
+
+<!-- EDITABLE CONSTANTS -->
 
 <div class="section">
 
@@ -795,7 +858,6 @@ footer strong{
 
 
 <div class="grid">
-
 
 <div>
 
@@ -828,11 +890,12 @@ footer strong{
 
 </div>
 
-
 </div>
 
 </div>
 
+
+<!-- TARGET MONTHLY -->
 
 <div class="section">
 
@@ -873,7 +936,9 @@ footer strong{
 </div>
 
 
-<!-- CALCULATOR 2 RESULT -->
+<!-- ============================================================
+     CALCULATOR 2 RESULT
+============================================================ -->
 
 <div
   id="reverseResults"
@@ -917,6 +982,21 @@ footer strong{
 <div class="result">
 
 <span>
+  TR
+</span>
+
+<span
+  id="rr_tr"
+  class="money">
+  —
+</span>
+
+</div>
+
+
+<div class="result">
+
+<span>
   Target Monthly
 </span>
 
@@ -932,7 +1012,7 @@ footer strong{
 <div class="result">
 
 <span>
-  Required Down Payment
+  Estimated Required DP
 </span>
 
 <span
@@ -973,7 +1053,6 @@ footer strong{
 </main>
 
 
-
 <footer>
 
   🦾 Powered by
@@ -991,14 +1070,23 @@ footer strong{
 </footer>
 
 
-
 <script>
 
 /* ============================================================
-   INTERNAL TERM → TR MAPPING
+   MSI FINANCING CALCULATOR
+   MSI-ADJ-001-V3.1
 
-   THESE VALUES ARE NOT DISPLAYED IN THE UI.
+   ONE TERM ONLY.
 
+   The user selects ONE loan term.
+
+   The corresponding default TR is automatically loaded.
+
+   TR remains editable.
+
+   Only the selected term is calculated.
+
+   DEFAULT TR:
    7 Years = 78%
    6 Years = 68%
    5 Years = 57%
@@ -1007,14 +1095,15 @@ footer strong{
    2 Years = 23%
 ============================================================ */
 
+
 const DEFAULT_TR = {
 
-  84: 78,
-  72: 68,
-  60: 57,
-  48: 49,
-  36: 39,
-  24: 23
+  84:78,
+  72:68,
+  60:57,
+  48:49,
+  36:39,
+  24:23
 
 };
 
@@ -1032,7 +1121,9 @@ function num(id){
 
   const value =
     Number(
-      document.getElementById(id).value
+      document
+        .getElementById(id)
+        .value
     );
 
   return Number.isFinite(value)
@@ -1076,6 +1167,54 @@ function getTermText(months){
 
 
 /* ============================================================
+   LOAD DEFAULT TR WHEN TERM CHANGES
+============================================================ */
+
+function loadForwardTR(){
+
+  const months =
+    Number(
+      document
+        .getElementById("f_term")
+        .value
+    );
+
+
+  const defaultTR =
+    DEFAULT_TR[months];
+
+
+  document
+    .getElementById("f_tr")
+    .value =
+      defaultTR;
+
+}
+
+
+function loadReverseTR(){
+
+  const months =
+    Number(
+      document
+        .getElementById("r_term")
+        .value
+    );
+
+
+  const defaultTR =
+    DEFAULT_TR[months];
+
+
+  document
+    .getElementById("r_tr")
+    .value =
+      defaultTR;
+
+}
+
+
+/* ============================================================
    BASE CALCULATION
 ============================================================ */
 
@@ -1100,7 +1239,7 @@ function getBaseRevenue(
 
 
 /* ============================================================
-   FORWARD CALCULATOR
+   CALCULATOR 1
    HIGHER DP → MONTHLY
 ============================================================ */
 
@@ -1136,11 +1275,10 @@ function calculateForward(){
     num("f_dp");
 
 
-  /* ----------------------------------------------------------
-     GET THE ONE TERM SELECTED BY THE USER
-  ---------------------------------------------------------- */
+  /* SELECTED TERM */
 
   const months =
+
     Number(
       document
         .getElementById("f_term")
@@ -1148,18 +1286,13 @@ function calculateForward(){
     );
 
 
-  /* ----------------------------------------------------------
-     AUTOMATICALLY GET INTERNAL TR
-     BASED ON SELECTED TERM
-  ---------------------------------------------------------- */
+  /* EDITABLE TR */
 
   const tr =
-    DEFAULT_TR[months];
+    num("f_tr");
 
 
-  /* ----------------------------------------------------------
-     BASE REVENUE
-  ---------------------------------------------------------- */
+  /* BASE REVENUE */
 
   const RB =
 
@@ -1171,9 +1304,7 @@ function calculateForward(){
     );
 
 
-  /* ----------------------------------------------------------
-     ADJUSTED FINANCED AMOUNT
-  ---------------------------------------------------------- */
+  /* ADJUSTED FINANCED */
 
   const adjustedFinanced =
 
@@ -1182,9 +1313,7 @@ function calculateForward(){
     (1 + dir / 100);
 
 
-  /* ----------------------------------------------------------
-     MONTHLY AMORTIZATION
-  ---------------------------------------------------------- */
+  /* MONTHLY */
 
   const rawMonthly =
 
@@ -1202,9 +1331,7 @@ function calculateForward(){
     );
 
 
-  /* ----------------------------------------------------------
-     DISPLAY ONLY THE SELECTED TERM
-  ---------------------------------------------------------- */
+  /* DISPLAY ONLY SELECTED TERM */
 
   document
     .getElementById("fr_vehicle")
@@ -1219,6 +1346,12 @@ function calculateForward(){
 
 
   document
+    .getElementById("fr_tr")
+    .textContent =
+      tr + "%";
+
+
+  document
     .getElementById("fr_dp")
     .textContent =
       peso(desiredDP);
@@ -1230,14 +1363,13 @@ function calculateForward(){
       peso(monthly);
 
 
-  /* ----------------------------------------------------------
-     COPY RESULTS
-  ---------------------------------------------------------- */
+  /* COPY RESULTS */
 
   fCopy =
 
 `${variant}
 Loan Term: ${getTermText(months)}
+TR: ${tr}%
 Higher DP: ${peso(desiredDP)}
 Estimated Monthly Amortization: ${peso(monthly)}
 
@@ -1256,7 +1388,7 @@ Estimated computation only. Final required down payment and monthly amortization
 
 
 /* ============================================================
-   REVERSE CALCULATOR
+   CALCULATOR 2
    MONTHLY → REQUIRED DP
 ============================================================ */
 
@@ -1292,11 +1424,10 @@ function calculateReverse(){
     num("r_monthly");
 
 
-  /* ----------------------------------------------------------
-     GET THE ONE TERM SELECTED BY THE USER
-  ---------------------------------------------------------- */
+  /* SELECTED TERM */
 
   const months =
+
     Number(
       document
         .getElementById("r_term")
@@ -1304,18 +1435,13 @@ function calculateReverse(){
     );
 
 
-  /* ----------------------------------------------------------
-     AUTOMATICALLY GET INTERNAL TR
-     BASED ON SELECTED TERM
-  ---------------------------------------------------------- */
+  /* EDITABLE TR */
 
   const tr =
-    DEFAULT_TR[months];
+    num("r_tr");
 
 
-  /* ----------------------------------------------------------
-     BASE REVENUE
-  ---------------------------------------------------------- */
+  /* BASE REVENUE */
 
   const RB =
 
@@ -1327,9 +1453,7 @@ function calculateReverse(){
     );
 
 
-  /* ----------------------------------------------------------
-     WIDTH / TERM FACTOR
-  ---------------------------------------------------------- */
+  /* WIDTH */
 
   const width =
 
@@ -1340,20 +1464,15 @@ function calculateReverse(){
     (1 + tr / 100);
 
 
-  /* ----------------------------------------------------------
-     REQUIRED DP
-  ---------------------------------------------------------- */
+  /* REQUIRED DP */
 
   const requiredDP =
 
     RB -
 
-    targetMonthly * width;
+    targetMonthly *
+    width;
 
-
-  /*
-     Do not allow negative Required DP.
-  */
 
   const finalDP =
 
@@ -1363,9 +1482,7 @@ function calculateReverse(){
     );
 
 
-  /* ----------------------------------------------------------
-     DISPLAY ONLY THE SELECTED TERM
-  ---------------------------------------------------------- */
+  /* DISPLAY ONLY SELECTED TERM */
 
   document
     .getElementById("rr_vehicle")
@@ -1380,6 +1497,12 @@ function calculateReverse(){
 
 
   document
+    .getElementById("rr_tr")
+    .textContent =
+      tr + "%";
+
+
+  document
     .getElementById("rr_monthly")
     .textContent =
       peso(targetMonthly);
@@ -1391,14 +1514,13 @@ function calculateReverse(){
       peso(finalDP);
 
 
-  /* ----------------------------------------------------------
-     COPY RESULTS
-  ---------------------------------------------------------- */
+  /* COPY RESULTS */
 
   rCopy =
 
 `${variant}
 Loan Term: ${getTermText(months)}
+TR: ${tr}%
 Target Monthly: ${peso(targetMonthly)}
 Estimated Required Down Payment: ${peso(finalDP)}
 
@@ -1463,6 +1585,10 @@ function showSaveToast(
 
 }
 
+
+/* ============================================================
+   COPY
+============================================================ */
 
 async function copyText(text){
 
@@ -1595,6 +1721,11 @@ function resetForward(){
 
 
   document
+    .getElementById("f_tr")
+    .value = 57;
+
+
+  document
     .getElementById("f_bdp")
     .value = 20;
 
@@ -1644,6 +1775,11 @@ function resetReverse(){
   document
     .getElementById("r_term")
     .value = 60;
+
+
+  document
+    .getElementById("r_tr")
+    .value = 57;
 
 
   document
@@ -1749,6 +1885,14 @@ function showCalculator(which){
   }
 
 }
+
+
+/* ============================================================
+   INITIALIZE DEFAULT TR
+============================================================ */
+
+loadForwardTR();
+loadReverseTR();
 
 </script>
 
