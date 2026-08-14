@@ -4,24 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b1220">
-
 <title>MSI Financing Calculator</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
-html{
-  background:#0b1220;
-}
+html{background:#0b1220}
 
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   background:#0b1220;
   color:#f5f7fb;
-  min-height:100vh;
+  min-height:100vh
 }
 
 header{
@@ -30,25 +25,25 @@ header{
   position:sticky;
   top:0;
   z-index:20;
-  border-bottom:1px solid #263247;
+  border-bottom:1px solid #263247
 }
 
 h1{
   margin:0;
   font-size:21px;
-  font-weight:800;
+  font-weight:800
 }
 
 .sub{
   margin-top:4px;
   color:#9ca3af;
-  font-size:11px;
+  font-size:11px
 }
 
 nav{
   display:flex;
   gap:8px;
-  margin-top:14px;
+  margin-top:14px
 }
 
 nav button{
@@ -60,19 +55,19 @@ nav button{
   color:#d1d5db;
   font-size:12px;
   font-weight:800;
-  cursor:pointer;
+  cursor:pointer
 }
 
 nav button.active{
   background:#f9fafb;
-  color:#111827;
+  color:#111827
 }
 
 main{
   width:100%;
   max-width:720px;
   margin:0 auto;
-  padding:14px;
+  padding:14px
 }
 
 .card{
@@ -81,18 +76,16 @@ main{
   border-radius:16px;
   padding:16px;
   margin-bottom:14px;
-  box-shadow:0 5px 18px rgba(0,0,0,.18);
+  box-shadow:0 5px 18px rgba(0,0,0,.18)
 }
 
 .card h2{
   margin:0 0 14px;
   font-size:18px;
-  font-weight:800;
+  font-weight:800
 }
 
-.section{
-  margin-top:18px;
-}
+.section{margin-top:18px}
 
 .section-title{
   color:#9ca3af;
@@ -100,7 +93,7 @@ main{
   font-weight:900;
   letter-spacing:.08em;
   text-transform:uppercase;
-  margin-bottom:8px;
+  margin-bottom:8px
 }
 
 label{
@@ -108,11 +101,10 @@ label{
   margin:10px 0 5px;
   color:#d1d5db;
   font-size:12px;
-  font-weight:700;
+  font-weight:700
 }
 
-input,
-select{
+input,select{
   width:100%;
   min-height:47px;
   padding:11px 12px;
@@ -121,19 +113,18 @@ select{
   background:#1f2937;
   color:#f9fafb;
   font-size:16px;
-  outline:none;
+  outline:none
 }
 
-input:focus,
-select:focus{
+input:focus,select:focus{
   border-color:#9ca3af;
-  box-shadow:0 0 0 2px rgba(156,163,175,.18);
+  box-shadow:0 0 0 2px rgba(156,163,175,.18)
 }
 
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
+  gap:10px
 }
 
 .target-box{
@@ -141,7 +132,7 @@ select:focus{
   border:1px solid #4b5563;
   border-radius:12px;
   padding:15px;
-  margin-top:8px;
+  margin-top:8px
 }
 
 .target-label{
@@ -149,16 +140,14 @@ select:focus{
   font-size:11px;
   font-weight:900;
   letter-spacing:.07em;
-  text-transform:uppercase;
+  text-transform:uppercase
 }
 
-.target-value{
-  margin-top:7px;
-}
+.target-value{margin-top:7px}
 
 .target-value input{
   font-size:21px;
-  font-weight:900;
+  font-weight:900
 }
 
 button.primary{
@@ -171,12 +160,10 @@ button.primary{
   color:#111827;
   font-size:14px;
   font-weight:900;
-  cursor:pointer;
+  cursor:pointer
 }
 
-button.primary:active{
-  transform:scale(.99);
-}
+button.primary:active{transform:scale(.99)}
 
 button.secondary{
   width:100%;
@@ -187,7 +174,7 @@ button.secondary{
   color:#f9fafb;
   font-size:12px;
   font-weight:800;
-  cursor:pointer;
+  cursor:pointer
 }
 
 .results{
@@ -196,17 +183,15 @@ button.secondary{
   border:1px solid #374151;
   border-radius:16px;
   padding:16px;
-  margin-bottom:14px;
+  margin-bottom:14px
 }
 
-.results.show{
-  display:block;
-}
+.results.show{display:block}
 
 .results h2{
   margin:0 0 14px;
   font-size:18px;
-  font-weight:800;
+  font-weight:800
 }
 
 .result{
@@ -215,16 +200,14 @@ button.secondary{
   align-items:center;
   gap:12px;
   padding:12px 0;
-  border-bottom:1px solid #374151;
+  border-bottom:1px solid #374151
 }
 
-.result:last-of-type{
-  border-bottom:0;
-}
+.result:last-of-type{border-bottom:0}
 
 .result span:first-child{
   color:#d1d5db;
-  font-size:13px;
+  font-size:13px
 }
 
 .money{
@@ -232,7 +215,7 @@ button.secondary{
   font-size:18px;
   font-weight:900;
   text-align:right;
-  white-space:nowrap;
+  white-space:nowrap
 }
 
 .status{
@@ -241,54 +224,33 @@ button.secondary{
   border-radius:10px;
   font-size:12px;
   line-height:1.45;
-  font-weight:700;
+  font-weight:700
 }
 
 .status.ok{
   background:#064e2b;
   border:1px solid #15803d;
-  color:#bbf7d0;
+  color:#bbf7d0
 }
 
 .status.warn{
   background:#451a03;
   border:1px solid #92400e;
-  color:#fed7aa;
+  color:#fed7aa
 }
 
 .note{
   margin-top:7px;
   color:#6b7280;
   font-size:10px;
-  line-height:1.45;
-}
-
-details{
-  margin-top:13px;
-  border-top:1px solid #374151;
-  padding-top:11px;
-}
-
-summary{
-  cursor:pointer;
-  color:#9ca3af;
-  font-size:11px;
-  font-weight:800;
-}
-
-.internal{
-  margin-top:10px;
-  color:#9ca3af;
-  font-size:10px;
-  line-height:1.6;
-  overflow-wrap:anywhere;
+  line-height:1.45
 }
 
 .actions{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
-  margin-top:13px;
+  margin-top:13px
 }
 
 footer{
@@ -298,42 +260,61 @@ footer{
   text-align:center;
   color:#6b7280;
   font-size:10px;
-  line-height:1.6;
+  line-height:1.6
 }
 
-footer strong{
-  color:#d1d5db;
+footer strong{color:#d1d5db}
+
+.hidden{display:none!important}
+
+/* COPY SUCCESS NOTIFICATION */
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  transform:translate(-50%,20px);
+  z-index:100;
+  background:#064e2b;
+  border:1px solid #15803d;
+  color:#bbf7d0;
+  padding:12px 16px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:800;
+  line-height:1.35;
+  box-shadow:0 8px 24px rgba(0,0,0,.28);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;
+  text-align:center;
+  max-width:calc(100vw - 32px)
 }
 
-.hidden{
-  display:none !important;
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0)
 }
 
 @media(max-width:600px){
-  main{
-    padding:12px;
-  }
+  main{padding:12px}
 
-  .grid{
-    grid-template-columns:1fr;
-  }
+  .grid{grid-template-columns:1fr}
 
-  .actions{
-    grid-template-columns:1fr 1fr;
-  }
+  .actions{grid-template-columns:1fr 1fr}
 
-  .result{
-    align-items:flex-start;
-  }
+  .result{align-items:flex-start}
 
-  .money{
-    font-size:17px;
-  }
+  .money{font-size:17px}
 }
 </style>
 </head>
 
 <body>
+
+<!-- COPY SUCCESS NOTIFICATION -->
+<div id="saveToast" class="toast" role="status" aria-live="polite">
+  ✓ Information saved successfully.
+</div>
 
 <header>
   <h1>MSI Financing Calculator</h1>
@@ -349,7 +330,6 @@ footer strong{
     </button>
   </nav>
 </header>
-
 
 <main>
 
@@ -534,11 +514,6 @@ COMPUTE MONTHLY
 VALID • Estimated computation only.
 </div>
 
-<details>
-<summary>Internal Verification</summary>
-<div id="f_internal" class="internal"></div>
-</details>
-
 <div class="actions">
 <button class="secondary" onclick="copyForward()">COPY RESULTS</button>
 <button class="secondary" onclick="resetForward()">RESET</button>
@@ -565,7 +540,6 @@ VALID • Estimated computation only.
 
 <label for="r_variant">Vehicle Variant</label>
 <input id="r_variant" type="text" placeholder="e.g. Xpander Cross">
-
 
 <div class="grid">
 
@@ -637,7 +611,6 @@ VALID • Estimated computation only.
 <option value="24">2 Years</option>
 </select>
 
-
 <label for="r_tr">Selected Term TR %</label>
 
 <input id="r_tr" type="number" step="0.01" value="57">
@@ -645,7 +618,6 @@ VALID • Estimated computation only.
 <div class="note">
 TR is editable. Selecting another term automatically loads its corresponding default TR, which you can then edit if needed.
 </div>
-
 
 <button class="primary" onclick="calculateReverse()">
 COMPUTE REQUIRED DP
@@ -680,17 +652,9 @@ COMPUTE REQUIRED DP
 <span id="rr_dp" class="money">—</span>
 </div>
 
-
 <div class="status ok">
 VALID • Estimated computation only.
 </div>
-
-
-<details>
-<summary>Internal Verification</summary>
-<div id="r_internal" class="internal"></div>
-</details>
-
 
 <div class="actions">
 <button class="secondary" onclick="copyReverse()">COPY RESULTS</button>
@@ -716,8 +680,6 @@ VALID • Estimated computation only.
 /* ============================================================
    MSI FINANCING CALCULATOR
    MSI-ADJ-001-V3.1
-
-   VALIDATED CORE STRUCTURE
 
    RB = SRP × (1 - BDP%) × (1 + DIR%) + Official Promo DP
 
@@ -766,25 +728,41 @@ let rCopy = "";
 ------------------------------------------------------------ */
 
 function num(id){
-  const v = Number(document.getElementById(id).value);
+
+  const v =
+    Number(
+      document.getElementById(id).value
+    );
+
   return Number.isFinite(v) ? v : 0;
+
 }
 
 
 function peso(value){
-  if(!Number.isFinite(value)) return "₱0";
 
-  return "₱" + Math.round(value).toLocaleString("en-PH");
+  if(!Number.isFinite(value))
+    return "₱0";
+
+  return "₱" +
+    Math.round(value).toLocaleString("en-PH");
+
 }
 
 
 function ceilPeso(value){
+
   return Math.ceil(value - 1e-10);
+
 }
 
 
 function cleanZero(value){
-  return Math.abs(value) < 0.005 ? 0 : value;
+
+  return Math.abs(value) < 0.005
+    ? 0
+    : value;
+
 }
 
 
@@ -793,14 +771,28 @@ function cleanZero(value){
 ------------------------------------------------------------ */
 
 function loadForwardTR(){
-  const term = Number(document.getElementById("f_term").value);
-  document.getElementById("f_tr").value = DEFAULT_TR[term];
+
+  const term =
+    Number(
+      document.getElementById("f_term").value
+    );
+
+  document.getElementById("f_tr").value =
+    DEFAULT_TR[term];
+
 }
 
 
 function loadReverseTR(){
-  const term = Number(document.getElementById("r_term").value);
-  document.getElementById("r_tr").value = DEFAULT_TR[term];
+
+  const term =
+    Number(
+      document.getElementById("r_term").value
+    );
+
+  document.getElementById("r_tr").value =
+    DEFAULT_TR[term];
+
 }
 
 
@@ -808,7 +800,12 @@ function loadReverseTR(){
    CORE MSI FORMULA
 ------------------------------------------------------------ */
 
-function getBaseRevenue(srp, bdp, dir, opdp){
+function getBaseRevenue(
+  srp,
+  bdp,
+  dir,
+  opdp
+){
 
   return (
     srp *
@@ -819,7 +816,11 @@ function getBaseRevenue(srp, bdp, dir, opdp){
 }
 
 
-function getWidth(months, dir, tr){
+function getWidth(
+  months,
+  dir,
+  tr
+){
 
   return (
     months *
@@ -844,21 +845,25 @@ function forwardMonthly(
   tr
 ){
 
-  const RB = getBaseRevenue(
-    srp,
-    bdp,
-    dir,
-    opdp
-  );
+  const RB =
+    getBaseRevenue(
+      srp,
+      bdp,
+      dir,
+      opdp
+    );
+
 
   const adjustedFinanced =
     (RB - desiredDP) /
     (1 + dir / 100);
 
+
   const rawMonthly =
     adjustedFinanced *
     (1 + tr / 100) /
     months;
+
 
   return {
     RB,
@@ -873,8 +878,12 @@ function forwardMonthly(
 function calculateForward(){
 
   const variant =
-    document.getElementById("f_variant").value.trim() ||
+    document
+      .getElementById("f_variant")
+      .value
+      .trim() ||
     "Vehicle";
+
 
   const srp = num("f_srp");
   const opdp = num("f_opdp");
@@ -882,18 +891,23 @@ function calculateForward(){
   const dir = num("f_dir");
   const desiredDP = num("f_dp");
 
-  const terms = [84,72,60,48,36,24];
+
+  const terms =
+    [84,72,60,48,36,24];
+
 
   const results = {};
+
 
   for(const months of terms){
 
     const tr =
       Number(
-        document.getElementById(
-          "f_tr" + months
-        ).value
+        document
+          .getElementById("f_tr" + months)
+          .value
       );
+
 
     results[months] =
       forwardMonthly(
@@ -909,48 +923,36 @@ function calculateForward(){
   }
 
 
-  document.getElementById("fr_vehicle").textContent =
-    variant;
-
-  document.getElementById("fr_dp").textContent =
-    peso(desiredDP);
-
-  document.getElementById("fr_84").textContent =
-    peso(results[84].monthly);
-
-  document.getElementById("fr_72").textContent =
-    peso(results[72].monthly);
-
-  document.getElementById("fr_60").textContent =
-    peso(results[60].monthly);
-
-  document.getElementById("fr_48").textContent =
-    peso(results[48].monthly);
-
-  document.getElementById("fr_36").textContent =
-    peso(results[36].monthly);
-
-  document.getElementById("fr_24").textContent =
-    peso(results[24].monthly);
+  document.getElementById("fr_vehicle")
+    .textContent = variant;
 
 
-  const selectedTerm =
-    Number(document.getElementById("f_term").value);
-
-  const selectedTR =
-    Number(document.getElementById("f_tr").value);
-
-  const selected =
-    results[selectedTerm];
+  document.getElementById("fr_dp")
+    .textContent = peso(desiredDP);
 
 
-  document.getElementById("f_internal").innerHTML =
-    "Base Revenue (RB): " + peso(selected.RB) +
-    "<br>Width: " + selectedTerm +
-    " × (1 + DIR) / (1 + TR)" +
-    "<br>TR: " + selectedTR + "%" +
-    "<br>Raw Monthly: " + peso(selected.rawMonthly) +
-    "<br>Displayed Monthly: " + peso(selected.monthly);
+  document.getElementById("fr_84")
+    .textContent = peso(results[84].monthly);
+
+
+  document.getElementById("fr_72")
+    .textContent = peso(results[72].monthly);
+
+
+  document.getElementById("fr_60")
+    .textContent = peso(results[60].monthly);
+
+
+  document.getElementById("fr_48")
+    .textContent = peso(results[48].monthly);
+
+
+  document.getElementById("fr_36")
+    .textContent = peso(results[36].monthly);
+
+
+  document.getElementById("fr_24")
+    .textContent = peso(results[24].monthly);
 
 
   fCopy =
@@ -968,7 +970,8 @@ JUDE DANTE PINEDA
 Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.`;
 
 
-  document.getElementById("forwardResults")
+  document
+    .getElementById("forwardResults")
     .classList.add("show");
 
 }
@@ -988,12 +991,14 @@ function reverseRequiredDP(
   tr
 ){
 
-  const RB = getBaseRevenue(
-    srp,
-    bdp,
-    dir,
-    opdp
-  );
+  const RB =
+    getBaseRevenue(
+      srp,
+      bdp,
+      dir,
+      opdp
+    );
+
 
   const width =
     getWidth(
@@ -1002,9 +1007,11 @@ function reverseRequiredDP(
       tr
     );
 
+
   const requiredDP =
     RB -
     targetMonthly * width;
+
 
   return {
     RB,
@@ -1018,8 +1025,12 @@ function reverseRequiredDP(
 function calculateReverse(){
 
   const variant =
-    document.getElementById("r_variant").value.trim() ||
+    document
+      .getElementById("r_variant")
+      .value
+      .trim() ||
     "Vehicle";
+
 
   const srp = num("r_srp");
   const opdp = num("r_opdp");
@@ -1027,11 +1038,21 @@ function calculateReverse(){
   const dir = num("r_dir");
   const targetMonthly = num("r_monthly");
 
+
   const months =
-    Number(document.getElementById("r_term").value);
+    Number(
+      document
+        .getElementById("r_term")
+        .value
+    );
+
 
   const tr =
-    Number(document.getElementById("r_tr").value);
+    Number(
+      document
+        .getElementById("r_tr")
+        .value
+    );
 
 
   const result =
@@ -1050,30 +1071,27 @@ function calculateReverse(){
     Math.max(
       0,
       Math.round(
-        cleanZero(result.requiredDP)
+        cleanZero(
+          result.requiredDP
+        )
       )
     );
 
 
-  document.getElementById("rr_vehicle").textContent =
-    variant;
-
-  document.getElementById("rr_monthly").textContent =
-    peso(targetMonthly);
-
-  document.getElementById("rr_term").textContent =
-    TERM_LABELS[months];
-
-  document.getElementById("rr_dp").textContent =
-    peso(requiredDP);
+  document.getElementById("rr_vehicle")
+    .textContent = variant;
 
 
-  document.getElementById("r_internal").innerHTML =
-    "Base Revenue (RB): " + peso(result.RB) +
-    "<br>Width: " + result.width.toFixed(10) +
-    "<br>TR: " + tr + "%" +
-    "<br>Raw Required DP: " + peso(result.requiredDP) +
-    "<br>Displayed Required DP: " + peso(requiredDP);
+  document.getElementById("rr_monthly")
+    .textContent = peso(targetMonthly);
+
+
+  document.getElementById("rr_term")
+    .textContent = TERM_LABELS[months];
+
+
+  document.getElementById("rr_dp")
+    .textContent = peso(requiredDP);
 
 
   rCopy =
@@ -1087,43 +1105,139 @@ JUDE DANTE PINEDA
 Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.`;
 
 
-  document.getElementById("reverseResults")
+  document
+    .getElementById("reverseResults")
     .classList.add("show");
 
 }
 
 
 /* ------------------------------------------------------------
-   COPY
+   COPY RESULTS
 ------------------------------------------------------------ */
+
+let toastTimer = null;
+
+
+function showSaveToast(
+  message =
+    "✓ Information saved successfully."
+){
+
+  const toast =
+    document.getElementById(
+      "saveToast"
+    );
+
+
+  if(!toast)
+    return;
+
+
+  toast.textContent =
+    message;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    toastTimer
+  );
+
+
+  toastTimer =
+    setTimeout(
+      () => {
+        toast.classList.remove(
+          "show"
+        );
+      },
+      2500
+    );
+
+}
+
 
 async function copyText(text){
 
   if(!text){
-    alert("Compute first.");
+
+    alert(
+      "Compute first."
+    );
+
     return;
+
   }
+
+
+  let copied = false;
+
 
   try{
 
-    await navigator.clipboard.writeText(text);
+    await navigator
+      .clipboard
+      .writeText(text);
+
+    copied = true;
 
   }catch(e){
 
-    const textarea =
-      document.createElement("textarea");
+    try{
 
-    textarea.value = text;
-    textarea.style.position = "fixed";
-    textarea.style.opacity = "0";
+      const textarea =
+        document.createElement(
+          "textarea"
+        );
 
-    document.body.appendChild(textarea);
 
-    textarea.select();
+      textarea.value = text;
 
-    document.execCommand("copy");
+      textarea.style.position =
+        "fixed";
 
-    textarea.remove();
+      textarea.style.opacity =
+        "0";
+
+
+      document.body.appendChild(
+        textarea
+      );
+
+
+      textarea.select();
+
+
+      copied =
+        document.execCommand(
+          "copy"
+        );
+
+
+      textarea.remove();
+
+    }catch(f){
+
+      copied = false;
+
+    }
+
+  }
+
+
+  if(copied){
+
+    showSaveToast();
+
+  }else{
+
+    alert(
+      "Unable to copy the results. Please try again."
+    );
 
   }
 
@@ -1131,12 +1245,16 @@ async function copyText(text){
 
 
 function copyForward(){
+
   copyText(fCopy);
+
 }
 
 
 function copyReverse(){
+
   copyText(rCopy);
+
 }
 
 
@@ -1146,25 +1264,84 @@ function copyReverse(){
 
 function resetForward(){
 
-  document.getElementById("f_variant").value = "";
-  document.getElementById("f_srp").value = 0;
-  document.getElementById("f_opdp").value = 0;
-  document.getElementById("f_bdp").value = 20;
-  document.getElementById("f_dir").value = 17;
-  document.getElementById("f_dp").value = 0;
+  document.getElementById(
+    "f_variant"
+  ).value = "";
 
-  document.getElementById("f_tr84").value = 78;
-  document.getElementById("f_tr72").value = 68;
-  document.getElementById("f_tr60").value = 57;
-  document.getElementById("f_tr48").value = 49;
-  document.getElementById("f_tr36").value = 39;
-  document.getElementById("f_tr24").value = 23;
 
-  document.getElementById("f_term").value = 60;
-  document.getElementById("f_tr").value = 57;
+  document.getElementById(
+    "f_srp"
+  ).value = 0;
 
-  document.getElementById("forwardResults")
-    .classList.remove("show");
+
+  document.getElementById(
+    "f_opdp"
+  ).value = 0;
+
+
+  document.getElementById(
+    "f_bdp"
+  ).value = 20;
+
+
+  document.getElementById(
+    "f_dir"
+  ).value = 17;
+
+
+  document.getElementById(
+    "f_dp"
+  ).value = 0;
+
+
+  document.getElementById(
+    "f_tr84"
+  ).value = 78;
+
+
+  document.getElementById(
+    "f_tr72"
+  ).value = 68;
+
+
+  document.getElementById(
+    "f_tr60"
+  ).value = 57;
+
+
+  document.getElementById(
+    "f_tr48"
+  ).value = 49;
+
+
+  document.getElementById(
+    "f_tr36"
+  ).value = 39;
+
+
+  document.getElementById(
+    "f_tr24"
+  ).value = 23;
+
+
+  document.getElementById(
+    "f_term"
+  ).value = 60;
+
+
+  document.getElementById(
+    "f_tr"
+  ).value = 57;
+
+
+  document
+    .getElementById(
+      "forwardResults"
+    )
+    .classList.remove(
+      "show"
+    );
+
 
   fCopy = "";
 
@@ -1173,18 +1350,54 @@ function resetForward(){
 
 function resetReverse(){
 
-  document.getElementById("r_variant").value = "";
-  document.getElementById("r_srp").value = 0;
-  document.getElementById("r_opdp").value = 0;
-  document.getElementById("r_bdp").value = 20;
-  document.getElementById("r_dir").value = 17;
-  document.getElementById("r_monthly").value = 25000;
+  document.getElementById(
+    "r_variant"
+  ).value = "";
 
-  document.getElementById("r_term").value = 60;
-  document.getElementById("r_tr").value = 57;
 
-  document.getElementById("reverseResults")
-    .classList.remove("show");
+  document.getElementById(
+    "r_srp"
+  ).value = 0;
+
+
+  document.getElementById(
+    "r_opdp"
+  ).value = 0;
+
+
+  document.getElementById(
+    "r_bdp"
+  ).value = 20;
+
+
+  document.getElementById(
+    "r_dir"
+  ).value = 17;
+
+
+  document.getElementById(
+    "r_monthly"
+  ).value = 25000;
+
+
+  document.getElementById(
+    "r_term"
+  ).value = 60;
+
+
+  document.getElementById(
+    "r_tr"
+  ).value = 57;
+
+
+  document
+    .getElementById(
+      "reverseResults"
+    )
+    .classList.remove(
+      "show"
+    );
+
 
   rCopy = "";
 
@@ -1198,33 +1411,70 @@ function resetReverse(){
 function showCalculator(which){
 
   const forward =
-    document.getElementById("forwardCalculator");
+    document.getElementById(
+      "forwardCalculator"
+    );
+
 
   const reverse =
-    document.getElementById("reverseCalculator");
+    document.getElementById(
+      "reverseCalculator"
+    );
+
 
   const tabForward =
-    document.getElementById("tabForward");
+    document.getElementById(
+      "tabForward"
+    );
+
 
   const tabReverse =
-    document.getElementById("tabReverse");
+    document.getElementById(
+      "tabReverse"
+    );
 
 
   if(which === "forward"){
 
-    forward.classList.remove("hidden");
-    reverse.classList.add("hidden");
+    forward
+      .classList
+      .remove("hidden");
 
-    tabForward.classList.add("active");
-    tabReverse.classList.remove("active");
+
+    reverse
+      .classList
+      .add("hidden");
+
+
+    tabForward
+      .classList
+      .add("active");
+
+
+    tabReverse
+      .classList
+      .remove("active");
 
   }else{
 
-    forward.classList.add("hidden");
-    reverse.classList.remove("hidden");
+    forward
+      .classList
+      .add("hidden");
 
-    tabForward.classList.remove("active");
-    tabReverse.classList.add("active");
+
+    reverse
+      .classList
+      .remove("hidden");
+
+
+    tabForward
+      .classList
+      .remove("active");
+
+
+    tabReverse
+      .classList
+      .add("active");
 
   }
 
