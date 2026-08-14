@@ -112,7 +112,7 @@ const peso=n=>Number.isFinite(n)?"₱"+Math.round(n).toLocaleString("en-PH"):"�
 const rawPeso=n=>Number.isFinite(n)?"₱"+n.toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2}):"—";
 function val(id){return parseFloat(document.getElementById(id).value)}
 function showTab(t){document.getElementById("forward").classList.toggle("hidden",t!=="f");document.getElementById("reverse").classList.toggle("hidden",t!=="r");document.getElementById("tabF").classList.toggle("active",t==="f");document.getElementById("tabR").classList.toggle("active",t==="r")}
-function setRRate(){document.getElementById("r_tr").value=(rates[val("r_term")]||0)*100}
+function setRate(){document.getElementById("r_tr").value=Math.round((rates[val("r_term")]||0)*100)}
 function ceil1(x){return Math.ceil(x-1e-10)}
 function calcForward(){
  const S=val("f_srp"), OPDP=val("f_opdp"), D=val("f_dp"), bdp=val("f_bdp")/100, dir=val("f_dir")/100;
