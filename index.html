@@ -1,15 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover">
+
 <meta name="theme-color" content="#0b1120">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent">
 
 <title>MSI Financing Calculator</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
@@ -23,8 +31,18 @@ body{
   margin:0;
   background:#0b1120;
   color:#f9fafb;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
 }
+
+/* =====================================================
+   HEADER
+   ===================================================== */
 
 header{
   background:#111827;
@@ -47,6 +65,10 @@ h1{
   font-size:11px;
 }
 
+/* =====================================================
+   NAVIGATION
+   ===================================================== */
+
 nav{
   display:flex;
   gap:7px;
@@ -68,6 +90,10 @@ nav button.active{
   background:#f9fafb;
   color:#111827;
 }
+
+/* =====================================================
+   MAIN
+   ===================================================== */
 
 main{
   width:100%;
@@ -136,6 +162,10 @@ input::placeholder{
   gap:9px;
 }
 
+/* =====================================================
+   RESULTS
+   ===================================================== */
+
 .result{
   display:flex;
   justify-content:space-between;
@@ -159,6 +189,37 @@ input::placeholder{
   text-align:right;
   white-space:nowrap;
 }
+
+/* =====================================================
+   TARGET MONTHLY DISPLAY
+   ===================================================== */
+
+.target-box{
+  background:#172033;
+  border:1px solid #4b5563;
+  border-radius:12px;
+  padding:15px;
+  margin-bottom:12px;
+}
+
+.target-label{
+  color:#9ca3af;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.target-value{
+  margin-top:5px;
+  color:#f9fafb;
+  font-size:25px;
+  font-weight:900;
+}
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
 
 button.primary{
   width:100%;
@@ -193,6 +254,10 @@ button.secondary{
   margin-top:12px;
 }
 
+/* =====================================================
+   STATUS
+   ===================================================== */
+
 .status{
   margin-top:11px;
   padding:11px;
@@ -203,9 +268,7 @@ button.secondary{
 }
 
 .ok{
-  background:#052e16;
-  border:1px solid #166534;
-  color:#bbf7d0;
+  display:none;
 }
 
 .warn{
@@ -220,6 +283,10 @@ button.secondary{
   color:#fecaca;
 }
 
+/* =====================================================
+   SMALL / NOTES
+   ===================================================== */
+
 .small{
   color:#9ca3af;
   font-size:11px;
@@ -232,6 +299,10 @@ button.secondary{
   font-size:10px;
   line-height:1.45;
 }
+
+/* =====================================================
+   INTERNAL VERIFICATION
+   ===================================================== */
 
 details{
   margin-top:13px;
@@ -254,9 +325,17 @@ summary{
   overflow-wrap:anywhere;
 }
 
+/* =====================================================
+   HIDDEN
+   ===================================================== */
+
 .hidden{
   display:none!important;
 }
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
 
 footer{
   max-width:720px;
@@ -278,21 +357,35 @@ hr{
   margin:10px 0;
 }
 
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
 @media(max-width:380px){
+
   .grid{
     grid-template-columns:1fr;
   }
+
 }
 
 @media(min-width:600px){
+
   main{
     padding:24px;
   }
+
 }
+
 </style>
+
 </head>
 
 <body>
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
 
 <header>
 
@@ -304,14 +397,16 @@ MSI-ADJ-001-V3.1 • Forward & Reverse
 
 <nav>
 
-<button id="tabF"
-class="active"
-onclick="showTab('f')">
+<button
+  id="tabF"
+  class="active"
+  onclick="showTab('f')">
 Higher DP → Monthly
 </button>
 
-<button id="tabR"
-onclick="showTab('r')">
+<button
+  id="tabR"
+  onclick="showTab('r')">
 Monthly → Required DP
 </button>
 
@@ -331,7 +426,9 @@ Monthly → Required DP
 
 <div class="card">
 
-<h2>Calculator 1 — Higher Down Payment → Monthly Amortization</h2>
+<h2>
+Calculator 1 — Higher Down Payment → Monthly Amortization
+</h2>
 
 <div class="section">
 INPUTS
@@ -342,9 +439,9 @@ Vehicle Variant
 </label>
 
 <input
-id="f_variant"
-type="text"
-placeholder="e.g. Xpander Cross"
+  id="f_variant"
+  type="text"
+  placeholder="e.g. Xpander Cross"
 >
 
 <div class="grid">
@@ -356,10 +453,10 @@ Unit SRP
 </label>
 
 <input
-id="f_srp"
-type="number"
-inputmode="decimal"
-placeholder="0"
+  id="f_srp"
+  type="number"
+  inputmode="decimal"
+  placeholder="0"
 >
 
 </div>
@@ -371,10 +468,10 @@ Official Promo DP
 </label>
 
 <input
-id="f_opdp"
-type="number"
-inputmode="decimal"
-placeholder="0"
+  id="f_opdp"
+  type="number"
+  inputmode="decimal"
+  placeholder="0"
 >
 
 </div>
@@ -386,10 +483,10 @@ Customer Desired Down Payment
 </label>
 
 <input
-id="f_dp"
-type="number"
-inputmode="decimal"
-placeholder="0"
+  id="f_dp"
+  type="number"
+  inputmode="decimal"
+  placeholder="0"
 >
 
 
@@ -437,8 +534,8 @@ V3.1 fallback TR table. If an official term-rate table is introduced into the pr
 
 
 <button
-class="primary"
-onclick="calcForward()">
+  class="primary"
+  onclick="calcForward()">
 COMPUTE MONTHLY
 </button>
 
@@ -469,8 +566,8 @@ Internal Verification
 </summary>
 
 <div
-id="f_internal"
-class="internal">
+  id="f_internal"
+  class="internal">
 </div>
 
 </details>
@@ -479,14 +576,14 @@ class="internal">
 <div class="copyrow">
 
 <button
-class="secondary"
-onclick="copyForward()">
+  class="secondary"
+  onclick="copyForward()">
 COPY RESULTS
 </button>
 
 <button
-class="secondary"
-onclick="resetF()">
+  class="secondary"
+  onclick="resetF()">
 RESET
 </button>
 
@@ -503,15 +600,14 @@ RESET
      ===================================================== -->
 
 <section
-id="reverse"
-class="hidden">
+  id="reverse"
+  class="hidden">
 
 <div class="card">
 
 <h2>
 Calculator 2 — Monthly → Required Down Payment
 </h2>
-
 
 <div class="section">
 INPUTS
@@ -522,9 +618,9 @@ Vehicle Variant
 </label>
 
 <input
-id="r_variant"
-type="text"
-placeholder="e.g. Xpander Cross"
+  id="r_variant"
+  type="text"
+  placeholder="e.g. Xpander Cross"
 >
 
 
@@ -537,10 +633,10 @@ Unit SRP
 </label>
 
 <input
-id="r_srp"
-type="number"
-inputmode="decimal"
-placeholder="0"
+  id="r_srp"
+  type="number"
+  inputmode="decimal"
+  placeholder="0"
 >
 
 </div>
@@ -552,10 +648,10 @@ Official Promo DP
 </label>
 
 <input
-id="r_opdp"
-type="number"
-inputmode="decimal"
-placeholder="0"
+  id="r_opdp"
+  type="number"
+  inputmode="decimal"
+  placeholder="0"
 >
 
 </div>
@@ -568,10 +664,10 @@ Target Monthly Amortization
 </label>
 
 <input
-id="r_monthly"
-type="number"
-inputmode="decimal"
-placeholder="0"
+  id="r_monthly"
+  type="number"
+  inputmode="decimal"
+  placeholder="0"
 >
 
 
@@ -584,8 +680,8 @@ Loan Term
 </label>
 
 <select
-id="r_term"
-onchange="setRate()">
+  id="r_term"
+  onchange="setRate()">
 
 <option value="84">
 7 Years
@@ -619,54 +715,21 @@ TR %
 </label>
 
 <input
-id="r_tr"
-type="number"
-step="0.01"
-value="57"
+  id="r_tr"
+  type="number"
+  step="0.01"
+  value="57"
+  readonly
 >
-
 
 <div class="note">
 V3.1 fallback TR: 7Y 78% • 6Y 68% • 5Y 57% • 4Y 49% • 3Y 39% • 2Y 23%
 </div>
 
 
-<div class="section">
-OPTIONAL PRECISION INPUT
-</div>
-
-<label>
-Raw Monthly Before Ceiling
-</label>
-
-<input
-id="r_raw"
-type="number"
-inputmode="decimal"
-step="0.000001"
-placeholder="Optional"
->
-
-<div class="note">
-Use this only when the raw monthly before the Forward calculator's CEILING operation is available. V3.1 uses this for the improved 0-difference calculation.
-</div>
-
-
-<label>
-Official Low-DP Monthly for Selected Term
-</label>
-
-<input
-id="r_official"
-type="number"
-inputmode="decimal"
-placeholder="Optional safeguard"
->
-
-
 <button
-class="primary"
-onclick="calcReverse()">
+  class="primary"
+  onclick="calcReverse()">
 COMPUTE REQUIRED DP
 </button>
 
@@ -675,10 +738,14 @@ COMPUTE REQUIRED DP
 </div>
 
 
+<!-- =====================================================
+     REVERSE RESULTS
+     ===================================================== -->
+
 <div class="card">
 
 <h2>
-Estimated Required Down Payment
+Required Down Payment
 </h2>
 
 <div id="r_results">
@@ -697,8 +764,8 @@ Internal Verification
 </summary>
 
 <div
-id="r_internal"
-class="internal">
+  id="r_internal"
+  class="internal">
 </div>
 
 </details>
@@ -707,14 +774,14 @@ class="internal">
 <div class="copyrow">
 
 <button
-class="secondary"
-onclick="copyReverse()">
+  class="secondary"
+  onclick="copyReverse()">
 COPY RESULTS
 </button>
 
 <button
-class="secondary"
-onclick="resetR()">
+  class="secondary"
+  onclick="resetR()">
 RESET
 </button>
 
@@ -726,6 +793,10 @@ RESET
 
 </main>
 
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
 
 <footer>
 
@@ -767,8 +838,7 @@ const TERMS = {
 
 
 /* =====================================================
-   V3.1 DEFAULT TR TABLE
-   FALLBACK ONLY
+   DEFAULT TR TABLE
    ===================================================== */
 
 const DEFAULT_TR = {
@@ -793,7 +863,6 @@ function val(id){
     );
 
   return Number.isFinite(x) ? x : NaN;
-
 }
 
 
@@ -804,7 +873,6 @@ function peso(n){
 
   return "₱" +
     Math.round(n).toLocaleString("en-PH");
-
 }
 
 
@@ -821,7 +889,6 @@ function rawPeso(n){
         maximumFractionDigits:6
       }
     );
-
 }
 
 
@@ -896,7 +963,6 @@ function showTab(t){
 
 /* =====================================================
    CALCULATOR 1
-   F1-F14
    HIGHER DP → MONTHLY
    ===================================================== */
 
@@ -933,7 +999,9 @@ function calcForward(){
       'Desired DP is at or above SRP. Treat as cash purchase / bank evaluation.' +
       '</div>';
 
-    document.getElementById("f_results").innerHTML = "";
+    document
+      .getElementById("f_results")
+      .innerHTML = "";
 
     return;
   }
@@ -946,7 +1014,9 @@ function calcForward(){
       'Desired DP is at or below Official Promo DP. Use the official low-DP monthly offer.' +
       '</div>';
 
-    document.getElementById("f_results").innerHTML = "";
+    document
+      .getElementById("f_results")
+      .innerHTML = "";
 
     return;
   }
@@ -1069,7 +1139,7 @@ function calcForward(){
 
 
     /* F14
-       Ceiled = CEILING(Raw,1)
+       Ceiled
     */
 
     const ceiled =
@@ -1092,13 +1162,11 @@ function calcForward(){
       `Raw Monthly: ${rawPeso(raw)}<br>` +
       `Ceiled Monthly: ${peso(ceiled)}` +
       `<hr>`;
+
   }
 
 
-  /*
-     Validation / Actual Revenue
-     F7 should align with RB after adjustment.
-  */
+  /* Validation / Actual Revenue */
 
   const actualRevenue =
     adjustedFinanced * 1.17 + D;
@@ -1107,19 +1175,22 @@ function calcForward(){
     actualRevenue - RB;
 
 
+  /*
+     DO NOT SHOW VALID EVALUATOR.
+     Only show validation error if something
+     is actually wrong.
+  */
+
   if(Math.abs(evaluator) > 0.10){
 
     status.innerHTML =
       `<div class="status bad">
-        VALIDATION ERROR • Evaluator ${rawPeso(evaluator)}
+        VALIDATION ERROR. Please review the inputs.
       </div>`;
 
   }else{
 
-    status.innerHTML =
-      `<div class="status ok">
-        VALID • Evaluator ${rawPeso(evaluator)}
-      </div>`;
+    status.innerHTML = "";
 
   }
 
@@ -1145,9 +1216,9 @@ function calcForward(){
       internal;
 
 
-  /*
+  /* =====================================================
      COPY RESULT
-  */
+     ===================================================== */
 
   const variant =
     document.getElementById("f_variant").value ||
@@ -1155,6 +1226,7 @@ function calcForward(){
 
 
   const values = {};
+
 
   for(const M of terms){
 
@@ -1169,7 +1241,9 @@ function calcForward(){
         M;
 
       values[M] =
-        peso(ceilingPeso(raw));
+        peso(
+          ceilingPeso(raw)
+        );
 
     }else{
 
@@ -1199,7 +1273,6 @@ Estimated computation only. Final required down payment and monthly amortization
 
 /* =====================================================
    CALCULATOR 2
-   R1-R7
    MONTHLY → REQUIRED DP
    ===================================================== */
 
@@ -1218,12 +1291,6 @@ function calcReverse(){
   const tr =
     val("r_tr") / 100;
 
-  const Raw_target =
-    val("r_raw");
-
-  const official =
-    val("r_official");
-
 
   const status =
     document.getElementById("r_status");
@@ -1239,91 +1306,45 @@ function calcReverse(){
 
     status.innerHTML =
       '<div class="status bad">' +
-      'Please complete SRP, Official Promo DP, Target Monthly, Term, and TR.' +
+      'Please complete SRP, Official Promo DP, Target Monthly, and Term.' +
       '</div>';
 
     return;
   }
 
 
-  /*
+  /* =====================================================
      R1
      RB = S × 0.8 × 1.17 + OPDP
-  */
+     ===================================================== */
 
   const RB =
     S * 0.8 * 1.17 + OPDP;
 
 
-  /*
+  /* =====================================================
      R2
      Width = M × 1.17 / (1 + TR)
-  */
+     ===================================================== */
 
   const Width =
     M * 1.17 /
     (1 + tr);
 
 
-  /*
+  /* =====================================================
      R3
-     Required DP =
-     RB - MT_target × Width
-  */
+     Required DP
+     ===================================================== */
 
   const D =
     RB -
     MT_target * Width;
 
 
-  /*
-     R4
-     Improved 0-diff:
-     D_exact =
-     RB - Raw_target × Width
-  */
-
-  let D_exact = NaN;
-
-  if(Number.isFinite(Raw_target)){
-
-    D_exact =
-      RB -
-      Raw_target * Width;
-
-  }
-
-
-  /*
-     Safeguard:
-     Target monthly >= official low-DP monthly
-  */
-
-  if(
-    Number.isFinite(official) &&
-    MT_target >= official
-  ){
-
-    status.innerHTML =
-      '<div class="status warn">' +
-      'Target monthly is at or above the official low-DP monthly for this term. Present the official low-DP offer; do not reverse.' +
-      '</div>';
-
-    document
-      .getElementById("r_results")
-      .innerHTML =
-        `<div class="result">
-          <span>Official Low-DP Monthly</span>
-          <span class="money">${peso(official)}</span>
-        </div>`;
-
-    return;
-  }
-
-
-  /*
-     D >= S
-  */
+  /* =====================================================
+     SAFEGUARD
+     ===================================================== */
 
   if(D >= S){
 
@@ -1340,10 +1361,6 @@ function calcReverse(){
   }
 
 
-  /*
-     D <= OPDP
-  */
-
   if(D <= OPDP){
 
     status.innerHTML =
@@ -1359,11 +1376,10 @@ function calcReverse(){
   }
 
 
-  /*
+  /* =====================================================
      R5
-     Proof Raw =
-     (RB-D)(1+TR)/(1.17M)
-  */
+     Proof Raw
+     ===================================================== */
 
   const proofRaw =
     (RB - D) *
@@ -1371,19 +1387,19 @@ function calcReverse(){
     (1.17 * M);
 
 
-  /*
+  /* =====================================================
      R6
      Proof Ceiled
-  */
+     ===================================================== */
 
   const proofCeiled =
     ceilingPeso(proofRaw);
 
 
-  /*
+  /* =====================================================
      R7
      Actual Revenue / Evaluator
-  */
+     ===================================================== */
 
   const actualRevenue =
     (RB - D) + D;
@@ -1392,59 +1408,59 @@ function calcReverse(){
     actualRevenue - RB;
 
 
-  let exactBlock = "";
+  /*
+     DO NOT SHOW VALID EVALUATOR.
+     Only show validation error if it fails.
+  */
 
-  if(Number.isFinite(D_exact)){
+  if(Math.abs(evaluator) > 0.10){
 
-    const exactProofRaw =
-      (RB - D_exact) *
-      (1 + tr) /
-      (1.17 * M);
-
-    exactBlock =
-      `<div class="result">
-        <span>Exact DP Using Raw Monthly</span>
-        <span class="money">${peso(D_exact)}</span>
-      </div>
-
-      <div class="result">
-        <span>Raw Monthly Used</span>
-        <span class="money">${rawPeso(Raw_target)}</span>
-      </div>
-
-      <div class="result">
-        <span>Exact Proof Monthly</span>
-        <span class="money">${rawPeso(exactProofRaw)}</span>
+    status.innerHTML =
+      `<div class="status bad">
+        VALIDATION ERROR. Please review the inputs.
       </div>`;
+
+  }else{
+
+    status.innerHTML = "";
 
   }
 
 
+  /* =====================================================
+     CUSTOMER-FACING RESULT
+     ===================================================== */
+
   document
     .getElementById("r_results")
     .innerHTML =
-      `<div class="result">
-        <span>Loan Term</span>
-        <span class="money">${TERMS[M]}</span>
+
+    `<div class="target-box">
+
+      <div class="target-label">
+        Target Monthly
       </div>
 
-      <div class="result">
-        <span>Estimated Required DP</span>
-        <span class="money">${peso(D)}</span>
+      <div class="target-value">
+        ${peso(MT_target)}
       </div>
 
-      ${exactBlock}
+    </div>
 
-      <div class="result">
-        <span>Proof Monthly — Raw</span>
-        <span class="money">${rawPeso(proofRaw)}</span>
-      </div>
+    <div class="result">
+      <span>Loan Term</span>
+      <span class="money">${TERMS[M]}</span>
+    </div>
 
-      <div class="result">
-        <span>Proof Monthly — Ceiled</span>
-        <span class="money">${peso(proofCeiled)}</span>
-      </div>`;
+    <div class="result">
+      <span>Estimated Required DP</span>
+      <span class="money">${peso(D)}</span>
+    </div>`;
 
+
+  /* =====================================================
+     INTERNAL VERIFICATION
+     ===================================================== */
 
   document
     .getElementById("r_internal")
@@ -1460,26 +1476,9 @@ function calcReverse(){
       `Evaluator: ${rawPeso(evaluator)}`;
 
 
-  if(Math.abs(evaluator) <= 0.10){
-
-    status.innerHTML =
-      `<div class="status ok">
-        VALID • Evaluator ${rawPeso(evaluator)}
-      </div>`;
-
-  }else{
-
-    status.innerHTML =
-      `<div class="status bad">
-        VALIDATION ERROR • Evaluator ${rawPeso(evaluator)}
-      </div>`;
-
-  }
-
-
-  /*
+  /* =====================================================
      COPY RESULT
-  */
+     ===================================================== */
 
   const variant =
     document.getElementById("r_variant").value ||
@@ -1607,8 +1606,6 @@ function resetR(){
   document.getElementById("r_srp").value="";
   document.getElementById("r_opdp").value="";
   document.getElementById("r_monthly").value="";
-  document.getElementById("r_raw").value="";
-  document.getElementById("r_official").value="";
 
   document.getElementById("r_results").innerHTML =
     '<div class="small">Enter the required inputs and tap COMPUTE REQUIRED DP.</div>';
@@ -1621,7 +1618,9 @@ function resetR(){
 }
 
 
-/* Initialize TR */
+/* =====================================================
+   INITIALIZE
+   ===================================================== */
 
 setRate();
 
