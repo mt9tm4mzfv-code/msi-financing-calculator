@@ -158,6 +158,12 @@ function calcReverse(){
  document.getElementById("r_internal").innerHTML=`Base Revenue (RB): ${rawPeso(RB)}<br>Width: ${rawPeso(width)}<br>TR: ${(tr*100).toFixed(2)}%<br>Evaluator concept: proof raw should reproduce target monthly.`;
  status.innerHTML='<div class="status ok">VALIDATED • Estimated computation only.</div>';
  window.rCopy=`${document.getElementById("r_variant").value||"Vehicle"}\nTarget Monthly: ${peso(MT)}\nTerm: ${terms[M]}\nEstimated Required DP: ${peso(D)}\nEstimated computation only. Final remains subject to bank approval.`;
+ window.rCopy += `
+
+🦾 Powered by MSI Framework™ 🚀
+JUDE DANTE PINEDA
+
+Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.`;
 }
 function copyText(t){if(navigator.clipboard) navigator.clipboard.writeText(t);else alert(t)}
 function copyForward(){copyText(window.fCopy||"Compute first.")}
