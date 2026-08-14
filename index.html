@@ -4,19 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b1220">
+
 <title>MSI Financing Calculator</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
-html{background:#0b1220}
+html{
+  background:#0b1220;
+}
 
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   background:#0b1220;
   color:#f5f7fb;
-  min-height:100vh
+  min-height:100vh;
 }
 
 header{
@@ -25,25 +30,25 @@ header{
   position:sticky;
   top:0;
   z-index:20;
-  border-bottom:1px solid #263247
+  border-bottom:1px solid #263247;
 }
 
 h1{
   margin:0;
   font-size:21px;
-  font-weight:800
+  font-weight:800;
 }
 
 .sub{
   margin-top:4px;
   color:#9ca3af;
-  font-size:11px
+  font-size:11px;
 }
 
 nav{
   display:flex;
   gap:8px;
-  margin-top:14px
+  margin-top:14px;
 }
 
 nav button{
@@ -55,19 +60,19 @@ nav button{
   color:#d1d5db;
   font-size:12px;
   font-weight:800;
-  cursor:pointer
+  cursor:pointer;
 }
 
 nav button.active{
   background:#f9fafb;
-  color:#111827
+  color:#111827;
 }
 
 main{
   width:100%;
   max-width:720px;
   margin:0 auto;
-  padding:14px
+  padding:14px;
 }
 
 .card{
@@ -76,16 +81,18 @@ main{
   border-radius:16px;
   padding:16px;
   margin-bottom:14px;
-  box-shadow:0 5px 18px rgba(0,0,0,.18)
+  box-shadow:0 5px 18px rgba(0,0,0,.18);
 }
 
 .card h2{
   margin:0 0 14px;
   font-size:18px;
-  font-weight:800
+  font-weight:800;
 }
 
-.section{margin-top:18px}
+.section{
+  margin-top:18px;
+}
 
 .section-title{
   color:#9ca3af;
@@ -93,7 +100,7 @@ main{
   font-weight:900;
   letter-spacing:.08em;
   text-transform:uppercase;
-  margin-bottom:8px
+  margin-bottom:8px;
 }
 
 label{
@@ -101,10 +108,11 @@ label{
   margin:10px 0 5px;
   color:#d1d5db;
   font-size:12px;
-  font-weight:700
+  font-weight:700;
 }
 
-input,select{
+input,
+select{
   width:100%;
   min-height:47px;
   padding:11px 12px;
@@ -113,18 +121,19 @@ input,select{
   background:#1f2937;
   color:#f9fafb;
   font-size:16px;
-  outline:none
+  outline:none;
 }
 
-input:focus,select:focus{
+input:focus,
+select:focus{
   border-color:#9ca3af;
-  box-shadow:0 0 0 2px rgba(156,163,175,.18)
+  box-shadow:0 0 0 2px rgba(156,163,175,.18);
 }
 
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px
+  gap:10px;
 }
 
 .target-box{
@@ -132,7 +141,7 @@ input:focus,select:focus{
   border:1px solid #4b5563;
   border-radius:12px;
   padding:15px;
-  margin-top:8px
+  margin-top:8px;
 }
 
 .target-label{
@@ -140,14 +149,16 @@ input:focus,select:focus{
   font-size:11px;
   font-weight:900;
   letter-spacing:.07em;
-  text-transform:uppercase
+  text-transform:uppercase;
 }
 
-.target-value{margin-top:7px}
+.target-value{
+  margin-top:7px;
+}
 
 .target-value input{
   font-size:21px;
-  font-weight:900
+  font-weight:900;
 }
 
 button.primary{
@@ -160,10 +171,12 @@ button.primary{
   color:#111827;
   font-size:14px;
   font-weight:900;
-  cursor:pointer
+  cursor:pointer;
 }
 
-button.primary:active{transform:scale(.99)}
+button.primary:active{
+  transform:scale(.99);
+}
 
 button.secondary{
   width:100%;
@@ -174,7 +187,7 @@ button.secondary{
   color:#f9fafb;
   font-size:12px;
   font-weight:800;
-  cursor:pointer
+  cursor:pointer;
 }
 
 .results{
@@ -183,15 +196,17 @@ button.secondary{
   border:1px solid #374151;
   border-radius:16px;
   padding:16px;
-  margin-bottom:14px
+  margin-bottom:14px;
 }
 
-.results.show{display:block}
+.results.show{
+  display:block;
+}
 
 .results h2{
   margin:0 0 14px;
   font-size:18px;
-  font-weight:800
+  font-weight:800;
 }
 
 .result{
@@ -200,14 +215,16 @@ button.secondary{
   align-items:center;
   gap:12px;
   padding:12px 0;
-  border-bottom:1px solid #374151
+  border-bottom:1px solid #374151;
 }
 
-.result:last-of-type{border-bottom:0}
+.result:last-of-type{
+  border-bottom:0;
+}
 
 .result span:first-child{
   color:#d1d5db;
-  font-size:13px
+  font-size:13px;
 }
 
 .money{
@@ -215,7 +232,7 @@ button.secondary{
   font-size:18px;
   font-weight:900;
   text-align:right;
-  white-space:nowrap
+  white-space:nowrap;
 }
 
 .status{
@@ -224,33 +241,27 @@ button.secondary{
   border-radius:10px;
   font-size:12px;
   line-height:1.45;
-  font-weight:700
+  font-weight:700;
 }
 
 .status.ok{
   background:#064e2b;
   border:1px solid #15803d;
-  color:#bbf7d0
-}
-
-.status.warn{
-  background:#451a03;
-  border:1px solid #92400e;
-  color:#fed7aa
+  color:#bbf7d0;
 }
 
 .note{
   margin-top:7px;
   color:#6b7280;
   font-size:10px;
-  line-height:1.45
+  line-height:1.45;
 }
 
 .actions{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
-  margin-top:13px
+  margin-top:13px;
 }
 
 footer{
@@ -260,14 +271,20 @@ footer{
   text-align:center;
   color:#6b7280;
   font-size:10px;
-  line-height:1.6
+  line-height:1.6;
 }
 
-footer strong{color:#d1d5db}
+footer strong{
+  color:#d1d5db;
+}
 
-.hidden{display:none!important}
+.hidden{
+  display:none !important;
+}
 
-/* COPY SUCCESS NOTIFICATION */
+
+/* COPY SUCCESS MESSAGE */
+
 .toast{
   position:fixed;
   left:50%;
@@ -287,236 +304,364 @@ footer strong{color:#d1d5db}
   pointer-events:none;
   transition:opacity .2s ease,transform .2s ease;
   text-align:center;
-  max-width:calc(100vw - 32px)
+  max-width:calc(100vw - 32px);
 }
 
 .toast.show{
   opacity:1;
-  transform:translate(-50%,0)
+  transform:translate(-50%,0);
 }
+
 
 @media(max-width:600px){
-  main{padding:12px}
 
-  .grid{grid-template-columns:1fr}
+  main{
+    padding:12px;
+  }
 
-  .actions{grid-template-columns:1fr 1fr}
+  .grid{
+    grid-template-columns:1fr;
+  }
 
-  .result{align-items:flex-start}
+  .actions{
+    grid-template-columns:1fr 1fr;
+  }
 
-  .money{font-size:17px}
 }
+
 </style>
 </head>
 
+
 <body>
 
+
 <!-- COPY SUCCESS NOTIFICATION -->
-<div id="saveToast" class="toast" role="status" aria-live="polite">
+
+<div id="saveToast"
+     class="toast"
+     role="status"
+     aria-live="polite">
   ✓ Information saved successfully.
 </div>
 
+
 <header>
+
   <h1>MSI Financing Calculator</h1>
-  <div class="sub">MSI-ADJ-001-V3.1 • Forward &amp; Reverse</div>
+
+  <div class="sub">
+    MSI-ADJ-001-V3.1 • Forward &amp; Reverse
+  </div>
 
   <nav>
-    <button id="tabForward" class="active" onclick="showCalculator('forward')">
+
+    <button
+      id="tabForward"
+      class="active"
+      onclick="showCalculator('forward')">
       Higher DP → Monthly
     </button>
 
-    <button id="tabReverse" onclick="showCalculator('reverse')">
+    <button
+      id="tabReverse"
+      onclick="showCalculator('reverse')">
       Monthly → Required DP
     </button>
+
   </nav>
+
 </header>
+
 
 <main>
 
-<!-- ========================================================= -->
-<!-- CALCULATOR 1 -->
-<!-- ========================================================= -->
+
+<!-- ============================================================
+     CALCULATOR 1
+============================================================ -->
 
 <section id="forwardCalculator">
 
 <div class="card">
 
-<h2>Calculator 1 — Higher Down Payment → Monthly Amortization</h2>
+<h2>
+  Calculator 1 — Higher Down Payment → Monthly Amortization
+</h2>
+
 
 <div class="section">
-<div class="section-title">Inputs</div>
 
-<label for="f_variant">Vehicle Variant</label>
-<input id="f_variant" type="text" placeholder="e.g. Xpander Cross">
+<div class="section-title">
+  Inputs
+</div>
+
+
+<label for="f_variant">
+  Vehicle Variant
+</label>
+
+<input
+  id="f_variant"
+  type="text"
+  placeholder="e.g. Xpander Cross"
+>
+
 
 <div class="grid">
 
-<div>
-<label for="f_srp">Unit SRP</label>
-<input id="f_srp" type="number" min="0" step="1" value="0">
-</div>
 
 <div>
-<label for="f_opdp">Official Promo DP</label>
-<input id="f_opdp" type="number" min="0" step="1" value="0">
-</div>
+
+<label for="f_srp">
+  Unit SRP
+</label>
+
+<input
+  id="f_srp"
+  type="number"
+  min="0"
+  step="1"
+  value="0"
+>
 
 </div>
-</div>
 
-
-<div class="section">
-<div class="section-title">Editable Constants</div>
-
-<div class="grid">
 
 <div>
-<label for="f_bdp">BDP %</label>
-<input id="f_bdp" type="number" step="0.01" value="20">
-</div>
 
-<div>
-<label for="f_dir">DIR %</label>
-<input id="f_dir" type="number" step="0.01" value="17">
-</div>
+<label for="f_opdp">
+  Official Promo DP
+</label>
 
-</div>
-</div>
+<input
+  id="f_opdp"
+  type="number"
+  min="0"
+  step="1"
+  value="0"
+>
 
-
-<div class="section">
-<div class="section-title">Customer Desired Down Payment</div>
-
-<label for="f_dp">Desired Down Payment</label>
-<input id="f_dp" type="number" min="0" step="1" value="0">
 </div>
 
 
-<div class="section">
-<div class="section-title">Term-Rate Table</div>
-
-<div class="note">
-V3.1 fallback TR table. Each TR remains editable.
-Selecting another term automatically loads its corresponding default TR.
-</div>
-
-<div class="grid">
-
-<div>
-<label for="f_tr84">7 Years TR %</label>
-<input id="f_tr84" type="number" step="0.01" value="78">
-</div>
-
-<div>
-<label for="f_tr72">6 Years TR %</label>
-<input id="f_tr72" type="number" step="0.01" value="68">
-</div>
-
-<div>
-<label for="f_tr60">5 Years TR %</label>
-<input id="f_tr60" type="number" step="0.01" value="57">
-</div>
-
-<div>
-<label for="f_tr48">4 Years TR %</label>
-<input id="f_tr48" type="number" step="0.01" value="49">
-</div>
-
-<div>
-<label for="f_tr36">3 Years TR %</label>
-<input id="f_tr36" type="number" step="0.01" value="39">
-</div>
-
-<div>
-<label for="f_tr24">2 Years TR %</label>
-<input id="f_tr24" type="number" step="0.01" value="23">
 </div>
 
 </div>
-</div>
 
+
+<!-- ============================================================
+     LOAN TERM
+     TR IS NOT DISPLAYED
+============================================================ -->
 
 <div class="section">
 
-<label for="f_term">Loan Term</label>
+<label for="f_term">
+  Loan Term
+</label>
 
-<select id="f_term" onchange="loadForwardTR()">
-<option value="84">7 Years</option>
-<option value="72">6 Years</option>
-<option value="60" selected>5 Years</option>
-<option value="48">4 Years</option>
-<option value="36">3 Years</option>
-<option value="24">2 Years</option>
+<select id="f_term">
+
+  <option value="84">
+    7 Years
+  </option>
+
+  <option value="72">
+    6 Years
+  </option>
+
+  <option value="60" selected>
+    5 Years
+  </option>
+
+  <option value="48">
+    4 Years
+  </option>
+
+  <option value="36">
+    3 Years
+  </option>
+
+  <option value="24">
+    2 Years
+  </option>
+
 </select>
 
-<label for="f_tr">Selected Term TR %</label>
-
-<input id="f_tr" type="number" step="0.01" value="57">
-
-<div class="note">
-TR is editable. Selecting another term automatically loads its corresponding default TR, which you can then edit if needed.
 </div>
 
-<button class="primary" onclick="calculateForward()">
-COMPUTE MONTHLY
+
+<div class="section">
+
+<div class="section-title">
+  Editable Constants
+</div>
+
+
+<div class="grid">
+
+
+<div>
+
+<label for="f_bdp">
+  BDP %
+</label>
+
+<input
+  id="f_bdp"
+  type="number"
+  step="0.01"
+  value="20"
+>
+
+</div>
+
+
+<div>
+
+<label for="f_dir">
+  DIR %
+</label>
+
+<input
+  id="f_dir"
+  type="number"
+  step="0.01"
+  value="17"
+>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<div class="section">
+
+<div class="section-title">
+  Customer Desired Down Payment
+</div>
+
+
+<label for="f_dp">
+  Desired Down Payment
+</label>
+
+<input
+  id="f_dp"
+  type="number"
+  min="0"
+  step="1"
+  value="0"
+>
+
+</div>
+
+
+<button
+  class="primary"
+  onclick="calculateForward()">
+  COMPUTE MONTHLY
 </button>
 
 </div>
 
-</div>
 
+<!-- CALCULATOR 1 RESULT -->
 
-<div id="forwardResults" class="results">
+<div
+  id="forwardResults"
+  class="results"
+>
 
-<h2>Estimated Monthly Amortization</h2>
+<h2>
+  Estimated Monthly Amortization
+</h2>
+
 
 <div class="result">
-<span>Vehicle</span>
-<span id="fr_vehicle" class="money">—</span>
+
+<span>
+  Vehicle
+</span>
+
+<span
+  id="fr_vehicle"
+  class="money">
+  —
+</span>
+
 </div>
 
-<div class="result">
-<span>Higher DP</span>
-<span id="fr_dp" class="money">—</span>
-</div>
 
 <div class="result">
-<span>7Y</span>
-<span id="fr_84" class="money">—</span>
+
+<span>
+  Loan Term
+</span>
+
+<span
+  id="fr_term"
+  class="money">
+  —
+</span>
+
 </div>
 
-<div class="result">
-<span>6Y</span>
-<span id="fr_72" class="money">—</span>
-</div>
 
 <div class="result">
-<span>5Y</span>
-<span id="fr_60" class="money">—</span>
+
+<span>
+  Higher DP
+</span>
+
+<span
+  id="fr_dp"
+  class="money">
+  —
+</span>
+
 </div>
 
-<div class="result">
-<span>4Y</span>
-<span id="fr_48" class="money">—</span>
-</div>
 
 <div class="result">
-<span>3Y</span>
-<span id="fr_36" class="money">—</span>
+
+<span>
+  Monthly Amortization
+</span>
+
+<span
+  id="fr_monthly"
+  class="money">
+  —
+</span>
+
 </div>
 
-<div class="result">
-<span>2Y</span>
-<span id="fr_24" class="money">—</span>
-</div>
 
 <div class="status ok">
-VALID • Estimated computation only.
+  VALID • Estimated computation only.
 </div>
 
+
 <div class="actions">
-<button class="secondary" onclick="copyForward()">COPY RESULTS</button>
-<button class="secondary" onclick="resetForward()">RESET</button>
+
+<button
+  class="secondary"
+  onclick="copyForward()">
+  COPY RESULTS
+</button>
+
+
+<button
+  class="secondary"
+  onclick="resetForward()">
+  RESET
+</button>
+
 </div>
 
 </div>
@@ -524,55 +669,165 @@ VALID • Estimated computation only.
 </section>
 
 
-<!-- ========================================================= -->
-<!-- CALCULATOR 2 -->
-<!-- ========================================================= -->
 
-<section id="reverseCalculator" class="hidden">
+<!-- ============================================================
+     CALCULATOR 2
+============================================================ -->
+
+<section
+  id="reverseCalculator"
+  class="hidden">
 
 <div class="card">
 
-<h2>Calculator 2 — Monthly → Required Down Payment</h2>
+<h2>
+  Calculator 2 — Monthly → Required Down Payment
+</h2>
 
 
 <div class="section">
-<div class="section-title">Inputs</div>
 
-<label for="r_variant">Vehicle Variant</label>
-<input id="r_variant" type="text" placeholder="e.g. Xpander Cross">
+<div class="section-title">
+  Inputs
+</div>
+
+
+<label for="r_variant">
+  Vehicle Variant
+</label>
+
+<input
+  id="r_variant"
+  type="text"
+  placeholder="e.g. Xpander Cross"
+>
+
 
 <div class="grid">
 
-<div>
-<label for="r_srp">Unit SRP</label>
-<input id="r_srp" type="number" min="0" step="1" value="0">
-</div>
 
 <div>
-<label for="r_opdp">Official Promo DP</label>
-<input id="r_opdp" type="number" min="0" step="1" value="0">
+
+<label for="r_srp">
+  Unit SRP
+</label>
+
+<input
+  id="r_srp"
+  type="number"
+  min="0"
+  step="1"
+  value="0"
+>
+
+</div>
+
+
+<div>
+
+<label for="r_opdp">
+  Official Promo DP
+</label>
+
+<input
+  id="r_opdp"
+  type="number"
+  min="0"
+  step="1"
+  value="0"
+>
+
+</div>
+
+
 </div>
 
 </div>
+
+
+<!-- ============================================================
+     LOAN TERM
+     TR IS NOT DISPLAYED
+============================================================ -->
+
+<div class="section">
+
+<label for="r_term">
+  Loan Term
+</label>
+
+<select id="r_term">
+
+  <option value="84">
+    7 Years
+  </option>
+
+  <option value="72">
+    6 Years
+  </option>
+
+  <option value="60" selected>
+    5 Years
+  </option>
+
+  <option value="48">
+    4 Years
+  </option>
+
+  <option value="36">
+    3 Years
+  </option>
+
+  <option value="24">
+    2 Years
+  </option>
+
+</select>
 
 </div>
 
 
 <div class="section">
 
-<div class="section-title">Editable Constants</div>
+<div class="section-title">
+  Editable Constants
+</div>
+
 
 <div class="grid">
 
-<div>
-<label for="r_bdp">BDP %</label>
-<input id="r_bdp" type="number" step="0.01" value="20">
-</div>
 
 <div>
-<label for="r_dir">DIR %</label>
-<input id="r_dir" type="number" step="0.01" value="17">
+
+<label for="r_bdp">
+  BDP %
+</label>
+
+<input
+  id="r_bdp"
+  type="number"
+  step="0.01"
+  value="20"
+>
+
 </div>
+
+
+<div>
+
+<label for="r_dir">
+  DIR %
+</label>
+
+<input
+  id="r_dir"
+  type="number"
+  step="0.01"
+  value="17"
+>
+
+</div>
+
 
 </div>
 
@@ -581,84 +836,134 @@ VALID • Estimated computation only.
 
 <div class="section">
 
-<div class="section-title">Target Monthly</div>
+<div class="section-title">
+  Target Monthly
+</div>
+
 
 <div class="target-box">
 
-<div class="target-label">Target Monthly</div>
+<div class="target-label">
+  Target Monthly
+</div>
 
 <div class="target-value">
-<input id="r_monthly" type="number" min="0" step="1" value="25000">
-</div>
+
+<input
+  id="r_monthly"
+  type="number"
+  min="0"
+  step="1"
+  value="25000"
+>
 
 </div>
 
 </div>
 
-
-<div class="section">
-
-<div class="section-title">Term &amp; Rate</div>
-
-<label for="r_term">Loan Term</label>
-
-<select id="r_term" onchange="loadReverseTR()">
-<option value="84">7 Years</option>
-<option value="72">6 Years</option>
-<option value="60" selected>5 Years</option>
-<option value="48">4 Years</option>
-<option value="36">3 Years</option>
-<option value="24">2 Years</option>
-</select>
-
-<label for="r_tr">Selected Term TR %</label>
-
-<input id="r_tr" type="number" step="0.01" value="57">
-
-<div class="note">
-TR is editable. Selecting another term automatically loads its corresponding default TR, which you can then edit if needed.
 </div>
 
-<button class="primary" onclick="calculateReverse()">
-COMPUTE REQUIRED DP
+
+<button
+  class="primary"
+  onclick="calculateReverse()">
+  COMPUTE REQUIRED DP
 </button>
 
 </div>
 
-</div>
 
+<!-- CALCULATOR 2 RESULT -->
 
-<div id="reverseResults" class="results">
+<div
+  id="reverseResults"
+  class="results">
 
-<h2>Estimated Required Down Payment</h2>
+<h2>
+  Estimated Required Down Payment
+</h2>
+
 
 <div class="result">
-<span>Vehicle</span>
-<span id="rr_vehicle" class="money">—</span>
+
+<span>
+  Vehicle
+</span>
+
+<span
+  id="rr_vehicle"
+  class="money">
+  —
+</span>
+
 </div>
 
-<div class="result">
-<span>Target Monthly</span>
-<span id="rr_monthly" class="money">—</span>
-</div>
 
 <div class="result">
-<span>Term</span>
-<span id="rr_term" class="money">—</span>
+
+<span>
+  Loan Term
+</span>
+
+<span
+  id="rr_term"
+  class="money">
+  —
+</span>
+
 </div>
 
+
 <div class="result">
-<span>Estimated Required DP</span>
-<span id="rr_dp" class="money">—</span>
+
+<span>
+  Target Monthly
+</span>
+
+<span
+  id="rr_monthly"
+  class="money">
+  —
+</span>
+
 </div>
+
+
+<div class="result">
+
+<span>
+  Required Down Payment
+</span>
+
+<span
+  id="rr_dp"
+  class="money">
+  —
+</span>
+
+</div>
+
 
 <div class="status ok">
-VALID • Estimated computation only.
+  VALID • Estimated computation only.
 </div>
 
+
 <div class="actions">
-<button class="secondary" onclick="copyReverse()">COPY RESULTS</button>
-<button class="secondary" onclick="resetReverse()">RESET</button>
+
+<button
+  class="secondary"
+  onclick="copyReverse()">
+  COPY RESULTS
+</button>
+
+
+<button
+  class="secondary"
+  onclick="resetReverse()">
+  RESET
+</button>
+
 </div>
 
 </div>
@@ -668,137 +973,111 @@ VALID • Estimated computation only.
 </main>
 
 
+
 <footer>
-  🦾 Powered by <strong>MSI Framework™</strong> 🚀<br>
-  <strong>JUDE DANTE PINEDA</strong><br>
+
+  🦾 Powered by
+  <strong>MSI Framework™</strong>
+  🚀
+
+  <br>
+
+  <strong>JUDE DANTE PINEDA</strong>
+
+  <br>
+
   Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.
+
 </footer>
+
 
 
 <script>
 
 /* ============================================================
-   MSI FINANCING CALCULATOR
-   MSI-ADJ-001-V3.1
+   INTERNAL TERM → TR MAPPING
 
-   RB = SRP × (1 - BDP%) × (1 + DIR%) + Official Promo DP
+   THESE VALUES ARE NOT DISPLAYED IN THE UI.
 
-   WIDTH = M × (1 + DIR%) / (1 + TR%)
-
-   FORWARD:
-   Adjusted Financed = (RB - Desired DP) / (1 + DIR%)
-   Monthly = CEILING(
-       Adjusted Financed × (1 + TR%) / M
-   )
-
-   REVERSE:
-   Required DP =
-       RB - Target Monthly × WIDTH
-
-   TR REMAINS EDITABLE.
-   ============================================================ */
-
-
-const TERM_LABELS = {
-  84:"7 Years",
-  72:"6 Years",
-  60:"5 Years",
-  48:"4 Years",
-  36:"3 Years",
-  24:"2 Years"
-};
-
+   7 Years = 78%
+   6 Years = 68%
+   5 Years = 57%
+   4 Years = 49%
+   3 Years = 39%
+   2 Years = 23%
+============================================================ */
 
 const DEFAULT_TR = {
-  84:78,
-  72:68,
-  60:57,
-  48:49,
-  36:39,
-  24:23
+
+  84: 78,
+  72: 68,
+  60: 57,
+  48: 49,
+  36: 39,
+  24: 23
+
 };
 
 
 let fCopy = "";
 let rCopy = "";
+let toastTimer = null;
 
 
-/* ------------------------------------------------------------
-   HELPERS
------------------------------------------------------------- */
+/* ============================================================
+   BASIC HELPERS
+============================================================ */
 
 function num(id){
 
-  const v =
+  const value =
     Number(
       document.getElementById(id).value
     );
 
-  return Number.isFinite(v) ? v : 0;
+  return Number.isFinite(value)
+    ? value
+    : 0;
 
 }
 
 
 function peso(value){
 
-  if(!Number.isFinite(value))
+  if(!Number.isFinite(value)){
     return "₱0";
+  }
 
-  return "₱" +
-    Math.round(value).toLocaleString("en-PH");
-
-}
-
-
-function ceilPeso(value){
-
-  return Math.ceil(value - 1e-10);
+  return (
+    "₱" +
+    Math.round(value)
+      .toLocaleString("en-PH")
+  );
 
 }
 
 
-function cleanZero(value){
+function getTermText(months){
 
-  return Math.abs(value) < 0.005
-    ? 0
-    : value;
+  const terms = {
 
-}
+    84:"7 Years",
+    72:"6 Years",
+    60:"5 Years",
+    48:"4 Years",
+    36:"3 Years",
+    24:"2 Years"
 
+  };
 
-/* ------------------------------------------------------------
-   TERM / TR
------------------------------------------------------------- */
-
-function loadForwardTR(){
-
-  const term =
-    Number(
-      document.getElementById("f_term").value
-    );
-
-  document.getElementById("f_tr").value =
-    DEFAULT_TR[term];
+  return terms[months] || "";
 
 }
 
 
-function loadReverseTR(){
-
-  const term =
-    Number(
-      document.getElementById("r_term").value
-    );
-
-  document.getElementById("r_tr").value =
-    DEFAULT_TR[term];
-
-}
-
-
-/* ------------------------------------------------------------
-   CORE MSI FORMULA
------------------------------------------------------------- */
+/* ============================================================
+   BASE CALCULATION
+============================================================ */
 
 function getBaseRevenue(
   srp,
@@ -808,44 +1087,82 @@ function getBaseRevenue(
 ){
 
   return (
+
     srp *
+
     (1 - bdp / 100) *
+
     (1 + dir / 100)
+
   ) + opdp;
 
 }
 
 
-function getWidth(
-  months,
-  dir,
-  tr
-){
-
-  return (
-    months *
-    (1 + dir / 100) /
-    (1 + tr / 100)
-  );
-
-}
-
-
-/* ------------------------------------------------------------
+/* ============================================================
    FORWARD CALCULATOR
------------------------------------------------------------- */
+   HIGHER DP → MONTHLY
+============================================================ */
 
-function forwardMonthly(
-  srp,
-  opdp,
-  bdp,
-  dir,
-  desiredDP,
-  months,
-  tr
-){
+function calculateForward(){
+
+  const variant =
+
+    document
+      .getElementById("f_variant")
+      .value
+      .trim()
+
+    || "Vehicle";
+
+
+  const srp =
+    num("f_srp");
+
+
+  const opdp =
+    num("f_opdp");
+
+
+  const bdp =
+    num("f_bdp");
+
+
+  const dir =
+    num("f_dir");
+
+
+  const desiredDP =
+    num("f_dp");
+
+
+  /* ----------------------------------------------------------
+     GET THE ONE TERM SELECTED BY THE USER
+  ---------------------------------------------------------- */
+
+  const months =
+    Number(
+      document
+        .getElementById("f_term")
+        .value
+    );
+
+
+  /* ----------------------------------------------------------
+     AUTOMATICALLY GET INTERNAL TR
+     BASED ON SELECTED TERM
+  ---------------------------------------------------------- */
+
+  const tr =
+    DEFAULT_TR[months];
+
+
+  /* ----------------------------------------------------------
+     BASE REVENUE
+  ---------------------------------------------------------- */
 
   const RB =
+
     getBaseRevenue(
       srp,
       bdp,
@@ -854,190 +1171,130 @@ function forwardMonthly(
     );
 
 
+  /* ----------------------------------------------------------
+     ADJUSTED FINANCED AMOUNT
+  ---------------------------------------------------------- */
+
   const adjustedFinanced =
+
     (RB - desiredDP) /
+
     (1 + dir / 100);
 
 
+  /* ----------------------------------------------------------
+     MONTHLY AMORTIZATION
+  ---------------------------------------------------------- */
+
   const rawMonthly =
+
     adjustedFinanced *
+
     (1 + tr / 100) /
+
     months;
 
 
-  return {
-    RB,
-    adjustedFinanced,
-    rawMonthly,
-    monthly:ceilPeso(rawMonthly)
-  };
+  const monthly =
 
-}
+    Math.ceil(
+      rawMonthly - 1e-10
+    );
 
 
-function calculateForward(){
+  /* ----------------------------------------------------------
+     DISPLAY ONLY THE SELECTED TERM
+  ---------------------------------------------------------- */
 
-  const variant =
-    document
-      .getElementById("f_variant")
-      .value
-      .trim() ||
-    "Vehicle";
-
-
-  const srp = num("f_srp");
-  const opdp = num("f_opdp");
-  const bdp = num("f_bdp");
-  const dir = num("f_dir");
-  const desiredDP = num("f_dp");
+  document
+    .getElementById("fr_vehicle")
+    .textContent =
+      variant;
 
 
-  const terms =
-    [84,72,60,48,36,24];
+  document
+    .getElementById("fr_term")
+    .textContent =
+      getTermText(months);
 
 
-  const results = {};
+  document
+    .getElementById("fr_dp")
+    .textContent =
+      peso(desiredDP);
 
 
-  for(const months of terms){
-
-    const tr =
-      Number(
-        document
-          .getElementById("f_tr" + months)
-          .value
-      );
+  document
+    .getElementById("fr_monthly")
+    .textContent =
+      peso(monthly);
 
 
-    results[months] =
-      forwardMonthly(
-        srp,
-        opdp,
-        bdp,
-        dir,
-        desiredDP,
-        months,
-        tr
-      );
-
-  }
-
-
-  document.getElementById("fr_vehicle")
-    .textContent = variant;
-
-
-  document.getElementById("fr_dp")
-    .textContent = peso(desiredDP);
-
-
-  document.getElementById("fr_84")
-    .textContent = peso(results[84].monthly);
-
-
-  document.getElementById("fr_72")
-    .textContent = peso(results[72].monthly);
-
-
-  document.getElementById("fr_60")
-    .textContent = peso(results[60].monthly);
-
-
-  document.getElementById("fr_48")
-    .textContent = peso(results[48].monthly);
-
-
-  document.getElementById("fr_36")
-    .textContent = peso(results[36].monthly);
-
-
-  document.getElementById("fr_24")
-    .textContent = peso(results[24].monthly);
-
+  /* ----------------------------------------------------------
+     COPY RESULTS
+  ---------------------------------------------------------- */
 
   fCopy =
+
 `${variant}
+Loan Term: ${getTermText(months)}
 Higher DP: ${peso(desiredDP)}
-7Y: ${peso(results[84].monthly)}
-6Y: ${peso(results[72].monthly)}
-5Y: ${peso(results[60].monthly)}
-4Y: ${peso(results[48].monthly)}
-3Y: ${peso(results[36].monthly)}
-2Y: ${peso(results[24].monthly)}
+Estimated Monthly Amortization: ${peso(monthly)}
 
 🦾 Powered by MSI Framework™ 🚀
 JUDE DANTE PINEDA
+
 Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.`;
 
 
   document
     .getElementById("forwardResults")
-    .classList.add("show");
+    .classList
+    .add("show");
 
 }
 
 
-/* ------------------------------------------------------------
+/* ============================================================
    REVERSE CALCULATOR
------------------------------------------------------------- */
-
-function reverseRequiredDP(
-  srp,
-  opdp,
-  bdp,
-  dir,
-  targetMonthly,
-  months,
-  tr
-){
-
-  const RB =
-    getBaseRevenue(
-      srp,
-      bdp,
-      dir,
-      opdp
-    );
-
-
-  const width =
-    getWidth(
-      months,
-      dir,
-      tr
-    );
-
-
-  const requiredDP =
-    RB -
-    targetMonthly * width;
-
-
-  return {
-    RB,
-    width,
-    requiredDP
-  };
-
-}
-
+   MONTHLY → REQUIRED DP
+============================================================ */
 
 function calculateReverse(){
 
   const variant =
+
     document
       .getElementById("r_variant")
       .value
-      .trim() ||
-    "Vehicle";
+      .trim()
+
+    || "Vehicle";
 
 
-  const srp = num("r_srp");
-  const opdp = num("r_opdp");
-  const bdp = num("r_bdp");
-  const dir = num("r_dir");
-  const targetMonthly = num("r_monthly");
+  const srp =
+    num("r_srp");
 
+
+  const opdp =
+    num("r_opdp");
+
+
+  const bdp =
+    num("r_bdp");
+
+
+  const dir =
+    num("r_dir");
+
+
+  const targetMonthly =
+    num("r_monthly");
+
+
+  /* ----------------------------------------------------------
+     GET THE ONE TERM SELECTED BY THE USER
+  ---------------------------------------------------------- */
 
   const months =
     Number(
@@ -1047,77 +1304,121 @@ function calculateReverse(){
     );
 
 
+  /* ----------------------------------------------------------
+     AUTOMATICALLY GET INTERNAL TR
+     BASED ON SELECTED TERM
+  ---------------------------------------------------------- */
+
   const tr =
-    Number(
-      document
-        .getElementById("r_tr")
-        .value
-    );
+    DEFAULT_TR[months];
 
 
-  const result =
-    reverseRequiredDP(
+  /* ----------------------------------------------------------
+     BASE REVENUE
+  ---------------------------------------------------------- */
+
+  const RB =
+
+    getBaseRevenue(
       srp,
-      opdp,
       bdp,
       dir,
-      targetMonthly,
-      months,
-      tr
+      opdp
     );
 
+
+  /* ----------------------------------------------------------
+     WIDTH / TERM FACTOR
+  ---------------------------------------------------------- */
+
+  const width =
+
+    months *
+
+    (1 + dir / 100) /
+
+    (1 + tr / 100);
+
+
+  /* ----------------------------------------------------------
+     REQUIRED DP
+  ---------------------------------------------------------- */
 
   const requiredDP =
+
+    RB -
+
+    targetMonthly * width;
+
+
+  /*
+     Do not allow negative Required DP.
+  */
+
+  const finalDP =
+
     Math.max(
       0,
-      Math.round(
-        cleanZero(
-          result.requiredDP
-        )
-      )
+      Math.round(requiredDP)
     );
 
 
-  document.getElementById("rr_vehicle")
-    .textContent = variant;
+  /* ----------------------------------------------------------
+     DISPLAY ONLY THE SELECTED TERM
+  ---------------------------------------------------------- */
+
+  document
+    .getElementById("rr_vehicle")
+    .textContent =
+      variant;
 
 
-  document.getElementById("rr_monthly")
-    .textContent = peso(targetMonthly);
+  document
+    .getElementById("rr_term")
+    .textContent =
+      getTermText(months);
 
 
-  document.getElementById("rr_term")
-    .textContent = TERM_LABELS[months];
+  document
+    .getElementById("rr_monthly")
+    .textContent =
+      peso(targetMonthly);
 
 
-  document.getElementById("rr_dp")
-    .textContent = peso(requiredDP);
+  document
+    .getElementById("rr_dp")
+    .textContent =
+      peso(finalDP);
 
+
+  /* ----------------------------------------------------------
+     COPY RESULTS
+  ---------------------------------------------------------- */
 
   rCopy =
+
 `${variant}
+Loan Term: ${getTermText(months)}
 Target Monthly: ${peso(targetMonthly)}
-Term: ${TERM_LABELS[months]}
-Estimated Required DP: ${peso(requiredDP)}
+Estimated Required Down Payment: ${peso(finalDP)}
 
 🦾 Powered by MSI Framework™ 🚀
 JUDE DANTE PINEDA
+
 Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.`;
 
 
   document
     .getElementById("reverseResults")
-    .classList.add("show");
+    .classList
+    .add("show");
 
 }
 
 
-/* ------------------------------------------------------------
-   COPY RESULTS
------------------------------------------------------------- */
-
-let toastTimer = null;
-
+/* ============================================================
+   COPY SUCCESS NOTIFICATION
+============================================================ */
 
 function showSaveToast(
   message =
@@ -1125,22 +1426,18 @@ function showSaveToast(
 ){
 
   const toast =
-    document.getElementById(
-      "saveToast"
-    );
 
-
-  if(!toast)
-    return;
+    document
+      .getElementById("saveToast");
 
 
   toast.textContent =
     message;
 
 
-  toast.classList.add(
-    "show"
-  );
+  toast
+    .classList
+    .add("show");
 
 
   clearTimeout(
@@ -1149,13 +1446,19 @@ function showSaveToast(
 
 
   toastTimer =
+
     setTimeout(
-      () => {
-        toast.classList.remove(
-          "show"
-        );
+
+      function(){
+
+        toast
+          .classList
+          .remove("show");
+
       },
+
       2500
+
     );
 
 }
@@ -1185,42 +1488,45 @@ async function copyText(text){
 
     copied = true;
 
-  }catch(e){
+  }
+
+  catch(error){
 
     try{
 
       const textarea =
-        document.createElement(
-          "textarea"
-        );
+        document.createElement("textarea");
 
 
-      textarea.value = text;
+      textarea.value =
+        text;
+
 
       textarea.style.position =
         "fixed";
+
 
       textarea.style.opacity =
         "0";
 
 
-      document.body.appendChild(
-        textarea
-      );
+      document
+        .body
+        .appendChild(textarea);
 
 
       textarea.select();
 
 
       copied =
-        document.execCommand(
-          "copy"
-        );
+        document.execCommand("copy");
 
 
       textarea.remove();
 
-    }catch(f){
+    }
+
+    catch(error2){
 
       copied = false;
 
@@ -1231,9 +1537,13 @@ async function copyText(text){
 
   if(copied){
 
-    showSaveToast();
+    showSaveToast(
+      "✓ Information saved successfully."
+    );
 
-  }else{
+  }
+
+  else{
 
     alert(
       "Unable to copy the results. Please try again."
@@ -1258,89 +1568,51 @@ function copyReverse(){
 }
 
 
-/* ------------------------------------------------------------
-   RESET
------------------------------------------------------------- */
+/* ============================================================
+   RESET CALCULATOR 1
+============================================================ */
 
 function resetForward(){
 
-  document.getElementById(
-    "f_variant"
-  ).value = "";
-
-
-  document.getElementById(
-    "f_srp"
-  ).value = 0;
-
-
-  document.getElementById(
-    "f_opdp"
-  ).value = 0;
-
-
-  document.getElementById(
-    "f_bdp"
-  ).value = 20;
-
-
-  document.getElementById(
-    "f_dir"
-  ).value = 17;
-
-
-  document.getElementById(
-    "f_dp"
-  ).value = 0;
-
-
-  document.getElementById(
-    "f_tr84"
-  ).value = 78;
-
-
-  document.getElementById(
-    "f_tr72"
-  ).value = 68;
-
-
-  document.getElementById(
-    "f_tr60"
-  ).value = 57;
-
-
-  document.getElementById(
-    "f_tr48"
-  ).value = 49;
-
-
-  document.getElementById(
-    "f_tr36"
-  ).value = 39;
-
-
-  document.getElementById(
-    "f_tr24"
-  ).value = 23;
-
-
-  document.getElementById(
-    "f_term"
-  ).value = 60;
-
-
-  document.getElementById(
-    "f_tr"
-  ).value = 57;
+  document
+    .getElementById("f_variant")
+    .value = "";
 
 
   document
-    .getElementById(
-      "forwardResults"
-    )
-    .classList.remove(
-      "show"
-    );
+    .getElementById("f_srp")
+    .value = 0;
+
+
+  document
+    .getElementById("f_opdp")
+    .value = 0;
+
+
+  document
+    .getElementById("f_term")
+    .value = 60;
+
+
+  document
+    .getElementById("f_bdp")
+    .value = 20;
+
+
+  document
+    .getElementById("f_dir")
+    .value = 17;
+
+
+  document
+    .getElementById("f_dp")
+    .value = 0;
+
+
+  document
+    .getElementById("forwardResults")
+    .classList
+    .remove("show");
 
 
   fCopy = "";
@@ -1348,55 +1620,51 @@ function resetForward(){
 }
 
 
+/* ============================================================
+   RESET CALCULATOR 2
+============================================================ */
+
 function resetReverse(){
 
-  document.getElementById(
-    "r_variant"
-  ).value = "";
-
-
-  document.getElementById(
-    "r_srp"
-  ).value = 0;
-
-
-  document.getElementById(
-    "r_opdp"
-  ).value = 0;
-
-
-  document.getElementById(
-    "r_bdp"
-  ).value = 20;
-
-
-  document.getElementById(
-    "r_dir"
-  ).value = 17;
-
-
-  document.getElementById(
-    "r_monthly"
-  ).value = 25000;
-
-
-  document.getElementById(
-    "r_term"
-  ).value = 60;
-
-
-  document.getElementById(
-    "r_tr"
-  ).value = 57;
+  document
+    .getElementById("r_variant")
+    .value = "";
 
 
   document
-    .getElementById(
-      "reverseResults"
-    )
-    .classList.remove(
-      "show"
-    );
+    .getElementById("r_srp")
+    .value = 0;
+
+
+  document
+    .getElementById("r_opdp")
+    .value = 0;
+
+
+  document
+    .getElementById("r_term")
+    .value = 60;
+
+
+  document
+    .getElementById("r_bdp")
+    .value = 20;
+
+
+  document
+    .getElementById("r_dir")
+    .value = 17;
+
+
+  document
+    .getElementById("r_monthly")
+    .value = 25000;
+
+
+  document
+    .getElementById("reverseResults")
+    .classList
+    .remove("show");
 
 
   rCopy = "";
@@ -1404,34 +1672,34 @@ function resetReverse(){
 }
 
 
-/* ------------------------------------------------------------
+/* ============================================================
    TAB SWITCHING
------------------------------------------------------------- */
+============================================================ */
 
 function showCalculator(which){
 
   const forward =
-    document.getElementById(
-      "forwardCalculator"
-    );
+
+    document
+      .getElementById("forwardCalculator");
 
 
   const reverse =
-    document.getElementById(
-      "reverseCalculator"
-    );
+
+    document
+      .getElementById("reverseCalculator");
 
 
   const tabForward =
-    document.getElementById(
-      "tabForward"
-    );
+
+    document
+      .getElementById("tabForward");
 
 
   const tabReverse =
-    document.getElementById(
-      "tabReverse"
-    );
+
+    document
+      .getElementById("tabReverse");
 
 
   if(which === "forward"){
@@ -1455,7 +1723,9 @@ function showCalculator(which){
       .classList
       .remove("active");
 
-  }else{
+  }
+
+  else{
 
     forward
       .classList
@@ -1479,14 +1749,6 @@ function showCalculator(which){
   }
 
 }
-
-
-/* ------------------------------------------------------------
-   INITIALIZE
------------------------------------------------------------- */
-
-loadForwardTR();
-loadReverseTR();
 
 </script>
 
