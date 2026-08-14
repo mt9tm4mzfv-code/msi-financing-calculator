@@ -1,11 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-
-<meta charset="utf-8">
+<meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width,initial-scale=1,viewport-fit=cover">
+      content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <meta name="theme-color" content="#0b1120">
 
@@ -35,6 +34,1766 @@ body{
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+}
+
+/* ================================
+   HEADER
+   ================================ */
+
+header{
+  background:#111827;
+  border-bottom:1px solid #374151;
+  padding:18px 15px 14px;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+h1{
+  margin:0;
+  font-size:20px;
+  font-weight:800;
+}
+
+.sub{
+  margin-top:4px;
+  color:#9ca3af;
+  font-size:11px;
+}
+
+/* ================================
+   NAVIGATION
+   ================================ */
+
+nav{
+  display:flex;
+  gap:7px;
+  margin-top:14px;
+}
+
+nav button{
+  flex:1;
+  border:1px solid #374151;
+  border-radius:10px;
+  padding:11px 6px;
+  background:#1f2937;
+  color:#d1d5db;
+  font-size:12px;
+  font-weight:800;
+}
+
+nav button.active{
+  background:#f9fafb;
+  color:#111827;
+}
+
+/* ================================
+   MAIN
+   ================================ */
+
+main{
+  width:100%;
+  max-width:720px;
+  margin:auto;
+  padding:13px;
+}
+
+.card{
+  background:#111827;
+  border:1px solid #374151;
+  border-radius:16px;
+  padding:15px;
+  margin-bottom:13px;
+  box-shadow:0 5px 18px #00000030;
+}
+
+h2{
+  margin:0 0 14px;
+  font-size:17px;
+  line-height:1.3;
+}
+
+.section{
+  margin:18px 0 8px;
+  color:#9ca3af;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.07em;
+}
+
+label{
+  display:block;
+  margin:10px 0 5px;
+  color:#d1d5db;
+  font-size:12px;
+  font-weight:700;
+}
+
+input,
+select{
+  width:100%;
+  min-height:45px;
+  padding:11px 12px;
+  border:1px solid #4b5563;
+  border-radius:10px;
+  background:#1f2937;
+  color:#f9fafb;
+  font-size:16px;
+  outline:none;
+}
+
+input:focus,
+select:focus{
+  border-color:#9ca3af;
+  box-shadow:0 0 0 2px #ffffff12;
+}
+
+input::placeholder{
+  color:#6b7280;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+/* ================================
+   RESULTS
+   ================================ */
+
+.result{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:12px 0;
+  border-bottom:1px solid #374151;
+}
+
+.result:last-child{
+  border-bottom:0;
+}
+
+.result span:first-child{
+  color:#d1d5db;
+}
+
+.money{
+  color:#f9fafb;
+  font-weight:900;
+  text-align:right;
+  white-space:nowrap;
+}
+
+/* ================================
+   TARGET MONTHLY
+   ================================ */
+
+.target-box{
+  background:#172033;
+  border:1px solid #4b5563;
+  border-radius:12px;
+  padding:15px;
+  margin-bottom:12px;
+}
+
+.target-label{
+  color:#9ca3af;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+}
+
+.target-value{
+  margin-top:5px;
+  color:#f9fafb;
+  font-size:25px;
+  font-weight:900;
+}
+
+/* ================================
+   BUTTONS
+   ================================ */
+
+button.primary{
+  width:100%;
+  margin-top:13px;
+  padding:13px;
+  border:0;
+  border-radius:11px;
+  background:#f9fafb;
+  color:#111827;
+  font-size:14px;
+  font-weight:900;
+}
+
+button.primary:active{
+  transform:scale(.99);
+}
+
+button.secondary{
+  flex:1;
+  padding:11px;
+  border:1px solid #4b5563;
+  border-radius:10px;
+  background:#1f2937;
+  color:#f9fafb;
+  font-size:12px;
+  font-weight:800;
+}
+
+.copyrow{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+/* ================================
+   STATUS
+   ================================ */
+
+.status{
+  margin-top:11px;
+  padding:11px;
+  border-radius:10px;
+  font-size:12px;
+  line-height:1.45;
+  font-weight:700;
+}
+
+.warn{
+  background:#451a03;
+  border:1px solid #92400e;
+  color:#fde68a;
+}
+
+.bad{
+  background:#450a0a;
+  border:1px solid #991b1b;
+  color:#fecaca;
+}
+
+/* ================================
+   NOTES
+   ================================ */
+
+.small{
+  color:#9ca3af;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.note{
+  margin-top:7px;
+  color:#6b7280;
+  font-size:10px;
+  line-height:1.45;
+}
+
+/* ================================
+   INTERNAL VERIFICATION
+   ================================ */
+
+details{
+  margin-top:13px;
+  border-top:1px solid #374151;
+  padding-top:11px;
+}
+
+summary{
+  cursor:pointer;
+  color:#9ca3af;
+  font-size:11px;
+  font-weight:800;
+}
+
+.internal{
+  margin-top:10px;
+  color:#9ca3af;
+  font-size:10px;
+  line-height:1.65;
+  overflow-wrap:anywhere;
+}
+
+/* ================================
+   HIDDEN
+   ================================ */
+
+.hidden{
+  display:none!important;
+}
+
+/* ================================
+   FOOTER
+   ================================ */
+
+footer{
+  max-width:720px;
+  margin:auto;
+  padding:8px 18px 30px;
+  text-align:center;
+  color:#6b7280;
+  font-size:10px;
+  line-height:1.6;
+}
+
+footer strong{
+  color:#d1d5db;
+}
+
+hr{
+  border:0;
+  border-top:1px solid #374151;
+  margin:10px 0;
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+
+@media(max-width:380px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(min-width:600px){
+
+  main{
+    padding:24px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>MSI Financing Calculator</h1>
+
+<div class="sub">
+MSI-ADJ-001-V3.1 • Forward & Reverse
+</div>
+
+<nav>
+
+<button
+  id="tabF"
+  class="active"
+  onclick="showTab('f')">
+Higher DP → Monthly
+</button>
+
+<button
+  id="tabR"
+  onclick="showTab('r')">
+Monthly → Required DP
+</button>
+
+</nav>
+
+</header>
+
+
+<main>
+
+<!-- =====================================================
+     CALCULATOR 1
+     HIGHER DP → MONTHLY
+     ===================================================== -->
+
+<section id="forward">
+
+<div class="card">
+
+<h2>
+Calculator 1 — Higher Down Payment → Monthly Amortization
+</h2>
+
+<div class="section">
+INPUTS
+</div>
+
+<label>
+Vehicle Variant
+</label>
+
+<input
+  id="f_variant"
+  type="text"
+  placeholder="e.g. Xpander Cross"
+>
+
+<div class="grid">
+
+<div>
+
+<label>
+Unit SRP
+</label>
+
+<input
+  id="f_srp"
+  type="number"
+  inputmode="decimal"
+  placeholder="0"
+>
+
+</div>
+
+<div>
+
+<label>
+Official Promo DP
+</label>
+
+<input
+  id="f_opdp"
+  type="number"
+  inputmode="decimal"
+  placeholder="0"
+>
+
+</div>
+
+</div>
+
+<label>
+Customer Desired Down Payment
+</label>
+
+<input
+  id="f_dp"
+  type="number"
+  inputmode="decimal"
+  placeholder="0"
+>
+
+
+<!-- ================================
+     EDITABLE CONSTANTS
+     ================================ -->
+
+<div class="section">
+EDITABLE CONSTANTS
+</div>
+
+<div class="grid">
+
+<div>
+
+<label>
+BDP %
+</label>
+
+<input
+  id="f_bdp"
+  type="number"
+  step="0.01"
+  value="20"
+>
+
+</div>
+
+<div>
+
+<label>
+DIR %
+</label>
+
+<input
+  id="f_dir"
+  type="number"
+  step="0.01"
+  value="17"
+>
+
+</div>
+
+</div>
+
+
+<!-- ================================
+     EDITABLE TR
+     ================================ -->
+
+<div class="section">
+EDITABLE TERM-RATE TABLE
+</div>
+
+<div class="small">
+TR values are intentionally editable so you can update them whenever required.
+</div>
+
+<div class="grid">
+
+<div>
+<label>7 Years TR %</label>
+<input
+  id="f_tr7"
+  type="number"
+  step="0.01"
+  value="78"
+>
+</div>
+
+<div>
+<label>6 Years TR %</label>
+<input
+  id="f_tr6"
+  type="number"
+  step="0.01"
+  value="68"
+>
+</div>
+
+<div>
+<label>5 Years TR %</label>
+<input
+  id="f_tr5"
+  type="number"
+  step="0.01"
+  value="57"
+>
+</div>
+
+<div>
+<label>4 Years TR %</label>
+<input
+  id="f_tr4"
+  type="number"
+  step="0.01"
+  value="49"
+>
+</div>
+
+<div>
+<label>3 Years TR %</label>
+<input
+  id="f_tr3"
+  type="number"
+  step="0.01"
+  value="39"
+>
+</div>
+
+<div>
+<label>2 Years TR %</label>
+<input
+  id="f_tr2"
+  type="number"
+  step="0.01"
+  value="23"
+>
+</div>
+
+</div>
+
+
+<button
+  class="primary"
+  onclick="calcForward()">
+COMPUTE MONTHLY
+</button>
+
+<div id="f_status"></div>
+
+</div>
+
+
+<!-- ================================
+     FORWARD RESULT
+     ================================ -->
+
+<div class="card">
+
+<h2>
+Estimated Monthly Amortization
+</h2>
+
+<div id="f_results">
+
+<div class="small">
+Enter the required inputs and tap COMPUTE MONTHLY.
+</div>
+
+</div>
+
+
+<details>
+
+<summary>
+Internal Verification
+</summary>
+
+<div
+  id="f_internal"
+  class="internal">
+</div>
+
+</details>
+
+
+<div class="copyrow">
+
+<button
+  class="secondary"
+  onclick="copyForward()">
+COPY RESULTS
+</button>
+
+<button
+  class="secondary"
+  onclick="resetF()">
+RESET
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     CALCULATOR 2
+     MONTHLY → REQUIRED DP
+     ===================================================== -->
+
+<section
+  id="reverse"
+  class="hidden">
+
+<div class="card">
+
+<h2>
+Calculator 2 — Monthly → Required Down Payment
+</h2>
+
+<div class="section">
+INPUTS
+</div>
+
+<label>
+Vehicle Variant
+</label>
+
+<input
+  id="r_variant"
+  type="text"
+  placeholder="e.g. Xpander Cross"
+>
+
+
+<div class="grid">
+
+<div>
+
+<label>
+Unit SRP
+</label>
+
+<input
+  id="r_srp"
+  type="number"
+  inputmode="decimal"
+  placeholder="0"
+>
+
+</div>
+
+<div>
+
+<label>
+Official Promo DP
+</label>
+
+<input
+  id="r_opdp"
+  type="number"
+  inputmode="decimal"
+  placeholder="0"
+>
+
+</div>
+
+</div>
+
+
+<!-- ================================
+     EDITABLE CONSTANTS
+     ================================ -->
+
+<div class="section">
+EDITABLE CONSTANTS
+</div>
+
+<div class="grid">
+
+<div>
+
+<label>
+BDP %
+</label>
+
+<input
+  id="r_bdp"
+  type="number"
+  step="0.01"
+  value="20"
+>
+
+</div>
+
+<div>
+
+<label>
+DIR %
+</label>
+
+<input
+  id="r_dir"
+  type="number"
+  step="0.01"
+  value="17"
+>
+
+</div>
+
+</div>
+
+
+<!-- ================================
+     TARGET MONTHLY
+     ================================ -->
+
+<div class="section">
+TARGET MONTHLY
+</div>
+
+<div class="target-box">
+
+<div class="target-label">
+Target Monthly
+</div>
+
+<input
+  id="r_monthly"
+  type="number"
+  inputmode="decimal"
+  placeholder="₱25,000"
+  style="
+    margin-top:8px;
+    font-size:20px;
+    font-weight:800;
+  "
+>
+
+</div>
+
+
+<!-- ================================
+     TERM
+     ================================ -->
+
+<div class="section">
+TERM & RATE
+</div>
+
+<label>
+Loan Term
+</label>
+
+<select
+  id="r_term"
+  onchange="setRate()">
+
+<option value="84">
+7 Years
+</option>
+
+<option value="72">
+6 Years
+</option>
+
+<option value="60" selected>
+5 Years
+</option>
+
+<option value="48">
+4 Years
+</option>
+
+<option value="36">
+3 Years
+</option>
+
+<option value="24">
+2 Years
+</option>
+
+</select>
+
+
+<!-- ================================
+     TR REMAINS EDITABLE
+     ================================ -->
+
+<label>
+Selected Term TR %
+</label>
+
+<input
+  id="r_tr"
+  type="number"
+  step="0.01"
+  value="57"
+>
+
+<div class="note">
+TR is editable. Selecting another term automatically loads its corresponding default TR, which you can then edit if needed.
+</div>
+
+
+<button
+  class="primary"
+  onclick="calcReverse()">
+COMPUTE REQUIRED DP
+</button>
+
+<div id="r_status"></div>
+
+</div>
+
+
+<!-- ================================
+     REVERSE RESULT
+     ================================ -->
+
+<div class="card">
+
+<h2>
+Estimated Required Down Payment
+</h2>
+
+<div id="r_results">
+
+<div class="small">
+Enter the required inputs and tap COMPUTE REQUIRED DP.
+</div>
+
+</div>
+
+
+<details>
+
+<summary>
+Internal Verification
+</summary>
+
+<div
+  id="r_internal"
+  class="internal">
+</div>
+
+</details>
+
+
+<div class="copyrow">
+
+<button
+  class="secondary"
+  onclick="copyReverse()">
+COPY RESULTS
+</button>
+
+<button
+  class="secondary"
+  onclick="resetR()">
+RESET
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+<strong>
+🦾 Powered by MSI Framework™ 🚀
+</strong>
+
+<br>
+
+<strong>
+JUDE DANTE PINEDA
+</strong>
+
+<br>
+
+Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.
+
+</footer>
+
+
+<script>
+
+/* =====================================================
+   MSI-ADJ-001-V3.1
+   DEFAULTS
+   ===================================================== */
+
+const DEFAULT_TR = {
+  84: 0.78,
+  72: 0.68,
+  60: 0.57,
+  48: 0.49,
+  36: 0.39,
+  24: 0.23
+};
+
+
+const TERMS = {
+  84:"7 Years",
+  72:"6 Years",
+  60:"5 Years",
+  48:"4 Years",
+  36:"3 Years",
+  24:"2 Years"
+};
+
+
+/* =====================================================
+   UTILITIES
+   ===================================================== */
+
+function val(id){
+
+  const x =
+    parseFloat(
+      document.getElementById(id).value
+    );
+
+  return Number.isFinite(x) ? x : NaN;
+
+}
+
+
+function peso(n){
+
+  if(!Number.isFinite(n))
+    return "—";
+
+  return "₱" +
+    Math.round(n).toLocaleString("en-PH");
+
+}
+
+
+function rawPeso(n){
+
+  if(!Number.isFinite(n))
+    return "—";
+
+  return "₱" +
+    n.toLocaleString(
+      "en-PH",
+      {
+        minimumFractionDigits:2,
+        maximumFractionDigits:6
+      }
+    );
+
+}
+
+
+function ceilingPeso(n){
+
+  return Math.ceil(n - 1e-10);
+
+}
+
+
+/* =====================================================
+   TAB SWITCHING
+   ===================================================== */
+
+function showTab(tab){
+
+  document
+    .getElementById("forward")
+    .classList.toggle(
+      "hidden",
+      tab !== "f"
+    );
+
+  document
+    .getElementById("reverse")
+    .classList.toggle(
+      "hidden",
+      tab !== "r"
+    );
+
+  document
+    .getElementById("tabF")
+    .classList.toggle(
+      "active",
+      tab === "f"
+    );
+
+  document
+    .getElementById("tabR")
+    .classList.toggle(
+      "active",
+      tab === "r"
+    );
+
+}
+
+
+/* =====================================================
+   GET TR
+   ===================================================== */
+
+function getTRFromForward(M){
+
+  const year =
+    M / 12;
+
+  const id =
+    "f_tr" + year;
+
+  const tr =
+    val(id);
+
+  return Number.isFinite(tr)
+    ? tr / 100
+    : NaN;
+
+}
+
+
+function setRate(){
+
+  const M =
+    parseInt(
+      document.getElementById("r_term").value,
+      10
+    );
+
+  const tr =
+    DEFAULT_TR[M];
+
+  /*
+     IMPORTANT:
+     This remains EDITABLE.
+     Changing the term loads the default TR,
+     but user can edit it afterward.
+  */
+
+  document.getElementById("r_tr").value =
+    Number.isFinite(tr)
+      ? (tr * 100).toFixed(0)
+      : "";
+
+}
+
+
+/* =====================================================
+   CALCULATOR 1
+   HIGHER DP → MONTHLY
+   ===================================================== */
+
+function calcForward(){
+
+  const S = val("f_srp");
+  const OPDP = val("f_opdp");
+  const D = val("f_dp");
+
+  const BDP =
+    val("f_bdp") / 100;
+
+  const DIR =
+    val("f_dir") / 100;
+
+
+  const status =
+    document.getElementById("f_status");
+
+
+  if(
+    !Number.isFinite(S) ||
+    !Number.isFinite(OPDP) ||
+    !Number.isFinite(D) ||
+    !Number.isFinite(BDP) ||
+    !Number.isFinite(DIR)
+  ){
+
+    status.innerHTML =
+      '<div class="status bad">' +
+      'Please complete all required inputs.' +
+      '</div>';
+
+    return;
+
+  }
+
+
+  if(D >= S){
+
+    status.innerHTML =
+      '<div class="status warn">' +
+      'Desired DP is at or above SRP. Treat as cash purchase / bank evaluation.' +
+      '</div>';
+
+    document.getElementById("f_results").innerHTML = "";
+
+    return;
+
+  }
+
+
+  if(D <= OPDP){
+
+    status.innerHTML =
+      '<div class="status warn">' +
+      'Desired DP is at or below Official Promo DP. Use the official low-DP monthly offer.' +
+      '</div>';
+
+    document.getElementById("f_results").innerHTML = "";
+
+    return;
+
+  }
+
+
+  /*
+     V3.1:
+     RB = S × 0.8 × 1.17 + OPDP
+
+     BDP/DIR are displayed/editable,
+     but V3.1 core uses the fixed
+     20% / 17% structure.
+  */
+
+  const RB =
+    S * (1 - 0.20) * (1 + 0.17) +
+    OPDP;
+
+
+  const adjustableFinanced =
+    S - D;
+
+
+  const adjustableIncentive =
+    adjustableFinanced * 0.17;
+
+
+  const adjustableRevenue =
+    adjustableFinanced +
+    adjustableIncentive +
+    D;
+
+
+  const variableDiscount =
+    adjustableRevenue - RB;
+
+
+  const adjuster =
+    ((RB - D) / 1.17) -
+    S +
+    D +
+    variableDiscount;
+
+
+  const adjustedDiscount =
+    variableDiscount -
+    adjuster;
+
+
+  const adjustedFinanced =
+    (RB - D) / 1.17;
+
+
+  const terms = [
+    84,
+    72,
+    60,
+    48,
+    36,
+    24
+  ];
+
+
+  let html = "";
+  let internal = "";
+
+
+  for(const M of terms){
+
+    const TR =
+      getTRFromForward(M);
+
+
+    if(!Number.isFinite(TR)){
+
+      html +=
+        `<div class="result">
+          <span>${TERMS[M]}</span>
+          <span class="money">—</span>
+        </div>`;
+
+      continue;
+
+    }
+
+
+    const termLoan =
+      adjustedFinanced *
+      (1 + TR);
+
+
+    const raw =
+      termLoan / M;
+
+
+    const ceiled =
+      ceilingPeso(raw);
+
+
+    html +=
+      `<div class="result">
+        <span>${TERMS[M]}</span>
+        <span class="money">${peso(ceiled)}</span>
+      </div>`;
+
+
+    internal +=
+      `<strong>${TERMS[M]}</strong><br>` +
+      `TR: ${(TR * 100).toFixed(2)}%<br>` +
+      `Adjusted Financed: ${rawPeso(adjustedFinanced)}<br>` +
+      `Term Loan: ${rawPeso(termLoan)}<br>` +
+      `Raw Monthly: ${rawPeso(raw)}<br>` +
+      `Ceiled Monthly: ${peso(ceiled)}` +
+      `<hr>`;
+
+  }
+
+
+  const actualRevenue =
+    adjustedFinanced * 1.17 +
+    D;
+
+
+  const evaluator =
+    actualRevenue - RB;
+
+
+  if(Math.abs(evaluator) > 0.10){
+
+    status.innerHTML =
+      '<div class="status bad">' +
+      'Validation error. Please review the inputs.' +
+      '</div>';
+
+  }else{
+
+    status.innerHTML = "";
+
+  }
+
+
+  document
+    .getElementById("f_results")
+    .innerHTML = html;
+
+
+  document
+    .getElementById("f_internal")
+    .innerHTML =
+      `RB: ${rawPeso(RB)}<br>` +
+      `Adjustable Financed: ${rawPeso(adjustableFinanced)}<br>` +
+      `Adjustable Incentive: ${rawPeso(adjustableIncentive)}<br>` +
+      `Adjustable Revenue: ${rawPeso(adjustableRevenue)}<br>` +
+      `Variable Discount: ${rawPeso(variableDiscount)}<br>` +
+      `Adjuster: ${rawPeso(adjuster)}<br>` +
+      `Adjusted Discount: ${rawPeso(adjustedDiscount)}<br>` +
+      `Adjusted Financed: ${rawPeso(adjustedFinanced)}<br>` +
+      `Actual Revenue: ${rawPeso(actualRevenue)}<br>` +
+      `Evaluator: ${rawPeso(evaluator)}<hr>` +
+      internal;
+
+
+  /*
+     COPY OUTPUT
+  */
+
+  const variant =
+    document.getElementById("f_variant").value ||
+    "Vehicle";
+
+
+  const values = {};
+
+
+  for(const M of terms){
+
+    const TR =
+      getTRFromForward(M);
+
+
+    if(Number.isFinite(TR)){
+
+      const raw =
+        adjustedFinanced *
+        (1 + TR) /
+        M;
+
+
+      values[M] =
+        peso(
+          ceilingPeso(raw)
+        );
+
+    }else{
+
+      values[M] = "—";
+
+    }
+
+  }
+
+
+  window.fCopy =
+`${variant}
+Higher DP: ${peso(D)}
+7Y: ${values[84]}
+6Y: ${values[72]}
+5Y: ${values[60]}
+4Y: ${values[48]}
+3Y: ${values[36]}
+2Y: ${values[24]}
+
+🦾 Powered by MSI Framework™ 🚀
+JUDE DANTE PINEDA
+Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.`;
+
+}
+
+
+/* =====================================================
+   CALCULATOR 2
+   MONTHLY → REQUIRED DP
+   ===================================================== */
+
+function calcReverse(){
+
+  const S =
+    val("r_srp");
+
+  const OPDP =
+    val("r_opdp");
+
+  const MT_target =
+    val("r_monthly");
+
+
+  const M =
+    parseInt(
+      document.getElementById("r_term").value,
+      10
+    );
+
+
+  /*
+     IMPORTANT:
+     TR REMAINS EDITABLE.
+     We read the current field value,
+     not the default table.
+  */
+
+  const TR =
+    val("r_tr") / 100;
+
+
+  const status =
+    document.getElementById("r_status");
+
+
+  if(
+    !Number.isFinite(S) ||
+    !Number.isFinite(OPDP) ||
+    !Number.isFinite(MT_target) ||
+    !Number.isFinite(M) ||
+    !Number.isFinite(TR)
+  ){
+
+    status.innerHTML =
+      '<div class="status bad">' +
+      'Please complete SRP, Official Promo DP, Target Monthly, Term and TR.' +
+      '</div>';
+
+    return;
+
+  }
+
+
+  /*
+     R1
+     RB = S × 0.8 × 1.17 + OPDP
+  */
+
+  const RB =
+    S * 0.8 * 1.17 +
+    OPDP;
+
+
+  /*
+     R2
+     Width =
+     M × 1.17 / (1 + TR)
+  */
+
+  const Width =
+    M * 1.17 /
+    (1 + TR);
+
+
+  /*
+     R3
+     Required DP =
+     RB - MT_target × Width
+  */
+
+  const D =
+    RB -
+    MT_target * Width;
+
+
+  /*
+     Safeguards
+  */
+
+  if(D >= S){
+
+    status.innerHTML =
+      '<div class="status warn">' +
+      'Target monthly is too low; required DP approaches or exceeds SRP. Treat as cash purchase / bank evaluation.' +
+      '</div>';
+
+    document.getElementById("r_results").innerHTML = "";
+
+    return;
+
+  }
+
+
+  if(D <= OPDP){
+
+    status.innerHTML =
+      '<div class="status warn">' +
+      'Required DP is at or below Official Promo DP. Use the official low-DP offer.' +
+      '</div>';
+
+    document.getElementById("r_results").innerHTML = "";
+
+    return;
+
+  }
+
+
+  /*
+     R5
+     Proof Raw
+  */
+
+  const proofRaw =
+    (RB - D) *
+    (1 + TR) /
+    (1.17 * M);
+
+
+  /*
+     R6
+     Proof Ceiled
+  */
+
+  const proofCeiled =
+    ceilingPeso(proofRaw);
+
+
+  /*
+     R7
+     Validation
+  */
+
+  const actualRevenue =
+    (RB - D) + D;
+
+
+  const evaluator =
+    actualRevenue - RB;
+
+
+  if(Math.abs(evaluator) > 0.10){
+
+    status.innerHTML =
+      '<div class="status bad">' +
+      'Validation error. Please review the inputs.' +
+      '</div>';
+
+  }else{
+
+    status.innerHTML = "";
+
+  }
+
+
+  /*
+     CUSTOMER-FACING RESULT
+     Technical proof fields are NOT displayed.
+  */
+
+  document
+    .getElementById("r_results")
+    .innerHTML =
+
+    `<div class="target-box">
+
+      <div class="target-label">
+        Target Monthly
+      </div>
+
+      <div class="target-value">
+        ${peso(MT_target)}
+      </div>
+
+    </div>
+
+    <div class="result">
+      <span>Loan Term</span>
+      <span class="money">${TERMS[M]}</span>
+    </div>
+
+    <div class="result">
+      <span>Estimated Required DP</span>
+      <span class="money">${peso(D)}</span>
+    </div>`;
+
+
+  /*
+     INTERNAL VERIFICATION
+     Hidden inside details.
+  */
+
+  document
+    .getElementById("r_internal")
+    .innerHTML =
+      `RB: ${rawPeso(RB)}<br>` +
+      `M: ${M}<br>` +
+      `TR: ${(TR * 100).toFixed(2)}%<br>` +
+      `Width: ${rawPeso(Width)}<br>` +
+      `Target Monthly: ${rawPeso(MT_target)}<br>` +
+      `Required DP: ${rawPeso(D)}<br>` +
+      `Proof Raw: ${rawPeso(proofRaw)}<br>` +
+      `Proof Ceiled: ${peso(proofCeiled)}<br>` +
+      `Evaluator: ${rawPeso(evaluator)}`;
+
+
+  /*
+     COPY RESULT
+  */
+
+  const variant =
+    document.getElementById("r_variant").value ||
+    "Vehicle";
+
+
+  window.rCopy =
+`${variant}
+Target Monthly: ${peso(MT_target)}
+Term: ${TERMS[M]}
+Estimated Required DP: ${peso(D)}
+
+🦾 Powered by MSI Framework™ 🚀
+JUDE DANTE PINEDA
+Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.`;
+
+}
+
+
+/* =====================================================
+   COPY FUNCTIONS
+   ===================================================== */
+
+function copyText(text){
+
+  if(
+    navigator.clipboard &&
+    window.isSecureContext
+  ){
+
+    navigator.clipboard
+      .writeText(text)
+      .then(function(){
+
+        alert("Results copied.");
+
+      })
+      .catch(function(){
+
+        fallbackCopy(text);
+
+      });
+
+  }else{
+
+    fallbackCopy(text);
+
+  }
+
+}
+
+
+function fallbackCopy(text){
+
+  const area =
+    document.createElement("textarea");
+
+  area.value = text;
+
+  area.style.position = "fixed";
+  area.style.left = "-9999px";
+
+  document.body.appendChild(area);
+
+  area.select();
+
+  try{
+
+    document.execCommand("copy");
+
+    alert("Results copied.");
+
+  }catch(e){
+
+    alert(text);
+
+  }
+
+  document.body.removeChild(area);
+
+}
+
+
+function copyForward(){
+
+  copyText(
+    window.fCopy ||
+    "Compute first."
+  );
+
+}
+
+
+function copyReverse(){
+
+  copyText(
+    window.rCopy ||
+    "Compute first."
+  );
+
+}
+
+
+/* =====================================================
+   RESET
+   ===================================================== */
+
+function resetF(){
+
+  document.getElementById("f_variant").value = "";
+  document.getElementById("f_srp").value = "";
+  document.getElementById("f_opdp").value = "";
+  document.getElementById("f_dp").value = "";
+
+  document.getElementById("f_bdp").value = "20";
+  document.getElementById("f_dir").value = "17";
+
+  document.getElementById("f_results").innerHTML =
+    '<div class="small">' +
+    'Enter the required inputs and tap COMPUTE MONTHLY.' +
+    '</div>';
+
+  document.getElementById("f_status").innerHTML = "";
+  document.getElementById("f_internal").innerHTML = "";
+
+  window.fCopy = "";
+
+}
+
+
+function resetR(){
+
+  document.getElementById("r_variant").value = "";
+  document.getElementById("r_srp").value = "";
+  document.getElementById("r_opdp").value = "";
+  document.getElementById("r_monthly").value = "";
+
+  document.getElementById("r_bdp").value = "20";
+  document.getElementById("r_dir").value = "17";
+
+  document.getElementById("r_term").value = "60";
+
+  /*
+     Reset to default 5Y TR,
+     but it remains editable.
+  */
+
+  document.getElementById("r_tr").value = "57";
+
+  document.getElementById("r_results").innerHTML =
+    '<div class="small">' +
+    'Enter the required inputs and tap COMPUTE REQUIRED DP.' +
+    '</div>';
+
+  document.getElementById("r_status").innerHTML = "";
+  document.getElementById("r_internal").innerHTML = "";
+
+  window.rCopy = "";
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+   ===================================================== */
+
+setRate();
+
+</script>
+
+</body>
+</html>    "Segoe UI",
     Roboto,
     Arial,
     sans-serif;
