@@ -157,7 +157,7 @@ function calcReverse(){
  document.getElementById("r_results").innerHTML=`<div class="result"><span>Loan Term</span><span class="money">${terms[M]}</span></div><div class="result"><span>Estimated Required DP</span><span class="money">${peso(D)}</span></div><div class="result"><span>Exact DP (for zero-diff raw target)</span><span class="money">${rawPeso(exact)}</span></div><div class="result"><span>Proof Monthly (Raw)</span><span class="money">${rawPeso(proofRaw)}</span></div><div class="result"><span>Proof Monthly (Ceiled)</span><span class="money">${peso(proofCeil)}</span></div>`;
  document.getElementById("r_internal").innerHTML=`Base Revenue (RB): ${rawPeso(RB)}<br>Width: ${rawPeso(width)}<br>TR: ${(tr*100).toFixed(2)}%<br>Evaluator concept: proof raw should reproduce target monthly.`;
  status.innerHTML='<div class="status ok">VALIDATED • Estimated computation only.</div>';
- window.rCopy=`${document.getElementById("r_variant").value||"Vehicle"}\nTarget Monthly: ${peso(MT)}\nTerm: ${terms[M]}\nEstimated Required DP: ${peso(D)}\nEstimated computation only. Final remains subject to bank approval.`;
+ window.rCopy=`${document.getElementById("r_variant").value||"Vehicle"}\nTarget Monthly: ${peso(MT)}\nTerm: ${terms[M]}\nEstimated Required DP: ${peso(exact)}\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA\nEstimated computation only. Final required down payment and monthly amortization remain subject to bank approval.`;
  window.rCopy += `
 
 🦾 Powered by MSI Framework™ 🚀
