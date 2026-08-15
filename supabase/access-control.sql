@@ -11,14 +11,28 @@
 
 alter table public.app_users enable row level security;
 
--- Users may read only their own profile.
--- This preserves the existing "Users can read own profile" behavior.
+-- Users may read their own profile.
 drop policy if exists "Users can read own profile" on public.app_users;
 create policy "Users can read own profile"
 on public.app_users
 for select
 to authenticated
 using (id = auth.uid());
+
+-- Admins may read all profiles so the admin panel can show every user.
+drop policy if exists "Admins can read all profiles" on public.app_users;
+create policy "Admins can read all profiles"
+on public.app_users
+for select
+to authenticated
+using (
+  exists (
+    select 1
+    from public.app_users admin_user
+    where admin_user.id = auth.uid()
+      and admin_user.role = 'admin'
+  )
+);
 
 -- Admins may update user access status.
 -- The admin check is evaluated against the admin's own app_users row.
@@ -45,6 +59,4 @@ with check (
   )
 );
 
--- Recommended: prevent non-admin users from changing their own profile.
--- The SELECT policy above remains unchanged.
 -- INSERT/DELETE policies are intentionally not added here.
