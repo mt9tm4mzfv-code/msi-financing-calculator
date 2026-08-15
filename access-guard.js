@@ -41,7 +41,8 @@ function validConfig(){
 function injectStyles(){
   const style = document.createElement("style");
   style.textContent = `
-    #msiAuthGate{position:fixed;inset:0;z-index:99999;background:#0b1220;color:#f5f7fb;display:flex;align-items:center;justify-content:center;padding:20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+    body.msiLocked > :not(#msiAuthGate){visibility:hidden !important}
+    #msiAuthGate{position:fixed;inset:0;z-index:99999;background:#0b1220;color:#f5f7fb;display:flex;align-items:center;justify-content:center;padding:20px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;visibility:visible!important}
     #msiAuthCard{width:min(430px,100%);background:#111827;border:1px solid #374151;border-radius:18px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
     #msiAuthCard h2{margin:0 0 6px;font-size:22px}#msiAuthCard p{color:#9ca3af;font-size:12px;line-height:1.5}
     #msiAuthCard label{display:block;margin:14px 0 6px;color:#d1d5db;font-size:12px;font-weight:700}
@@ -61,7 +62,7 @@ function injectStyles(){
   document.head.appendChild(style);
 }
 
-function showGate(message=""){ 
+function showGate(message=""){
   let gate=document.getElementById("msiAuthGate");
   if(!gate){
     gate=document.createElement("div"); gate.id="msiAuthGate";
@@ -75,8 +76,8 @@ function showGate(message=""){
 
 function hideGate(){ const gate=document.getElementById("msiAuthGate"); if(gate) gate.style.display="none"; }
 function setGateMessage(text,type="error"){ const el=document.getElementById("msiAuthMsg"); if(!el)return; el.textContent=text; el.className=type; }
-function hideApp(){ document.documentElement.style.visibility="hidden"; }
-function showApp(){ document.documentElement.style.visibility="visible"; }
+function hideApp(){ document.body.classList.add("msiLocked"); }
+function showApp(){ document.body.classList.remove("msiLocked"); }
 
 function profileIsActive(profile){
   if(!profile || profile.is_active !== true) return false;
