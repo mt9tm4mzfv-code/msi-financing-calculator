@@ -1,0 +1,32 @@
+MSI FINANCING CALCULATOR — ACCESS CONTROL SETUP
+
+1. In Supabase SQL Editor, run:
+   supabase/access-control.sql
+
+2. Create/authenticate users in Supabase Authentication.
+
+3. Ensure each authenticated user has a matching row in public.app_users:
+   id          = auth.users.id
+   email       = user's email
+   name        = display name
+   role        = 'admin' for the administrator; otherwise 'sales_agent'
+   is_active   = true to grant access; false to revoke access
+   expires_at  = NULL for no expiration, or a future timestamptz
+
+4. In access-guard.js replace ONLY these two placeholders:
+   SUPABASE_URL
+   SUPABASE_PUBLISHABLE_KEY
+
+   Use the Supabase Project URL and Publishable key.
+   NEVER use sb_secret_ or service_role in browser code.
+
+5. The access-control branch is the development branch. main is intentionally untouched.
+
+6. Expected behavior:
+   - Unauthenticated visitor -> login screen.
+   - Active user -> calculator access.
+   - Revoked user -> access denied.
+   - Expired user -> access denied.
+   - expires_at NULL -> no expiration.
+   - Admin -> Access Control panel with GIVE ACCESS / REVOKE ACCESS.
+   - Calculator 1 and Calculator 2 remain available after authorization.
