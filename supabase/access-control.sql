@@ -1,15 +1,31 @@
 -- MSI Financing Calculator — Access Control RLS
--- Run this in Supabase SQL Editor.
--- Expected app_users columns:
--- id uuid primary key references auth.users(id)
--- email text
--- name text
--- role text default 'sales_agent'
--- is_active boolean default true
--- expires_at timestamptz null
--- created_at timestamptz default now()
+-- Scope: login + Give Access / Revoke Access only.
+-- Calculator logic is not changed.
 
+-- RLS must remain enabled.
 alter table public.app_users enable row level security;
+
+-- Private helper prevents recursive RLS checks when determining whether
+-- the signed-in user is an administrator.
+create schema if not exists private;
+
+create or replace function private.is_admin()
+returns boolean
+language sql
+security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1
+    from public.app_users
+    where id = auth.uid()
+      and role = 'admin'
+  );
+$$;
+
+revoke all on function private.is_admin() from public;
+grant usage on schema private to authenticated;
+grant execute on function private.is_admin() to authenticated;
 
 -- Users may read their own profile.
 drop policy if exists "Users can read own profile" on public.app_users;
@@ -17,46 +33,29 @@ create policy "Users can read own profile"
 on public.app_users
 for select
 to authenticated
-using (id = auth.uid());
+using ((select auth.uid()) = id);
 
--- Admins may read all profiles so the admin panel can show every user.
+-- Admins may read all profiles.
 drop policy if exists "Admins can read all profiles" on public.app_users;
 create policy "Admins can read all profiles"
 on public.app_users
 for select
 to authenticated
-using (
-  exists (
-    select 1
-    from public.app_users admin_user
-    where admin_user.id = auth.uid()
-      and admin_user.role = 'admin'
-  )
-);
+using ((select private.is_admin()));
 
--- Admins may update user access status.
--- The admin check is evaluated against the admin's own app_users row.
--- Do not disable RLS to implement Give Access / Revoke Access.
+-- Admins may give/revoke access by changing ONLY is_active.
 drop policy if exists "Admins can update user access" on public.app_users;
 create policy "Admins can update user access"
 on public.app_users
 for update
 to authenticated
-using (
-  exists (
-    select 1
-    from public.app_users admin_user
-    where admin_user.id = auth.uid()
-      and admin_user.role = 'admin'
-  )
-)
-with check (
-  exists (
-    select 1
-    from public.app_users admin_user
-    where admin_user.id = auth.uid()
-      and admin_user.role = 'admin'
-  )
-);
+using ((select private.is_admin()))
+with check ((select private.is_admin()));
 
--- INSERT/DELETE policies are intentionally not added here.
+-- Restrict authenticated users to the single column required for
+-- Give Access / Revoke Access. This prevents the browser client from
+-- changing role, email, id, or other profile fields through UPDATE.
+revoke update on table public.app_users from authenticated;
+grant update (is_active) on table public.app_users to authenticated;
+
+-- No INSERT or DELETE policies are intentionally added.
