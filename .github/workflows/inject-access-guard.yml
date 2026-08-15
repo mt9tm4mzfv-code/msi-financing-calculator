@@ -1,0 +1,46 @@
+name: Wire Access Guard
+
+on:
+  push:
+    branches:
+      - access-control
+
+permissions:
+  contents: write
+
+jobs:
+  inject:
+    if: ${{ !contains(github.event.head_commit.message, '[auth-injected]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inject access guard script
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+          tag = '<script src="./access-guard.js"></script>'
+          if tag not in text:
+              marker = '</body>'
+              if marker not in text:
+                  raise SystemExit('index.html does not contain </body>')
+              text = text.replace(marker, f'  {tag}\n{marker}', 1)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit injected script reference
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes required."
+            exit 0
+          fi
+          git commit -m "chore: wire access guard [auth-injected]"
+          git push
