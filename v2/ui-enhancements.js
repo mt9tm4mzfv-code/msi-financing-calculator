@@ -1,102 +1,119 @@
 (function(){
   'use strict';
 
-  function applyUI(){
-    const cards = document.querySelectorAll('main > section.card');
-    cards.forEach((card, i) => {
-      const n = i + 1;
-      if (n > 3) return;
-      card.classList.add('calculator-card', `calculator-${n}`);
-      const badge = card.querySelector('.badge');
-      if (badge) badge.textContent = `CALCULATOR ${n}`;
-      const button = card.querySelector('button.primary');
-      if (button) button.textContent = 'CLICK THIS TO GENERATE COMPUTATION';
-    });
-    replaceVariantInputs();
-    enhanceNumericInputs();
-    syncHeaderHeights();
+  function formatNumber(value){
+    const raw=String(value??'').replace(/,/g,'').trim();
+    if(raw===''||raw==='-'||raw==='. ') return raw;
+    if(!/^-?\d*(\.\d*)?$/.test(raw)) return value;
+    const parts=raw.split('.');
+    const sign=parts[0].startsWith('-')?'-':'';
+    const integer=parts[0].replace('-','')||'0';
+    const grouped=integer.replace(/^0+(?=\d)/,'').replace(/\B(?=(\d{3})+(?!\d))/g,',');
+    return sign+grouped+(parts.length>1?'.'+parts[1]:'');
   }
+
+  function stripCommas(value){return String(value??'').replace(/,/g,'').trim()}
 
   function replaceVariantInputs(){
     document.querySelectorAll('input[id$="_variant"]').forEach(input=>{
-      if(input.tagName === 'TEXTAREA') return;
-      const area = document.createElement('textarea');
-      area.id = input.id;
-      area.name = input.name || '';
-      area.className = `${input.className || ''} variant-input`.trim();
-      area.placeholder = input.placeholder || '';
-      area.value = input.value || '';
-      area.rows = 2;
-      area.wrap = 'soft';
-      if(input.getAttribute('aria-label')) area.setAttribute('aria-label', input.getAttribute('aria-label'));
+      if(input.dataset.msiVariantEnhanced==='1') return;
+      const area=document.createElement('textarea');
+      area.id=input.id;
+      area.name=input.name||'';
+      area.className=(input.className||'')+' variant-input';
+      area.placeholder=input.placeholder||'';
+      area.value=input.value||'';
+      area.rows=2;
+      area.wrap='soft';
+      area.dataset.msiVariantEnhanced='1';
       input.replaceWith(area);
     });
   }
 
-  function sanitizeNumericValue(value){
-    return String(value ?? '').replace(/,/g,'').trim();
+  function replaceNumericInputs(){
+    document.querySelectorAll('input[type="number"]').forEach(input=>{
+      if(input.dataset.msiNumericEnhanced==='1') return;
+      const text=document.createElement('input');
+      for(const attr of input.getAttributeNames()){
+        if(attr==='type'||attr==='value') continue;
+        text.setAttribute(attr,input.getAttribute(attr));
+      }
+      text.type='text';
+      text.value=formatNumber(input.value);
+      text.inputMode='decimal';
+      text.autocomplete='off';
+      text.dataset.msiNumericEnhanced='1';
+      text.classList.add('numeric-input');
+      input.replaceWith(text);
+      text.addEventListener('focus',function(){this.value=stripCommas(this.value)});
+      text.addEventListener('blur',function(){this.value=formatNumber(this.value)});
+    });
   }
 
-  function formatNumericValue(value){
-    const raw = sanitizeNumericValue(value);
-    if(raw === '' || raw === '-' || raw === '.') return raw;
-    const match = raw.match(/^(-?)(\d*)(\.\d*)?$/);
-    if(!match) return raw;
-    const sign = match[1] || '';
-    const integer = match[2] || '0';
-    const decimal = match[3] || '';
-    const grouped = integer.replace(/^0+(?=\d)/,'').replace(/\B(?=(\d{3})+(?!\d))/g,',');
-    return sign + grouped + decimal;
+  function normalizeNumericInputs(){
+    document.querySelectorAll('.numeric-input').forEach(input=>{input.value=stripCommas(input.value)});
   }
 
-  function enhanceNumericInputs(){
-    document.querySelectorAll('.calculator-card input[type="number"]').forEach(input=>{
-      if(input.dataset.msiNumericEnhanced === '1') return;
-      input.type = 'text';
-      input.inputMode = 'decimal';
-      input.autocomplete = 'off';
-      input.dataset.msiNumericEnhanced = '1';
-      input.classList.add('numeric-input');
-      input.addEventListener('focus', function(){
-        this.value = sanitizeNumericValue(this.value);
-        try{ this.select(); }catch(e){}
-      });
-      input.addEventListener('blur', function(){
-        this.value = formatNumericValue(this.value);
-      });
-      input.value = formatNumericValue(input.value);
+  function formatNumericInputs(){
+    document.querySelectorAll('.numeric-input').forEach(input=>{input.value=formatNumber(input.value)});
+  }
+
+  function applyCalculatorClasses(){
+    document.querySelectorAll('main > section.card').forEach((card,i)=>{
+      if(i>=3) return;
+      const n=i+1;
+      card.classList.add('calculator-card','calculator-'+n);
     });
   }
 
   function syncHeaderHeights(){
     document.querySelectorAll('.calculator-card').forEach(card=>{
-      const section = card.querySelector('.section');
+      const section=card.querySelector('.section');
       if(!section) return;
-      const height = Math.max(135, Math.ceil(section.offsetTop + 2));
-      card.style.setProperty('--calc-header-height', `${height}px`);
+      const cardRect=card.getBoundingClientRect();
+      const sectionRect=section.getBoundingClientRect();
+      const height=Math.max(170,Math.ceil(sectionRect.top-cardRect.top));
+      card.style.setProperty('--calc-header-height',height+'px');
     });
   }
 
-  function installClipboardTransform(){
-    if (!navigator.clipboard || !navigator.clipboard.writeText || navigator.clipboard.writeText.__msiWrapped) return;
-    const original = navigator.clipboard.writeText.bind(navigator.clipboard);
-    const wrapped = function(text){
-      let output = String(text);
-      output = output.replace(/\n?Estimated computation only\. Final monthly amortization remains subject to bank approval\.?/gi, '');
-      output = output.replace(/\n?Estimated computation only\. Final required down payment remains subject to bank approval\.?/gi, '');
-      output = output.replace(/Interest \/ TR:/g, 'Bank Interest Rate:');
-      return original(output);
-    };
-    wrapped.__msiWrapped = true;
-    navigator.clipboard.writeText = wrapped;
+  function placeLogout(){
+    const buttons=[...document.querySelectorAll('button')].filter(b=>b.textContent.trim().toUpperCase()==='LOG OUT');
+    buttons.forEach(button=>{
+      const holder=button.parentElement||button;
+      holder.classList.add('msi-mobile-logout');
+    });
+  }
+
+  function wrapCalculators(){
+    ['calculate1','calculate2','calculate3'].forEach(name=>{
+      const fn=window[name];
+      if(typeof fn!=='function'||fn.__msiWrapped) return;
+      const wrapped=function(){
+        normalizeNumericInputs();
+        const result=fn.apply(this,arguments);
+        formatNumericInputs();
+        syncHeaderHeights();
+        return result;
+      };
+      wrapped.__msiWrapped=true;
+      window[name]=wrapped;
+    });
   }
 
   function init(){
-    applyUI();
-    installClipboardTransform();
-    window.addEventListener('resize', syncHeaderHeights);
+    applyCalculatorClasses();
+    replaceVariantInputs();
+    replaceNumericInputs();
+    placeLogout();
+    wrapCalculators();
+    syncHeaderHeights();
+    window.addEventListener('resize',syncHeaderHeights);
+    window.addEventListener('orientationchange',()=>setTimeout(syncHeaderHeights,100));
+    setTimeout(()=>{wrapCalculators();placeLogout();syncHeaderHeights()},50);
+    setTimeout(()=>{wrapCalculators();placeLogout();syncHeaderHeights()},500);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true});
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
   else init();
 })();
