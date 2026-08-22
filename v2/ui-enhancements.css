@@ -9,7 +9,7 @@
   content:"";
   position:absolute;
   left:0;right:0;top:0;
-  height:190px;
+  height:155px;
   background:var(--calc-color);
   z-index:0;
   pointer-events:none;
@@ -33,6 +33,7 @@
 .calculator-card > .note{
   color:rgba(0,0,0,.58);
   font-size:11px;
+  line-height:1.45;
 }
 .calculator-card .section{margin-top:22px}
 .calculator-card .section-title{color:#9ca3af}
@@ -63,6 +64,7 @@
 }
 .calculator-card button.primary:hover{filter:brightness(.96)}
 @media(max-width:600px){
-  .calculator-card::before{height:188px}
+  .calculator-card::before{height:155px}
   .calculator-card h2{font-size:18px}
+  .calculator-card > .note{font-size:11px}
 }
