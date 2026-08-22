@@ -1,56 +1,55 @@
-const CACHE="msi-financial-calculator-v2-8";
-const ASSETS=["./manifest.webmanifest?v=8","./sw.js?v=8","../access-guard.js?v=8","./ui-enhancements.css?v=8","./ui-enhancements.js?v=8","./ui-result-enhancements.js?v=8"];
+const CACHE="msi-financial-calculator-v2-9";
+const VERSION="9";
+const ASSETS=[`./manifest.webmanifest?v=${VERSION}`,`./sw.js?v=${VERSION}`,`../access-guard.js?v=${VERSION}`,`./ui-enhancements.css?v=${VERSION}`,`./ui-enhancements.js?v=${VERSION}`,`./ui-result-enhancements.js?v=${VERSION}`];
 
 async function enhanceHTML(response){
-  if(!response || !response.ok) return response;
+  if(!response||!response.ok)return response;
   const text=await response.text();
-  const enhanced=text.includes('ui-result-enhancements.js')
-    ? text
-    : text.replace('</head>', '<link rel="stylesheet" href="./ui-enhancements.css?v=8"><script src="./ui-enhancements.js?v=8" defer></script><script src="./ui-result-enhancements.js?v=8" defer></script></head>');
+  let enhanced=text;
+  enhanced=enhanced.replace(/<link[^>]+ui-enhancements\.css[^>]*>/gi,'');
+  enhanced=enhanced.replace(/<script[^>]+ui-enhancements\.js[^>]*><\/script>/gi,'');
+  enhanced=enhanced.replace(/<script[^>]+ui-result-enhancements\.js[^>]*><\/script>/gi,'');
+  enhanced=enhanced.replace('</head>',`<link rel="stylesheet" href="./ui-enhancements.css?v=${VERSION}"><script src="./ui-enhancements.js?v=${VERSION}" defer></script><script src="./ui-result-enhancements.js?v=${VERSION}" defer></script></head>`);
   const headers=new Headers(response.headers);
   headers.delete('content-length');
   return new Response(enhanced,{status:response.status,statusText:response.statusText,headers});
 }
 
 async function getFreshHTML(request){
-  const networkResponse=await fetch(request,{cache:"no-store"});
-  if(!networkResponse.ok) return networkResponse;
+  const networkResponse=await fetch(request,{cache:'no-store'});
+  if(!networkResponse.ok)return networkResponse;
   return enhanceHTML(networkResponse);
 }
 
-self.addEventListener("install",event=>event.waitUntil((async()=>{
+self.addEventListener('install',event=>event.waitUntil((async()=>{
   const cache=await caches.open(CACHE);
   await Promise.all(ASSETS.map(async asset=>{
-    try{
-      const response=await fetch(asset,{cache:"no-store"});
-      if(response.ok) await cache.put(asset,response.clone());
-    }catch(e){}
+    try{const response=await fetch(asset,{cache:'no-store'});if(response.ok)await cache.put(asset,response.clone())}catch(e){}
   }));
   try{
-    const response=await fetch("./index.html?v=8",{cache:"no-store"});
+    const response=await fetch(`./index.html?v=${VERSION}`,{cache:'no-store'});
     if(response.ok){
       const enhanced=await enhanceHTML(response);
-      await cache.put("./index.html",enhanced.clone());
-      await cache.put("./",enhanced.clone());
+      await cache.put('./index.html',enhanced.clone());
+      await cache.put('./',enhanced.clone());
     }
   }catch(e){}
   await self.skipWaiting();
 })()));
 
-self.addEventListener("activate",event=>event.waitUntil(
+self.addEventListener('activate',event=>event.waitUntil(
   caches.keys()
-    .then(keys=>Promise.all(keys.filter(key=>key.startsWith("msi-financial-calculator-v2")&&key!==CACHE).map(key=>caches.delete(key))))
+    .then(keys=>Promise.all(keys.filter(key=>key.startsWith('msi-financial-calculator-v2')&&key!==CACHE).map(key=>caches.delete(key))))
     .then(()=>self.clients.claim())
 ));
 
-self.addEventListener("fetch",event=>{
-  if(event.request.method!=="GET")return;
+self.addEventListener('fetch',event=>{
+  if(event.request.method!=='GET')return;
   event.respondWith((async()=>{
     const url=new URL(event.request.url);
-    const acceptsHTML=(event.request.headers.get("accept")||"").includes("text/html");
-    const isHTML=acceptsHTML || url.pathname.endsWith("/v2/") || url.pathname.endsWith("/v2/index.html");
-
-    if(url.origin===location.origin && isHTML){
+    const acceptsHTML=(event.request.headers.get('accept')||'').includes('text/html');
+    const isHTML=acceptsHTML||url.pathname.endsWith('/v2/')||url.pathname.endsWith('/v2/index.html');
+    if(url.origin===location.origin&&isHTML){
       try{
         const fresh=await getFreshHTML(event.request);
         const cache=await caches.open(CACHE);
@@ -62,18 +61,12 @@ self.addEventListener("fetch",event=>{
         throw e;
       }
     }
-
     const cached=await caches.match(event.request);
     if(cached)return cached;
-
     try{
       const response=await fetch(event.request);
-      if(url.origin===location.origin){
-        caches.open(CACHE).then(cache=>cache.put(event.request,response.clone())).catch(()=>{});
-      }
+      if(url.origin===location.origin)caches.open(CACHE).then(cache=>cache.put(event.request,response.clone())).catch(()=>{});
       return response;
-    }catch(e){
-      return cached;
-    }
+    }catch(e){return cached}
   })());
 });
