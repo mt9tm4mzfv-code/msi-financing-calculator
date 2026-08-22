@@ -1,0 +1,10 @@
+{
+  "name": "MSI Financial Calculator V2",
+  "short_name": "MSI Calc V2",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "description": "MSI Framework mobile financial calculator with three client inquiry calculators."
+}
