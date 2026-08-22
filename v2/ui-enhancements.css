@@ -15,7 +15,11 @@
 .calculator-card .result{min-width:0}
 .calculator-card .result>span:first-child{min-width:0;overflow-wrap:anywhere;word-break:normal}
 .calculator-card .result .money{min-width:0;max-width:52%;overflow-wrap:anywhere;white-space:normal}
-.msi-mobile-logout{position:fixed!important;right:10px!important;bottom:max(10px,env(safe-area-inset-bottom))!important;left:auto!important;top:auto!important;transform:none!important;z-index:10000!important;margin:0!important}
+.calculator-card button.primary{color:#000;border:1px solid rgba(0,0,0,.28);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.calculator-1 button.primary{background:#97f888}
+.calculator-2 button.primary{background:#c5d9f1}
+.calculator-3 button.primary{background:#eb4025}
+.msi-mobile-logout{position:fixed!important;right:0!important;bottom:0!important;left:auto!important;top:auto!important;transform:none!important;z-index:10000!important;margin:0!important;border-radius:14px 0 0 0!important}
 .msi-mobile-logout button{margin:0!important}
 @media(max-width:600px){
   .calculator-card{padding:14px}
@@ -27,4 +31,4 @@
   .calculator-card .results .result>span:first-child{flex:1 1 54%;font-size:12px;line-height:1.35}
   .calculator-card .results .money{flex:0 1 46%;max-width:46%;font-size:15px;line-height:1.25;text-align:right}
 }
-@media(min-width:601px){.msi-mobile-logout{position:initial!important}}
+@media(min-width:601px){.msi-mobile-logout{position:initial!important;border-radius:initial!important}}
