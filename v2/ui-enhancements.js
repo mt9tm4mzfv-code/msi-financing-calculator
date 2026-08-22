@@ -67,10 +67,10 @@
   }
 
   function updatePrimaryButtons(){
-    document.querySelectorAll('.calculator-card').forEach((card,i)=>{
+    document.querySelectorAll('.calculator-card').forEach(card=>{
       const button=card.querySelector('button.primary');
       if(!button) return;
-      button.textContent=i===2?'CLICK TO GENERATE COMPUTATION':'CLICK TO GENERATE COMPUTATION';
+      button.textContent='CLICK TO GENERATE COMPUTATION';
       button.setAttribute('aria-label','Click to generate computation');
     });
   }
@@ -90,7 +90,17 @@
     const buttons=[...document.querySelectorAll('button')].filter(b=>b.textContent.trim().toUpperCase()==='LOG OUT');
     buttons.forEach(button=>{
       const holder=button.parentElement||button;
+      if(holder.dataset.msiLogoutMoved==='1') return;
+      let dock=document.getElementById('msi-logout-dock');
+      if(!dock){
+        dock=document.createElement('div');
+        dock.id='msi-logout-dock';
+        dock.className='msi-logout-dock';
+        document.body.appendChild(dock);
+      }
       holder.classList.add('msi-mobile-logout');
+      holder.dataset.msiLogoutMoved='1';
+      dock.appendChild(holder);
     });
   }
 
