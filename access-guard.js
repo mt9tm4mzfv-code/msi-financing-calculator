@@ -25,8 +25,11 @@ function loadSupabase(){
     if(window.supabase?.createClient){ return resolve(); }
     const s = document.createElement("script");
     s.src = SUPABASE_CDN;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error("Unable to load Supabase client."));
+    s.onload = () => {
+      if(window.supabase?.createClient) resolve();
+      else reject(new Error("Supabase client loaded, but createClient is unavailable."));
+    };
+    s.onerror = () => reject(new Error("Unable to load the Supabase client library. Check the internet connection or Safari content blockers."));
     document.head.appendChild(s);
   });
 }
@@ -61,7 +64,7 @@ function injectStyles(){
   document.head.appendChild(style);
 }
 
-function showGate(message=""){ 
+function showGate(message=""){
   let gate=document.getElementById("msiAuthGate");
   if(!gate){
     gate=document.createElement("div"); gate.id="msiAuthGate";
@@ -94,6 +97,14 @@ async function fetchProfile(userId){
   return data;
 }
 
+function friendlyAuthError(error){
+  const message=String(error?.message || error || "Sign-in failed.");
+  if(message === "Load failed" || message === "Failed to fetch" || /network/i.test(message)){
+    return "Unable to connect to the MSI authorization server. Please check your internet connection or Safari content blockers, then try again.";
+  }
+  return message;
+}
+
 async function login(event){
   event.preventDefault();
   const email=document.getElementById("msiEmail").value.trim();
@@ -101,6 +112,7 @@ async function login(event){
   const button=event.submitter;
   button.disabled=true; button.textContent="SIGNING IN...";
   try{
+    if(!supabaseClient) throw new Error("Authorization service is still loading. Please refresh and try again.");
     const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
     if(error) throw error;
     const profile=await fetchProfile(data.user.id);
@@ -112,7 +124,7 @@ async function login(event){
     hideGate(); showApp(); renderUserBar();
     if(profile.role === "admin") renderAdminPanel();
   }catch(error){
-    setGateMessage(error.message || "Sign-in failed.","error");
+    setGateMessage(friendlyAuthError(error),"error");
   }finally{
     button.disabled=false; button.textContent="SIGN IN";
   }
@@ -167,7 +179,8 @@ function renderAdminPanel(){
 
 async function verifyCurrentAccess(){
   const {data:{user},error:userError}=await supabaseClient.auth.getUser();
-  if(userError || !user) return false;
+  if(userError) throw userError;
+  if(!user) return false;
   const profile=await fetchProfile(user.id);
   if(!profileIsActive(profile)){
     await supabaseClient.auth.signOut();
@@ -188,7 +201,7 @@ async function initializeGuard(){
   try{
     await loadSupabase();
     supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
-    const authorized=await verifyCurrentAccess().catch(error=>{showGate(error.message||"Access denied.");return false;});
+    const authorized=await verifyCurrentAccess().catch(error=>{showGate(friendlyAuthError(error));return false;});
     if(authorized){
       hideGate(); showApp(); renderUserBar();
       if(currentProfile.role === "admin") renderAdminPanel();
@@ -202,7 +215,7 @@ async function initializeGuard(){
       }
     });
   }catch(error){
-    showGate(error.message || "Unable to initialize access control.");
+    showGate(friendlyAuthError(error));
   }
 }
 
