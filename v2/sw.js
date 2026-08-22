@@ -1,4 +1,4 @@
-const CACHE="msi-financial-calculator-v2-3";
+const CACHE="msi-financial-calculator-v2-4";
 const ASSETS=["./manifest.webmanifest","./sw.js","../access-guard.js?v=2","./ui-enhancements.css","./ui-enhancements.js"];
 
 async function enhanceHTML(response){
