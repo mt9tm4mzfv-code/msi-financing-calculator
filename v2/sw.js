@@ -1,5 +1,5 @@
-const CACHE="msi-financial-calculator-v2-9";
-const VERSION="9";
+const CACHE="msi-financial-calculator-v2-10";
+const VERSION="10";
 const ASSETS=[`./manifest.webmanifest?v=${VERSION}`,`./sw.js?v=${VERSION}`,`../access-guard.js?v=${VERSION}`,`./ui-enhancements.css?v=${VERSION}`,`./ui-enhancements.js?v=${VERSION}`,`./ui-result-enhancements.js?v=${VERSION}`];
 
 async function enhanceHTML(response){
