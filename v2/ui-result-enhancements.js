@@ -67,11 +67,33 @@
     copyStore[n] = text.trim();
   }
 
+  function normalizeNumericInputs(n){
+    document.querySelectorAll(`#c${n}_results`).forEach(()=>{});
+    document.querySelectorAll(`.calculator-${n} input.numeric-input`).forEach(input=>{
+      input.value = String(input.value || '').replace(/,/g,'');
+    });
+  }
+
+  function formatNumericInputs(n){
+    document.querySelectorAll(`.calculator-${n} input.numeric-input`).forEach(input=>{
+      const raw = String(input.value || '').replace(/,/g,'').trim();
+      if(raw === '' || raw === '-' || raw === '.') return;
+      const match = raw.match(/^(-?)(\d*)(\.\d*)?$/);
+      if(!match) return;
+      const sign = match[1] || '';
+      const integer = match[2] || '0';
+      const decimal = match[3] || '';
+      input.value = sign + integer.replace(/^0+(?=\d)/,'').replace(/\B(?=(\d{3})+(?!\d))/g,',') + decimal;
+    });
+  }
+
   function wrapCalculators(){
     if(typeof calculate1 === 'function' && !calculate1.__msiResultWrapped){
       const original = calculate1;
       const wrapped = function(){
+        normalizeNumericInputs(1);
         original();
+        formatNumericInputs(1);
         const dp = num('c1_dp');
         updateMiddleMenu(1, dp);
         refreshCopy(1, dp);
@@ -83,7 +105,9 @@
     if(typeof calculate2 === 'function' && !calculate2.__msiResultWrapped){
       const original = calculate2;
       const wrapped = function(){
+        normalizeNumericInputs(2);
         original();
+        formatNumericInputs(2);
         const dp = moneyFromText(document.getElementById('c2r_dp')?.textContent);
         updateMiddleMenu(2, dp);
         refreshCopy(2, dp);
@@ -95,7 +119,9 @@
     if(typeof calculate3 === 'function' && !calculate3.__msiResultWrapped){
       const original = calculate3;
       const wrapped = function(){
+        normalizeNumericInputs(3);
         original();
+        formatNumericInputs(3);
         const dp = moneyFromText(document.getElementById('c3r_dp')?.textContent);
         updateMiddleMenu(3, dp);
         refreshCopy(3, dp);
