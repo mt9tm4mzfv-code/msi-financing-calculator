@@ -1,11 +1,11 @@
-const CACHE="msi-financial-calculator-v2-4";
-const ASSETS=["./manifest.webmanifest","./sw.js","../access-guard.js?v=2","./ui-enhancements.css","./ui-enhancements.js"];
+const CACHE="msi-financial-calculator-v2-5";
+const ASSETS=["./manifest.webmanifest","./sw.js","../access-guard.js?v=2","./ui-enhancements.css","./ui-enhancements.js","./ui-result-enhancements.js"];
 
 async function enhanceHTML(response){
   if(!response || !response.ok) return response;
   const text=await response.text();
-  if(text.includes('ui-enhancements.css')) return new Response(text,{status:response.status,statusText:response.statusText,headers:response.headers});
-  const enhanced=text.replace('</head>', '<link rel="stylesheet" href="./ui-enhancements.css"><script src="./ui-enhancements.js" defer></script></head>');
+  if(text.includes('ui-result-enhancements.js')) return new Response(text,{status:response.status,statusText:response.statusText,headers:response.headers});
+  const enhanced=text.replace('</head>', '<link rel="stylesheet" href="./ui-enhancements.css"><script src="./ui-enhancements.js" defer></script><script src="./ui-result-enhancements.js" defer></script></head>');
   const headers=new Headers(response.headers);
   headers.delete('content-length');
   return new Response(enhanced,{status:response.status,statusText:response.statusText,headers});
