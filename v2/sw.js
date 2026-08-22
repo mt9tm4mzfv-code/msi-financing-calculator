@@ -1,14 +1,21 @@
-const CACHE="msi-financial-calculator-v2-5";
-const ASSETS=["./manifest.webmanifest","./sw.js","../access-guard.js?v=2","./ui-enhancements.css","./ui-enhancements.js","./ui-result-enhancements.js"];
+const CACHE="msi-financial-calculator-v2-6";
+const ASSETS=["./manifest.webmanifest?v=6","./sw.js?v=6","../access-guard.js?v=6","./ui-enhancements.css?v=6","./ui-enhancements.js?v=6","./ui-result-enhancements.js?v=6"];
 
 async function enhanceHTML(response){
   if(!response || !response.ok) return response;
   const text=await response.text();
-  if(text.includes('ui-result-enhancements.js')) return new Response(text,{status:response.status,statusText:response.statusText,headers:response.headers});
-  const enhanced=text.replace('</head>', '<link rel="stylesheet" href="./ui-enhancements.css"><script src="./ui-enhancements.js" defer></script><script src="./ui-result-enhancements.js" defer></script></head>');
+  const enhanced=text.includes('ui-result-enhancements.js')
+    ? text
+    : text.replace('</head>', '<link rel="stylesheet" href="./ui-enhancements.css?v=6"><script src="./ui-enhancements.js?v=6" defer></script><script src="./ui-result-enhancements.js?v=6" defer></script></head>');
   const headers=new Headers(response.headers);
   headers.delete('content-length');
   return new Response(enhanced,{status:response.status,statusText:response.statusText,headers});
+}
+
+async function getFreshHTML(request){
+  const networkResponse=await fetch(request,{cache:"no-store"});
+  if(!networkResponse.ok) return networkResponse;
+  return enhanceHTML(networkResponse);
 }
 
 self.addEventListener("install",event=>event.waitUntil((async()=>{
@@ -20,7 +27,7 @@ self.addEventListener("install",event=>event.waitUntil((async()=>{
     }catch(e){}
   }));
   try{
-    const response=await fetch("./index.html",{cache:"no-store"});
+    const response=await fetch("./index.html?v=6",{cache:"no-store"});
     if(response.ok){
       const enhanced=await enhanceHTML(response);
       await cache.put("./index.html",enhanced.clone());
@@ -30,22 +37,39 @@ self.addEventListener("install",event=>event.waitUntil((async()=>{
   await self.skipWaiting();
 })()));
 
-self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith("msi-financial-calculator-v2")&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
+self.addEventListener("activate",event=>event.waitUntil(
+  caches.keys()
+    .then(keys=>Promise.all(keys.filter(key=>key.startsWith("msi-financial-calculator-v2")&&key!==CACHE).map(key=>caches.delete(key))))
+    .then(()=>self.clients.claim())
+));
 
 self.addEventListener("fetch",event=>{
   if(event.request.method!=="GET")return;
   event.respondWith((async()=>{
+    const url=new URL(event.request.url);
+    const acceptsHTML=(event.request.headers.get("accept")||"").includes("text/html");
+    const isHTML=acceptsHTML || url.pathname.endsWith("/v2/") || url.pathname.endsWith("/v2/index.html");
+
+    if(url.origin===location.origin && isHTML){
+      try{
+        const fresh=await getFreshHTML(event.request);
+        const cache=await caches.open(CACHE);
+        await cache.put(event.request,fresh.clone());
+        return fresh;
+      }catch(e){
+        const cached=await caches.match(event.request);
+        if(cached)return cached;
+        throw e;
+      }
+    }
+
     const cached=await caches.match(event.request);
     if(cached)return cached;
+
     try{
       const response=await fetch(event.request);
-      const url=new URL(event.request.url);
-      const acceptsHTML=(event.request.headers.get("accept")||"").includes("text/html");
-      const isHTML=acceptsHTML || url.pathname.endsWith("/v2/") || url.pathname.endsWith("/v2/index.html");
       if(url.origin===location.origin){
-        const toCache=isHTML?await enhanceHTML(response.clone()):response.clone();
-        caches.open(CACHE).then(cache=>cache.put(event.request,toCache)).catch(()=>{});
-        if(isHTML)return toCache;
+        caches.open(CACHE).then(cache=>cache.put(event.request,response.clone())).catch(()=>{});
       }
       return response;
     }catch(e){
