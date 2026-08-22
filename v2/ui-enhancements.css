@@ -1,0 +1,68 @@
+/* MSI V2 UI-only enhancements. No calculation logic is changed. */
+.calculator-card{
+  --calc-color:#374151;
+  position:relative;
+  overflow:hidden;
+  background:#111827 !important;
+}
+.calculator-card::before{
+  content:"";
+  position:absolute;
+  left:0;right:0;top:0;
+  height:190px;
+  background:var(--calc-color);
+  z-index:0;
+  pointer-events:none;
+}
+.calculator-1{--calc-color:#97f888}
+.calculator-2{--calc-color:#c5d9f1}
+.calculator-3{--calc-color:#eb4025}
+.calculator-card > *{position:relative;z-index:1}
+.calculator-card .badge{
+  background:rgba(255,255,255,.28);
+  border-color:rgba(0,0,0,.45);
+  color:#000;
+  font-size:11px;
+  padding:6px 10px;
+}
+.calculator-card h2{
+  color:#000;
+  font-size:19px;
+  line-height:1.25;
+}
+.calculator-card > .note{
+  color:rgba(0,0,0,.58);
+  font-size:11px;
+}
+.calculator-card .section{margin-top:22px}
+.calculator-card .section-title{color:#9ca3af}
+.calculator-card input,
+.calculator-card select{
+  height:47px;
+  min-height:47px;
+  width:100%;
+}
+.calculator-card select{
+  -webkit-appearance:none;
+  appearance:none;
+  padding-top:11px;
+  padding-bottom:11px;
+  background-color:#1f2937;
+  background-image:linear-gradient(45deg,transparent 50%,#9ca3af 50%),linear-gradient(135deg,#9ca3af 50%,transparent 50%);
+  background-position:calc(100% - 16px) 20px,calc(100% - 11px) 20px;
+  background-size:5px 5px,5px 5px;
+  background-repeat:no-repeat;
+}
+.calculator-card button.primary{
+  min-height:47px;
+  margin-top:13px;
+  background:var(--calc-color);
+  color:#000;
+  border:1px solid rgba(0,0,0,.45);
+  box-shadow:0 3px 10px rgba(0,0,0,.18);
+}
+.calculator-card button.primary:hover{filter:brightness(.96)}
+@media(max-width:600px){
+  .calculator-card::before{height:188px}
+  .calculator-card h2{font-size:18px}
+}
