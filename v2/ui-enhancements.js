@@ -66,13 +66,22 @@
     });
   }
 
+  function updatePrimaryButtons(){
+    document.querySelectorAll('.calculator-card').forEach((card,i)=>{
+      const button=card.querySelector('button.primary');
+      if(!button) return;
+      button.textContent=i===2?'CLICK TO GENERATE COMPUTATION':'CLICK TO GENERATE COMPUTATION';
+      button.setAttribute('aria-label','Click to generate computation');
+    });
+  }
+
   function syncHeaderHeights(){
     document.querySelectorAll('.calculator-card').forEach(card=>{
-      const section=card.querySelector('.section');
-      if(!section) return;
+      const title=card.querySelector('.section-title');
+      if(!title) return;
       const cardRect=card.getBoundingClientRect();
-      const sectionRect=section.getBoundingClientRect();
-      const height=Math.max(170,Math.ceil(sectionRect.top-cardRect.top));
+      const titleRect=title.getBoundingClientRect();
+      const height=Math.max(155,Math.ceil(titleRect.top-cardRect.top-10));
       card.style.setProperty('--calc-header-height',height+'px');
     });
   }
@@ -105,13 +114,14 @@
     applyCalculatorClasses();
     replaceVariantInputs();
     replaceNumericInputs();
+    updatePrimaryButtons();
     placeLogout();
     wrapCalculators();
     syncHeaderHeights();
     window.addEventListener('resize',syncHeaderHeights);
     window.addEventListener('orientationchange',()=>setTimeout(syncHeaderHeights,100));
-    setTimeout(()=>{wrapCalculators();placeLogout();syncHeaderHeights()},50);
-    setTimeout(()=>{wrapCalculators();placeLogout();syncHeaderHeights()},500);
+    setTimeout(()=>{wrapCalculators();placeLogout();updatePrimaryButtons();syncHeaderHeights()},50);
+    setTimeout(()=>{wrapCalculators();placeLogout();updatePrimaryButtons();syncHeaderHeights()},500);
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
