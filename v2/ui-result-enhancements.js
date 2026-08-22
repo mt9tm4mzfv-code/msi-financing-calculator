@@ -62,7 +62,10 @@
 
     text = text.replace(/^.*\nClient's Desired Down Payment:/m, `Unit Model: ${variant}\nClient's Desired Down Payment:`);
     text = text.replace(/^.*\nClient's Desired Down Payment Percentage:/m, `Unit Model: ${variant}\nClient's Desired Down Payment Percentage:`);
-    text = text.replace(/^.*\nTarget Monthly Amortization:/m, `Unit Model: ${variant}\nTarget Monthly Amortization:`);
+    text = text.replace(/^.*\nTarget Monthly Amortization:/m, `Unit Model: ${variant}\nDesired Monthly Amortization:`);
+    text = text.replace(/^.*\nDesired Monthly Amortization:/m, `Unit Model: ${variant}\nDesired Monthly Amortization:`);
+    text = text.replace(/\nDerived Down Payment Amount:/g, '\nClient Down Payment Amount:');
+    text = text.replace(/\nEstimated Required Down Payment:/g, '\nRequired Down Payment:');
     text = text.replace(/\nUnit SRP:/, `\nOfficial Promo DP: ${peso(opdp)}\nUnit SRP:`);
     text = text.replace(/Client Net Down Payment: ₱[0-9,.-]+/g, `Client Net Down Payment: ${peso(net)}`);
     text = text.replace(/Interest \/ TR:/g, 'Bank Interest Rate:');
