@@ -3,7 +3,7 @@
    NEVER put a sb_secret_ or service_role key in this file.
 */
 
-const SUPABASE_URL = "https://ctdddpmkulrlllgmbasq.supabase.co";
+const SUPABASE_URL = "https://cdtddpmkulrlllgmbasq.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_vB63Sq3B-eJe5HGknMkW_Q_9XIbSb5E";
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
 
