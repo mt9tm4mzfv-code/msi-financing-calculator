@@ -1,12 +1,12 @@
-const CACHE="msi-financial-calculator-v2-6";
-const ASSETS=["./manifest.webmanifest?v=6","./sw.js?v=6","../access-guard.js?v=6","./ui-enhancements.css?v=6","./ui-enhancements.js?v=6","./ui-result-enhancements.js?v=6"];
+const CACHE="msi-financial-calculator-v2-7";
+const ASSETS=["./manifest.webmanifest?v=7","./sw.js?v=7","../access-guard.js?v=7","./ui-enhancements.css?v=7","./ui-enhancements.js?v=7","./ui-result-enhancements.js?v=7"];
 
 async function enhanceHTML(response){
   if(!response || !response.ok) return response;
   const text=await response.text();
   const enhanced=text.includes('ui-result-enhancements.js')
     ? text
-    : text.replace('</head>', '<link rel="stylesheet" href="./ui-enhancements.css?v=6"><script src="./ui-enhancements.js?v=6" defer></script><script src="./ui-result-enhancements.js?v=6" defer></script></head>');
+    : text.replace('</head>', '<link rel="stylesheet" href="./ui-enhancements.css?v=7"><script src="./ui-enhancements.js?v=7" defer></script><script src="./ui-result-enhancements.js?v=7" defer></script></head>');
   const headers=new Headers(response.headers);
   headers.delete('content-length');
   return new Response(enhanced,{status:response.status,statusText:response.statusText,headers});
@@ -27,7 +27,7 @@ self.addEventListener("install",event=>event.waitUntil((async()=>{
     }catch(e){}
   }));
   try{
-    const response=await fetch("./index.html?v=6",{cache:"no-store"});
+    const response=await fetch("./index.html?v=7",{cache:"no-store"});
     if(response.ok){
       const enhanced=await enhanceHTML(response);
       await cache.put("./index.html",enhanced.clone());
