@@ -70,6 +70,7 @@ function showGate(message=""){
     document.getElementById("msiLoginForm").addEventListener("submit", login);
   }
   gate.style.display="flex";
+  showApp();
   if(message) setGateMessage(message,"error");
 }
 
