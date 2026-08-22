@@ -92,7 +92,7 @@ function profileIsActive(profile){
 }
 
 async function fetchProfile(userId){
-  const {data,error}=await supabaseClient.from("app_users").select("id,email,name,full_name,role,is_active,expires_at,created_at").eq("id",userId).maybeSingle();
+  const {data,error}=await supabaseClient.from("app_users").select("id,email,name,role,is_active,expires_at,created_at").eq("id",userId).maybeSingle();
   if(error) throw error;
   return data;
 }
@@ -141,7 +141,7 @@ async function logout(){
 function renderUserBar(){
   let bar=document.getElementById("msiUserBar"); if(bar)bar.remove();
   bar=document.createElement("div"); bar.id="msiUserBar";
-  const label=currentProfile?.name || currentProfile?.full_name || currentProfile?.email || "Authorized user";
+  const label=currentProfile?.name || currentProfile?.email || "Authorized user";
   bar.innerHTML=`<span>${esc(label)}</span><button id="msiLogoutBtn">LOG OUT</button>`;
   document.body.appendChild(bar);
   document.getElementById("msiLogoutBtn").onclick=logout;
@@ -150,10 +150,10 @@ function renderUserBar(){
 async function loadAdminUsers(){
   const list=document.getElementById("msiAdminUsers"); if(!list)return;
   list.innerHTML="<div class='adminSub'>Loading users...</div>";
-  const {data,error}=await supabaseClient.from("app_users").select("id,email,name,full_name,role,is_active,expires_at,created_at").order("created_at",{ascending:true});
+  const {data,error}=await supabaseClient.from("app_users").select("id,email,name,role,is_active,expires_at,created_at").order("created_at",{ascending:true});
   if(error){list.innerHTML=`<div class='adminSub'>Unable to load users: ${esc(error.message)}</div>`;return;}
   list.innerHTML=data.map(user=>{
-    const display=user.name||user.full_name||user.email||user.id;
+    const display=user.name||user.email||user.id;
     const active=profileIsActive(user);
     const expiry=user.expires_at ? new Date(user.expires_at).toLocaleString() : "No expiration";
     return `<div class="msiUser"><div class="msiUserTop"><div><div class="msiUserName">${esc(display)}</div><div class="msiUserEmail">${esc(user.email||"")}</div></div><span class="msiBadge ${active?"on":"off"}">${active?"ACTIVE":"REVOKED"}</span></div><div class="msiUserEmail">Role: ${esc(user.role||"sales_agent")} • ${esc(expiry)}</div>${user.id!==currentProfile.id?`<div class="msiUserActions"><button class="grant" data-action="grant" data-id="${esc(user.id)}">GIVE ACCESS</button><button class="revoke" data-action="revoke" data-id="${esc(user.id)}">REVOKE ACCESS</button></div>`:""}</div>`;
