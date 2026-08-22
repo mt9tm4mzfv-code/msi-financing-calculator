@@ -7,6 +7,11 @@
     return Number.isFinite(n) ? n : 0;
   }
 
+  function inputNumber(id){
+    const el = document.getElementById(id);
+    return moneyFromText(el ? el.value : '');
+  }
+
   function setResultLabel(n, oldLabel, newLabel){
     const results = document.getElementById(`c${n}_results`);
     if(!results) return;
@@ -37,11 +42,11 @@
     setResultLabel(n, 'Additional White Cashout', 'Additional Cashout for White Pearl');
     setResultLabel(n, 'TR', 'Bank Interest Rate');
 
-    const opdp = num(`c${n}_opdp`);
+    const opdp = inputNumber(`c${n}_opdp`);
     const opdpEl = document.getElementById(`c${n}r_opdp`);
     if(opdpEl) opdpEl.textContent = peso(opdp);
 
-    const white = num(`c${n}_white`);
+    const white = inputNumber(`c${n}_white`);
     const net = dpAmount + white;
     const netEl = document.getElementById(`c${n}r_netdp`);
     if(netEl) netEl.textContent = peso(net);
@@ -49,9 +54,9 @@
 
   function refreshCopy(n, dpAmount){
     if(typeof copyStore === 'undefined' || !copyStore[n]) return;
-    const white = num(`c${n}_white`);
+    const white = inputNumber(`c${n}_white`);
     const net = dpAmount + white;
-    const opdp = num(`c${n}_opdp`);
+    const opdp = inputNumber(`c${n}_opdp`);
     const variant = (document.getElementById(`c${n}_variant`)?.value || 'Vehicle').trim() || 'Vehicle';
     let text = String(copyStore[n]);
 
@@ -68,7 +73,6 @@
   }
 
   function normalizeNumericInputs(n){
-    document.querySelectorAll(`#c${n}_results`).forEach(()=>{});
     document.querySelectorAll(`.calculator-${n} input.numeric-input`).forEach(input=>{
       input.value = String(input.value || '').replace(/,/g,'');
     });
@@ -94,7 +98,7 @@
         normalizeNumericInputs(1);
         original();
         formatNumericInputs(1);
-        const dp = num('c1_dp');
+        const dp = inputNumber('c1_dp');
         updateMiddleMenu(1, dp);
         refreshCopy(1, dp);
       };
