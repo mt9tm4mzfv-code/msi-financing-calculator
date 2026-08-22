@@ -1,130 +1,30 @@
-/* MSI V2 UI-only enhancements. No calculation logic is changed. */
-.calculator-card{
-  --calc-color:#374151;
-  --calc-header-height:135px;
-  position:relative;
-  overflow:hidden;
-  background:#111827 !important;
-}
-.calculator-card::before{
-  content:"";
-  position:absolute;
-  left:0;right:0;top:0;
-  height:var(--calc-header-height);
-  background:var(--calc-color);
-  z-index:0;
-  pointer-events:none;
-}
+/* MSI V2 responsive UI layer. Calculation logic is untouched. */
+.calculator-card{position:relative;overflow:hidden}
+.calculator-card::before{content:"";position:absolute;left:0;right:0;top:0;height:var(--calc-header-height,240px);background:var(--calc-color,#111827);z-index:0;pointer-events:none}
 .calculator-1{--calc-color:#97f888}
 .calculator-2{--calc-color:#c5d9f1}
 .calculator-3{--calc-color:#eb4025}
-.calculator-card > *{position:relative;z-index:1}
-.calculator-card .badge{
-  background:rgba(255,255,255,.28);
-  border-color:rgba(0,0,0,.45);
-  color:#000;
-  font-size:11px;
-  padding:6px 10px;
-}
-.calculator-card h2{
-  color:#000;
-  font-size:19px;
-  line-height:1.25;
-}
-.calculator-card > .note{
-  color:rgba(0,0,0,.58);
-  font-size:13px;
-  line-height:1.45;
-  white-space:normal;
-  overflow-wrap:anywhere;
-  word-break:normal;
-}
-.calculator-card .section{margin-top:22px}
-.calculator-card .section-title{color:#9ca3af}
-.calculator-card input,
-.calculator-card select,
-.calculator-card textarea{
-  width:100%;
-}
-.calculator-card input,
-.calculator-card select{
-  height:47px;
-  min-height:47px;
-}
-.calculator-card textarea.variant-input{
-  min-height:47px;
-  height:47px;
-  padding:11px 12px;
-  border:1px solid #4b5563;
-  border-radius:10px;
-  background:#1f2937;
-  color:#f9fafb;
-  font:inherit;
-  font-size:16px;
-  line-height:1.25;
-  outline:none;
-  resize:none;
-  overflow-wrap:anywhere;
-  white-space:pre-wrap;
-}
-.calculator-card textarea.variant-input:focus{
-  border-color:#9ca3af;
-  box-shadow:0 0 0 2px rgba(156,163,175,.18);
-}
-.calculator-card select{
-  -webkit-appearance:none;
-  appearance:none;
-  padding-top:11px;
-  padding-bottom:11px;
-  background-color:#1f2937;
-  background-image:linear-gradient(45deg,transparent 50%,#9ca3af 50%),linear-gradient(135deg,#9ca3af 50%,transparent 50%);
-  background-position:calc(100% - 16px) 20px,calc(100% - 11px) 20px;
-  background-size:5px 5px,5px 5px;
-  background-repeat:no-repeat;
-}
-.calculator-card button.primary{
-  min-height:47px;
-  margin-top:13px;
-  background:var(--calc-color);
-  color:#000;
-  border:1px solid rgba(0,0,0,.45);
-  box-shadow:0 3px 10px rgba(0,0,0,.18);
-}
-.calculator-card button.primary:hover{filter:brightness(.96)}
-.calculator-card .results .status{display:none !important}
-.calculator-card .result span:first-child{
-  min-width:0;
-  overflow-wrap:anywhere;
-}
-.calculator-card .result .money{
-  min-width:0;
-  overflow-wrap:anywhere;
-}
+.calculator-card>*{position:relative;z-index:1}
+.calculator-card .badge{background:rgba(255,255,255,.28);border-color:rgba(0,0,0,.45);color:#000}
+.calculator-card h2{color:#000;line-height:1.25}
+.calculator-card>.note{color:rgba(0,0,0,.58);white-space:normal;overflow-wrap:anywhere;word-break:normal}
+.calculator-card textarea.variant-input{display:block;width:100%;min-height:58px;height:58px;padding:10px 12px;border:1px solid #4b5563;border-radius:10px;background:#1f2937;color:#f9fafb;font-family:inherit;font-size:14px;line-height:1.3;outline:none;resize:none;overflow-y:auto;overflow-x:hidden;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}
+.calculator-card textarea.variant-input:focus{border-color:#9ca3af;box-shadow:0 0 0 2px rgba(156,163,175,.18)}
+.calculator-card input.numeric-input{font-variant-numeric:tabular-nums}
+.calculator-card .results .status{display:none!important}
+.calculator-card .result{min-width:0}
+.calculator-card .result>span:first-child{min-width:0;overflow-wrap:anywhere;word-break:normal}
+.calculator-card .result .money{min-width:0;max-width:52%;overflow-wrap:anywhere;white-space:normal}
+.msi-mobile-logout{position:fixed!important;right:10px!important;bottom:max(10px,env(safe-area-inset-bottom))!important;left:auto!important;top:auto!important;transform:none!important;z-index:10000!important;margin:0!important}
+.msi-mobile-logout button{margin:0!important}
 @media(max-width:600px){
-  .calculator-card::before{height:var(--calc-header-height)}
+  .calculator-card{padding:14px}
   .calculator-card h2{font-size:18px;line-height:1.25}
-  .calculator-card > .note{
-    font-size:12px;
-    line-height:1.4;
-    margin-bottom:0;
-  }
-  .calculator-card textarea.variant-input{
-    height:62px;
-    min-height:62px;
-    font-size:14px;
-    line-height:1.3;
-    padding:10px 12px;
-  }
-  .calculator-card .results .result{
-    gap:10px;
-  }
-  .calculator-card .results .result span:first-child{
-    flex:1 1 52%;
-  }
-  .calculator-card .results .money{
-    flex:0 1 48%;
-    white-space:normal;
-    text-align:right;
-    font-size:15px;
-  }
+  .calculator-card>.note{font-size:12px;line-height:1.42;margin-top:8px}
+  .calculator-card .section{margin-top:20px}
+  .calculator-card textarea.variant-input{font-size:14px;line-height:1.3;min-height:64px;height:64px}
+  .calculator-card .results .result{gap:8px}
+  .calculator-card .results .result>span:first-child{flex:1 1 54%;font-size:12px;line-height:1.35}
+  .calculator-card .results .money{flex:0 1 46%;max-width:46%;font-size:15px;line-height:1.25;text-align:right}
 }
+@media(min-width:601px){.msi-mobile-logout{position:initial!important}}
