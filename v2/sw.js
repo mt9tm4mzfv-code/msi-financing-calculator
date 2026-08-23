@@ -1,5 +1,5 @@
-const CACHE="msi-financial-calculator-v2-16";
-const VERSION="16";
+const CACHE="msi-financial-calculator-v2-17";
+const VERSION="17";
 const ASSETS=[`./manifest.webmanifest?v=${VERSION}`,`./sw.js?v=${VERSION}`,`../access-guard.js?v=${VERSION}`,`./ui-enhancements.css?v=${VERSION}`,`./ui-enhancements.js?v=${VERSION}`,`./ui-result-enhancements.js?v=${VERSION}`];
 async function enhanceHTML(response){if(!response||!response.ok)return response;const text=await response.text();let enhanced=text;enhanced=enhanced.replace(/<link[^>]+ui-enhancements\.css[^>]*>/gi,'');enhanced=enhanced.replace(/<script[^>]+ui-enhancements\.js[^>]*><\/script>/gi,'');enhanced=enhanced.replace(/<script[^>]+ui-result-enhancements\.js[^>]*><\/script>/gi,'');enhanced=enhanced.replace('</head>',`<link rel="stylesheet" href="./ui-enhancements.css?v=${VERSION}"><script src="./ui-enhancements.js?v=${VERSION}" defer></script><script src="./ui-result-enhancements.js?v=${VERSION}" defer></script></head>`);const headers=new Headers(response.headers);headers.delete('content-length');return new Response(enhanced,{status:response.status,statusText:response.statusText,headers})}
 async function getFreshHTML(request){const networkResponse=await fetch(request,{cache:'no-store'});if(!networkResponse.ok)return networkResponse;return enhanceHTML(networkResponse)}
