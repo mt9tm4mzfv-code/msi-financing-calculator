@@ -3,13 +3,12 @@
   'use strict';
 
   function moneyFromText(text){
-    const n=Number(String(text||'').replace(/[^0-9.-]/g,''));
+    const n=Number(String(text??'').replace(/,/g,'').replace(/[^0-9.-]/g,''));
     return Number.isFinite(n)?n:0;
   }
   function inputNumber(id){
     const el=document.getElementById(id);
-    const n=Number(el?.value);
-    return Number.isFinite(n)?n:0;
+    return moneyFromText(el?.value);
   }
   function pesoLocal(v){return '₱'+Math.round(v).toLocaleString('en-PH')}
 
@@ -42,8 +41,8 @@
     };
 
     const vehicle=find(['Vehicle','Unit Model']);
-    const desired=find(n===1?["Client's Desired DP","Client's Desired Down Payment","Client Down Payment Amount"]:n===2?["Desired DP %","Client's Desired Down Payment Percentage"]:['Target Monthly','Desired Monthly Amortization']);
-    const dp=n===2?find(['Derived DP Amount','Client Down Payment Amount']):find(n===1?["Client's Desired DP","Client's Desired Down Payment","Client Down Payment Amount"]:['Required DP','Required Down Payment']);
+    const desired=find(n===1?["Client's Desired DP","Client Down Payment Amount"]:n===2?["Desired DP %","Client's Desired Down Payment Percentage"]:['Target Monthly','Desired Monthly Amortization']);
+    const dp=n===2?find(['Derived DP Amount','Client Down Payment Amount']):find(n===1?["Client's Desired DP","Client Down Payment Amount"]:['Required DP','Required Down Payment']);
     const srp=find(['Unit SRP']);
     const white=find(['Additional White Cashout','Additional Cashout for White Pearl']);
     const net=find(['Client Net Down Payment','Client Net Down Payment Amount']);
@@ -77,7 +76,7 @@
 
     ordered.filter(Boolean).forEach(row=>results.appendChild(row));
 
-    const signature=ordered.filter(Boolean).map(row=>row.querySelector('.money')?.textContent||'').join('|')+'|'+inputNumber(`c${n}_white`);
+    const signature=ordered.filter(Boolean).map(row=>row.querySelector('.money')?.textContent||'').join('|')+'|'+inputNumber(`c${n}_white`)+'|'+inputNumber(`c${n}_opdp`);
     if(results.dataset.msiPresentationSignature!==signature){
       results.dataset.msiPresentationSignature=signature;
       if(typeof copyStore!=='undefined'){
