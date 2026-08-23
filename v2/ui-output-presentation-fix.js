@@ -32,15 +32,6 @@
     const results=document.getElementById(`c${n}_results`);
     if(!results)return;
 
-    /*
-      IMPORTANT: Do not format/reorder a result panel until the underlying
-      calculator has actually produced a result. The base calculator shows
-      the result container before validation, so an invalid input can leave
-      the original rows as "—" while this presentation layer was previously
-      injecting Official Promo DP / Net DP values. That created a misleading
-      partial result. This is presentation-only protection; no computation
-      formula or validation rule is changed.
-    */
     const vehicleValue=results.querySelector(`#c${n}r_vehicle`)?.textContent.trim()||'';
     if(!vehicleValue || vehicleValue==='—')return;
 
@@ -86,7 +77,12 @@
       ? [vehicle,desired,dp,promo,srp,net,discount,total,financed,white,monthly,term,interest]
       : [vehicle,desired,dp,promo,srp,net,discount,total,financed,white,term,interest];
 
+    /* Keep the result data first. Move status + action buttons to the bottom. */
     ordered.filter(Boolean).forEach(row=>results.appendChild(row));
+    const status=results.querySelector(`#c${n}_status`);
+    const actions=results.querySelector('.actions');
+    if(status)results.appendChild(status);
+    if(actions)results.appendChild(actions);
 
     const signature=ordered.filter(Boolean).map(row=>row.querySelector('.money')?.textContent||'').join('|')+'|'+inputNumber(`c${n}_white`)+'|'+inputNumber(`c${n}_opdp`);
     if(results.dataset.msiPresentationSignature!==signature){
