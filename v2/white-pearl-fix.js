@@ -11,59 +11,31 @@
     const dp=Number(dpText.replace(/[^0-9.-]/g,''))||0;
     const white=num(whiteId);
     const net=dp+white;
-    const netEl=document.getElementById(netId);if(netEl)netEl.textContent=money(net);
+    const netEl=document.getElementById(netId);
+    if(netEl&&netEl.textContent!==money(net))netEl.textContent=money(net);
 
     if(typeof copyStore!=='undefined'){
-      const vehicle=text(`c${n}r_vehicle`);
-      const discount=text(`c${n}r_discount`);
-      const total=text(`c${n}r_totaldp`);
-      const financed=text(`c${n}r_financed`);
-      const srp=text(`c${n}r_srp`);
-      const term=text(`c${n}r_term`);
-      const tr=text(`c${n}r_tr`);
-      const monthly=text(`c${n}r_monthly`);
-      const pct=text(`c${n}r_pct`);
-      const target=text(`c${n}r_monthly`);
+      const vehicle=text(`c${n}r_vehicle`),discount=text(`c${n}r_discount`),total=text(`c${n}r_totaldp`),financed=text(`c${n}r_financed`),srp=text(`c${n}r_srp`),term=text(`c${n}r_term`),tr=text(`c${n}r_tr`),monthly=text(`c${n}r_monthly`),pct=text(`c${n}r_pct`),target=text(`c${n}r_monthly`);
       const lines=[];
-      if(n===1){
-        lines.push(`Unit Model: ${vehicle}`);
-        lines.push(`Client's Desired Down Payment: ${money(dp)}`);
-      }else if(n===2){
-        lines.push(`Unit Model: ${vehicle}`);
-        lines.push(`Client's Desired Down Payment Percentage: ${pct}`);
-        lines.push(`Client Down Payment Amount: ${money(dp)}`);
-      }else{
-        lines.push(`Unit Model: ${vehicle}`);
-        lines.push(`Desired Monthly Amortization: ${target}`);
-        lines.push(`Required Down Payment: ${money(dp)}`);
-      }
-      lines.push(`Official Promo DP: ${text(`c${n}r_opdp`)||money(num(`c${n}_opdp`))}`);
-      lines.push(`Unit SRP: ${srp}`);
-      lines.push(`Client Net Down Payment: ${money(net)}`);
-      lines.push(`Client Discount: ${discount}`);
-      lines.push(`Total DP Deductible to SRP: ${total}`);
-      lines.push(`Amount Financed: ${financed}`);
-      lines.push(`Additional Cashout for White Pearl: ${money(white)}`);
+      if(n===1){lines.push(`Unit Model: ${vehicle}`,`Client's Desired Down Payment: ${money(dp)}`)}
+      else if(n===2){lines.push(`Unit Model: ${vehicle}`,`Client's Desired Down Payment Percentage: ${pct}`,`Client Down Payment Amount: ${money(dp)}`)}
+      else{lines.push(`Unit Model: ${vehicle}`,`Desired Monthly Amortization: ${target}`,`Required Down Payment: ${money(dp)}`)}
+      lines.push(`Official Promo DP: ${text(`c${n}r_opdp`)||money(num(`c${n}_opdp`))}`,`Unit SRP: ${srp}`,`Client Net Down Payment: ${money(net)}`,`Client Discount: ${discount}`,`Total DP Deductible to SRP: ${total}`,`Amount Financed: ${financed}`,`Additional Cashout for White Pearl: ${money(white)}`);
       if(n!==3)lines.push(`Estimated Monthly Amortization: ${monthly}`);
-      lines.push(`Loan Term: ${term} (${num(`c${n}_term`)} Months)`);
-      lines.push(`Bank Interest Rate: ${tr}`);
-      lines.push('','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA');
+      lines.push(`Loan Term: ${term} (${num(`c${n}_term`)} Months)`,`Bank Interest Rate: ${tr}`,'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA');
       copyStore[n]=lines.join('\n');
     }
   }
 
   function install(){
     [1,2,3].forEach(n=>{
-      const btn=document.querySelector(`.calculator-${n} button.primary`)||document.querySelectorAll('.calculator-card')[n-1]?.querySelector('button.primary');
-      if(btn&&!btn.dataset.whitePearlGuard){
-        btn.addEventListener('click',()=>setTimeout(()=>apply(n),0));
-        btn.dataset.whitePearlGuard='1';
-      }
       const results=document.getElementById(`c${n}_results`);
-      if(results&&!results.dataset.whitePearlGuard){
+      if(!results)return;
+      if(!results.dataset.whitePearlGuard){
         new MutationObserver(()=>{if(results.classList.contains('show'))apply(n)}).observe(results,{subtree:true,childList:true,characterData:true});
         results.dataset.whitePearlGuard='1';
       }
+      if(results.classList.contains('show'))apply(n);
     });
   }
 
