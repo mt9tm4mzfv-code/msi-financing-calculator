@@ -1,6 +1,7 @@
 /* MSI V2 FINAL UI FIX — Calculator 2 heading only. Calculation logic untouched. */
-.calculator-2 h2{
-  font-size:15.15px!important;
+.calculator-2 h2,
+main > section.card:nth-of-type(2) > h2{
+  font-size:13px!important;
   line-height:1.2!important;
   width:260px!important;
   max-width:260px!important;
@@ -13,8 +14,9 @@
   letter-spacing:-0.01em!important;
 }
 @media(max-width:600px){
-  .calculator-2 h2{
-    font-size:15.15px!important;
+  .calculator-2 h2,
+  main > section.card:nth-of-type(2) > h2{
+    font-size:13px!important;
     width:260px!important;
     max-width:260px!important;
     padding-right:0!important;
