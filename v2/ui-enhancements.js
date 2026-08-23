@@ -8,10 +8,21 @@
   function formatAllNumericInputs(root){(root||document).querySelectorAll('.numeric-input').forEach(input=>{input.value=formatNumber(input.value)})}
   function applyCalculatorClasses(){document.querySelectorAll('main > section.card').forEach((card,i)=>{if(i>=3)return;card.classList.add('calculator-card','calculator-'+(i+1))})}
   function renameCalculatorBadges(){document.querySelectorAll('.calculator-card .badge').forEach((badge,i)=>{if(i>=3)return;badge.textContent='CALCULATOR '+(i+1)})}
+  function updateCalculatorLabels(){
+    document.querySelectorAll('.calculator-card .section-title').forEach(title=>{title.textContent=''});
+    const labels={
+      c1_tr:'Bank Interest Rate (%)',c2_tr:'Bank Interest Rate (%)',c3_tr:'Bank Interest Rate (%)',
+      c1_bdp:'Base Down Payment Percentage (%)',c2_bdp:'Base Down Payment Percentage (%)',c3_bdp:'Base Down Payment Percentage (%)',
+      c1_dir:'Dealer’s Incentive Rate (%)',c2_dir:'Dealer’s Incentive Rate (%)',c3_dir:'Dealer’s Incentive Rate (%)',
+      c2_pct:"Client's Desired Down Payment Percentage (%)"
+    };
+    Object.entries(labels).forEach(([id,text])=>{const label=document.querySelector(`label[for="${id}"]`);if(label)label.textContent=text});
+    const c3=document.querySelector('.calculator-3 h2');if(c3)c3.textContent='Monthly Amortization → Down Payment Amount';
+  }
   function updatePrimaryButtons(){document.querySelectorAll('.calculator-card').forEach(card=>{const button=card.querySelector('button.primary');if(!button)return;button.textContent=button.getAttribute('data-msi-simple-primary')==='1'?'CLICK TO GENERATE SIMPLE COMPUTATION':'CLICK TO GENERATE DETAILED COMPUTATION';button.setAttribute('aria-label','Click to generate detailed computation')})}
-  function syncHeaderHeights(){document.querySelectorAll('.calculator-card').forEach(card=>{const title=card.querySelector('.section-title');if(!title)return;const cardRect=card.getBoundingClientRect(),titleRect=title.getBoundingClientRect(),height=Math.max(155,Math.ceil(titleRect.top-cardRect.top-10));card.style.setProperty('--calc-header-height',height+'px')})}
+  function syncHeaderHeights(){document.querySelectorAll('.calculator-card').forEach(card=>{const boundary=card.querySelector('.note')||card.querySelector('h2');if(!boundary)return;const cardRect=card.getBoundingClientRect(),boundaryRect=boundary.getBoundingClientRect(),height=Math.max(190,Math.ceil(boundaryRect.bottom-cardRect.top+24));card.style.setProperty('--calc-header-height',height+'px')})}
   function placeLogout(){const buttons=[...document.querySelectorAll('button')].filter(b=>b.textContent.trim().toUpperCase()==='LOG OUT');buttons.forEach(button=>{const holder=button.parentElement||button;if(holder.dataset.msiLogoutMoved==='1')return;let dock=document.getElementById('msi-logout-dock');if(!dock){dock=document.createElement('div');dock.id='msi-logout-dock';dock.className='msi-logout-dock';document.body.appendChild(dock)}holder.classList.add('msi-mobile-logout');holder.dataset.msiLogoutMoved='1';dock.appendChild(holder)})}
   function protectCalculationInputs(){document.addEventListener('click',function(event){const button=event.target.closest('.calculator-card button.primary');if(!button)return;const card=button.closest('.calculator-card');normalizeAllNumericInputs(card);setTimeout(()=>formatAllNumericInputs(card),0)},true)}
-  function init(){applyCalculatorClasses();renameCalculatorBadges();replaceVariantInputs();replaceNumericInputs();updatePrimaryButtons();placeLogout();protectCalculationInputs();syncHeaderHeights();window.addEventListener('resize',syncHeaderHeights);window.addEventListener('orientationchange',()=>setTimeout(syncHeaderHeights,100));setTimeout(()=>{renameCalculatorBadges();placeLogout();updatePrimaryButtons();syncHeaderHeights()},50);setTimeout(()=>{renameCalculatorBadges();placeLogout();updatePrimaryButtons();syncHeaderHeights()},500)}
+  function init(){applyCalculatorClasses();renameCalculatorBadges();updateCalculatorLabels();replaceVariantInputs();replaceNumericInputs();updatePrimaryButtons();placeLogout();protectCalculationInputs();syncHeaderHeights();window.addEventListener('resize',syncHeaderHeights);window.addEventListener('orientationchange',()=>setTimeout(syncHeaderHeights,100));setTimeout(()=>{renameCalculatorBadges();updateCalculatorLabels();placeLogout();updatePrimaryButtons();syncHeaderHeights()},50);setTimeout(()=>{renameCalculatorBadges();updateCalculatorLabels();placeLogout();updatePrimaryButtons();syncHeaderHeights()},500)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
