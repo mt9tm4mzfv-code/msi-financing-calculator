@@ -32,6 +32,18 @@
     const results=document.getElementById(`c${n}_results`);
     if(!results)return;
 
+    /*
+      IMPORTANT: Do not format/reorder a result panel until the underlying
+      calculator has actually produced a result. The base calculator shows
+      the result container before validation, so an invalid input can leave
+      the original rows as "—" while this presentation layer was previously
+      injecting Official Promo DP / Net DP values. That created a misleading
+      partial result. This is presentation-only protection; no computation
+      formula or validation rule is changed.
+    */
+    const vehicleValue=results.querySelector(`#c${n}r_vehicle`)?.textContent.trim()||'';
+    if(!vehicleValue || vehicleValue==='—')return;
+
     const find=(labels)=>{
       for(const label of labels){
         const row=rowByLabel(results,label);
