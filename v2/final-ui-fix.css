@@ -1,6 +1,7 @@
-/* MSI V2 FINAL UI FIX — Calculator 2 requested three-line heading. Calculation logic untouched. */
-.calculator-2 h2,
-main > section.card:nth-of-type(2) > h2{
+/* MSI V2 FINAL UI FIX — Calculator 2 responsive heading layout. Calculation logic untouched. */
+/* Portrait: exactly three lines — Down Payment / Percentage → / Monthly Amortization */
+main > section.card:nth-of-type(2) > h2,
+.calculator-2 h2{
   font-size:17.85px!important;
   line-height:1.2!important;
   width:340px!important;
@@ -13,14 +14,15 @@ main > section.card:nth-of-type(2) > h2{
   text-wrap:wrap!important;
   letter-spacing:-0.02em!important;
 }
-@media(max-width:600px){
-  .calculator-2 h2,
-  main > section.card:nth-of-type(2) > h2{
+@media (max-width:600px) and (orientation:portrait){
+  main > section.card:nth-of-type(2) > h2,
+  .calculator-2 h2{
     font-size:16px!important;
     line-height:1.2!important;
     width:230px!important;
     max-width:230px!important;
     padding-right:0!important;
+    margin-right:0!important;
     white-space:normal!important;
     overflow-wrap:normal!important;
     word-break:normal!important;
@@ -28,11 +30,21 @@ main > section.card:nth-of-type(2) > h2{
     letter-spacing:-0.02em!important;
   }
 }
-@media(max-width:360px){
-  .calculator-2 h2,
-  main > section.card:nth-of-type(2) > h2{
+@media (max-width:360px) and (orientation:portrait){
+  main > section.card:nth-of-type(2) > h2,
+  .calculator-2 h2{
     font-size:15px!important;
     width:215px!important;
     max-width:215px!important;
+  }
+}
+/* Landscape: allow the full heading to stay on one clean line. */
+@media (orientation:landscape){
+  main > section.card:nth-of-type(2) > h2,
+  .calculator-2 h2{
+    width:auto!important;
+    max-width:none!important;
+    white-space:nowrap!important;
+    font-size:18px!important;
   }
 }
