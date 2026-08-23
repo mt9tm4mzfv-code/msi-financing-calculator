@@ -1,5 +1,5 @@
-const CACHE="msi-financial-calculator-v2-44";
-const VERSION="44";
+const CACHE="msi-financial-calculator-v2-45";
+const VERSION="45";
 const ASSETS=[`./manifest.webmanifest?v=${VERSION}`,`./sw.js?v=${VERSION}`,`../access-guard.js?v=${VERSION}`,`./ui-enhancements.css?v=${VERSION}`,`./ui-enhancements.js?v=${VERSION}`,`./ui-result-enhancements.js?v=${VERSION}`,`./ui-output-presentation-fix.js?v=${VERSION}`,`./clipboard-fix.js?v=${VERSION}`,`./white-pearl-fix.js?v=${VERSION}`,`./final-ui-fix.css?v=${VERSION}`];
 async function enhanceHTML(response){if(!response||!response.ok)return response;const text=await response.text();const enhanced=text.replace('</head>',`<link rel="stylesheet" href="./ui-enhancements.css?v=${VERSION}"><link rel="stylesheet" href="./final-ui-fix.css?v=${VERSION}"><script src="./ui-enhancements.js?v=${VERSION}" defer></script><script src="./ui-result-enhancements.js?v=${VERSION}" defer></script><script src="./ui-output-presentation-fix.js?v=${VERSION}" defer></script><script src="./clipboard-fix.js?v=${VERSION}" defer></script><script src="./white-pearl-fix.js?v=${VERSION}" defer></script></head>`);const headers=new Headers(response.headers);headers.delete('content-length');return new Response(enhanced,{status:response.status,statusText:response.statusText,headers})}
 async function getFreshHTML(request){const networkResponse=await fetch(request,{cache:'no-store'});if(!networkResponse.ok)return networkResponse;return enhanceHTML(networkResponse)}
