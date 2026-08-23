@@ -32,3 +32,19 @@ header h1{font-size:28px!important;line-height:1.15!important;font-weight:900!im
 .msi-logout-dock{justify-content:center!important;text-align:center!important;background:#0b1220!important;padding:10px 10px calc(18px + env(safe-area-inset-bottom))!important}
 #msiUserBar{margin:0!important}
 @media(max-width:600px){header h1{font-size:26px!important}.calculator-card{padding:14px!important}.calculator-card .badge{font-size:32px!important}.calculator-card h2{font-size:20px!important}.calculator-card>.note{font-size:15px!important}.calculator-card button.primary{font-size:12.5px!important;min-height:40px!important}}
+
+/* ================================================================
+   MSI V2 — FINAL MOBILE UI POLISH
+   UI only: title, Calculator 3 line break, logout centering, icons.
+   ================================================================ */
+header h1{white-space:nowrap!important;font-size:clamp(19px,5.5vw,24px)!important;line-height:1.05!important;letter-spacing:-.025em!important}
+.calculator-card h2{padding-right:96px!important}
+.calculator-card>.note{padding-right:96px!important}
+.calculator-3 h2 .c3-title-line2{display:block!important;margin-top:2px!important}
+#msiUserBar{position:fixed!important;left:50%!important;right:auto!important;bottom:max(10px,env(safe-area-inset-bottom))!important;top:auto!important;transform:translateX(-50%)!important;margin:0!important;width:max-content!important;max-width:calc(100vw - 20px)!important;z-index:99990!important}
+.msi-logout-dock{display:none!important}
+.calculator-icon{position:absolute!important;top:20px!important;right:20px!important;width:76px!important;height:76px!important;border:3px solid var(--icon-color)!important;border-radius:16px!important;background:rgba(11,18,32,.42)!important;color:var(--icon-color)!important;display:flex!important;align-items:center!important;justify-content:center!important;z-index:3!important;pointer-events:none!important;box-shadow:0 0 0 1px rgba(255,255,255,.03) inset!important}
+.calculator-icon svg{width:58px!important;height:58px!important;display:block!important}
+.calculator-1 .calculator-icon{--icon-color:#97f888}.calculator-2 .calculator-icon{--icon-color:#2f80ff}.calculator-3 .calculator-icon{--icon-color:#ff7a00}
+@media(max-width:600px){header{padding-left:10px!important;padding-right:10px!important}header h1{font-size:clamp(19px,5.6vw,22px)!important}.calculator-card h2{padding-right:88px!important}.calculator-card>.note{padding-right:88px!important}.calculator-icon{top:18px!important;right:16px!important;width:70px!important;height:70px!important;border-radius:14px!important}.calculator-icon svg{width:53px!important;height:53px!important}}
+@media(max-width:360px){header h1{font-size:18px!important}.calculator-card h2{padding-right:82px!important}.calculator-card>.note{padding-right:82px!important}.calculator-icon{width:64px!important;height:64px!important}.calculator-icon svg{width:48px!important;height:48px!important}}
