@@ -1,28 +1,37 @@
-/* MSI V2 FINAL UI FIX — Calculator 2 heading only. Calculation logic untouched. */
+/* MSI V2 FINAL UI FIX — Calculator 2 exact two-line heading. Calculation logic untouched. */
 .calculator-2 h2,
 main > section.card:nth-of-type(2) > h2{
-  font-size:13px!important;
+  font-size:17.85px!important;
   line-height:1.2!important;
-  width:260px!important;
-  max-width:260px!important;
+  width:300px!important;
+  max-width:300px!important;
   padding-right:0!important;
   margin-right:0!important;
   white-space:normal!important;
   overflow-wrap:normal!important;
   word-break:normal!important;
   text-wrap:wrap!important;
-  letter-spacing:-0.01em!important;
+  letter-spacing:-0.02em!important;
 }
 @media(max-width:600px){
   .calculator-2 h2,
   main > section.card:nth-of-type(2) > h2{
-    font-size:13px!important;
-    width:260px!important;
-    max-width:260px!important;
+    font-size:17.85px!important;
+    width:300px!important;
+    max-width:300px!important;
     padding-right:0!important;
     white-space:normal!important;
     overflow-wrap:normal!important;
     word-break:normal!important;
     text-wrap:wrap!important;
+    letter-spacing:-0.02em!important;
+  }
+}
+@media(max-width:360px){
+  .calculator-2 h2,
+  main > section.card:nth-of-type(2) > h2{
+    font-size:16px!important;
+    width:270px!important;
+    max-width:270px!important;
   }
 }
