@@ -1,4 +1,4 @@
-/* MSI V2 FINAL UI FIX — Calculator 2 exact two-line heading. Calculation logic untouched. */
+/* MSI V2 FINAL UI FIX — Calculator 2 requested three-line heading. Calculation logic untouched. */
 .calculator-2 h2,
 main > section.card:nth-of-type(2) > h2{
   font-size:17.85px!important;
@@ -17,8 +17,9 @@ main > section.card:nth-of-type(2) > h2{
   .calculator-2 h2,
   main > section.card:nth-of-type(2) > h2{
     font-size:16px!important;
-    width:270px!important;
-    max-width:270px!important;
+    line-height:1.2!important;
+    width:230px!important;
+    max-width:230px!important;
     padding-right:0!important;
     white-space:normal!important;
     overflow-wrap:normal!important;
@@ -30,8 +31,8 @@ main > section.card:nth-of-type(2) > h2{
 @media(max-width:360px){
   .calculator-2 h2,
   main > section.card:nth-of-type(2) > h2{
-    font-size:16px!important;
-    width:270px!important;
-    max-width:270px!important;
+    font-size:15px!important;
+    width:215px!important;
+    max-width:215px!important;
   }
 }
