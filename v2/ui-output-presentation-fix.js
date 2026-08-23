@@ -33,7 +33,6 @@
     const results=document.getElementById(`c${n}_results`);
     if(!results)return;
 
-    const rows=[...results.querySelectorAll('.result')];
     const find=(labels)=>{
       for(const label of labels){
         const row=rowByLabel(results,label);
@@ -43,8 +42,8 @@
     };
 
     const vehicle=find(['Vehicle','Unit Model']);
-    const desired=find(n===1?["Client's Desired DP","Client Down Payment Amount"]:n===2?["Desired DP %","Client's Desired Down Payment Percentage"]:['Target Monthly','Desired Monthly Amortization']);
-    const dp=n===2?find(['Derived DP Amount','Client Down Payment Amount']):find(n===1?["Client's Desired DP","Client Down Payment Amount"]:['Required DP','Required Down Payment']);
+    const desired=find(n===1?["Client's Desired DP","Client's Desired Down Payment","Client Down Payment Amount"]:n===2?["Desired DP %","Client's Desired Down Payment Percentage"]:['Target Monthly','Desired Monthly Amortization']);
+    const dp=n===2?find(['Derived DP Amount','Client Down Payment Amount']):find(n===1?["Client's Desired DP","Client's Desired Down Payment","Client Down Payment Amount"]:['Required DP','Required Down Payment']);
     const srp=find(['Unit SRP']);
     const white=find(['Additional White Cashout','Additional Cashout for White Pearl']);
     const net=find(['Client Net Down Payment','Client Net Down Payment Amount']);
