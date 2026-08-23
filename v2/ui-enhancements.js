@@ -10,12 +10,7 @@
   function renameCalculatorBadges(){document.querySelectorAll('.calculator-card .badge').forEach((badge,i)=>{if(i>=3)return;badge.textContent='CALCULATOR '+(i+1)})}
   function updateCalculatorLabels(){
     document.querySelectorAll('.calculator-card .section-title').forEach(title=>{title.textContent=''});
-    const labels={
-      c1_tr:'Bank Interest Rate (%)',c2_tr:'Bank Interest Rate (%)',c3_tr:'Bank Interest Rate (%)',
-      c1_bdp:'Base Down Payment Percentage (%)',c2_bdp:'Base Down Payment Percentage (%)',c3_bdp:'Base Down Payment Percentage (%)',
-      c1_dir:'Dealer’s Incentive Rate (%)',c2_dir:'Dealer’s Incentive Rate (%)',c3_dir:'Dealer’s Incentive Rate (%)',
-      c2_pct:"Client's Desired Down Payment Percentage (%)"
-    };
+    const labels={c1_tr:'Bank Interest Rate (%)',c2_tr:'Bank Interest Rate (%)',c3_tr:'Bank Interest Rate (%)',c1_bdp:'Base Down Payment Percentage (%)',c2_bdp:'Base Down Payment Percentage (%)',c3_bdp:'Base Down Payment Percentage (%)',c1_dir:'Dealer’s Incentive Rate (%)',c2_dir:'Dealer’s Incentive Rate (%)',c3_dir:'Dealer’s Incentive Rate (%)',c2_pct:"Client's Desired Down Payment Percentage (%)"};
     Object.entries(labels).forEach(([id,text])=>{const label=document.querySelector(`label[for="${id}"]`);if(label)label.textContent=text});
     const c3=document.querySelector('.calculator-3 h2');if(c3)c3.innerHTML='Monthly Amortization → <span class="c3-title-line2">Down Payment Amount</span>';
   }
@@ -26,7 +21,7 @@
     const icons={
       1:'<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="12" y="6" width="40" height="52" rx="5" stroke="currentColor" stroke-width="4"/><rect x="20" y="13" width="24" height="9" rx="2" fill="currentColor"/><circle cx="22" cy="31" r="2.7" fill="currentColor"/><circle cx="32" cy="31" r="2.7" fill="currentColor"/><circle cx="42" cy="31" r="2.7" fill="currentColor"/><circle cx="22" cy="41" r="2.7" fill="currentColor"/><circle cx="32" cy="41" r="2.7" fill="currentColor"/><circle cx="42" cy="41" r="2.7" fill="currentColor"/><circle cx="22" cy="51" r="2.7" fill="currentColor"/><circle cx="32" cy="51" r="2.7" fill="currentColor"/><circle cx="42" cy="51" r="2.7" fill="currentColor"/></svg>',
       2:'<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="21" cy="18" r="7" stroke="currentColor" stroke-width="4"/><circle cx="43" cy="46" r="7" stroke="currentColor" stroke-width="4"/><path d="M18 50L46 14" stroke="currentColor" stroke-width="6" stroke-linecap="round"/></svg>',
-      3:'<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="10" width="34" height="39" rx="7" stroke="currentColor" stroke-width="4"/><path d="M9 21h34M18 6v10M34 6v10" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M19 30h14M19 38h10" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M30 37c6 0 10 2 13 6" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M38 38l5 5 5-5" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="48" cy="48" r="11" stroke="currentColor" stroke-width="4"/><path d="M48 41v14M44 44h7c2 0 3 1 3 3s-1 3-3 3h-7h7c2 0 3 1 3 3s-1 3-3 3h-7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      3:'<svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="10" width="34" height="39" rx="7" stroke="currentColor" stroke-width="4"/><path d="M9 21h34M18 6v10M34 6v10" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M19 30h14M19 38h10" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M30 37c6 0 10 2 13 6" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M38 38l5 5 5-5" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="48" cy="48" r="11" stroke="currentColor" stroke-width="4"/><path d="M48 39v18M43 43h8c2.5 0 4 1.5 4 4s-1.5 4-4 4h-8M43 51h8c2.5 0 4 1.5 4 4s-1.5 4-4 4h-8" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
     };
     document.querySelectorAll('.calculator-card').forEach((card,i)=>{if(i>=3||card.querySelector('.calculator-icon'))return;const icon=document.createElement('div');icon.className='calculator-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML=icons[i+1];card.appendChild(icon)});
   }
