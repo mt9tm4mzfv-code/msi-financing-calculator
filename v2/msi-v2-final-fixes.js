@@ -46,7 +46,7 @@
     }
     return s;
   }
-  function cleanCopyText(text){return decodePercentEncoded(text).replace(/\u2066/g,'')}
+  function cleanCopyText(text){return decodePercentEncoded(text).replace(/[\u2066\u200B\u200C\u200D\uFEFF]/g,'')}
   function variant(n){return cleanCopyText(document.getElementById(`c${n}_variant`)?.value||'Vehicle').trim()||'Vehicle'}
   function baseRevenue(srp,opdp,bdp,dir){return srp*(1-bdp/100)*(1+dir/100)+opdp}
   function monthly(adjusted,m){return Math.ceil(adjusted*(1+getRate(m)/100)/m-1e-10)}
@@ -67,19 +67,11 @@
 
   function toast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
 
-  /* Proven iOS/Safari repair: keep the visible/output format exactly
-     "Unit: ...", but protect the leading colon only inside the clipboard
-     payload so Messages/SMS/Viber do not interpret it as URI-like data. */
-  const INVISIBLE='\u2066';
-  function protectLeadingColon(text){
-    const s=String(text||'').replace(/\r\n/g,'\n').replace(/\r/g,'\n');
-    return s.replace(/^([^\s\n][^\n]*?):/,function(_,prefix){
-      return prefix+INVISIBLE+':';
-    });
-  }
-
+  /* Authoritative clipboard path: the exact generated result is written as
+     text/plain. No URI encoding, URL construction, invisible separator, HTML,
+     or text/uri-list payload is used. The visible output remains "Unit: ...". */
   function fallbackCopy(text,msg){
-    const clean=protectLeadingColon(cleanCopyText(text));
+    const clean=cleanCopyText(text);
     const ta=document.createElement('textarea');
     ta.value=clean;ta.setAttribute('readonly','');
     ta.style.position='fixed';ta.style.left='-10000px';ta.style.top='-10000px';ta.style.opacity='0';ta.style.fontSize='16px';
@@ -89,12 +81,10 @@
   }
 
   function copyPlain(text,msg){
-    const clean=protectLeadingColon(cleanCopyText(text));
+    const clean=cleanCopyText(text);
     try{
-      if(navigator.clipboard&&navigator.clipboard.write&&typeof ClipboardItem!=='undefined'){
-        const blob=new Blob([clean],{type:'text/plain'});
-        const item=new ClipboardItem({'text/plain':blob});
-        navigator.clipboard.write([item]).then(()=>toast(msg)).catch(()=>fallbackCopy(clean,msg));
+      if(navigator.clipboard&&typeof navigator.clipboard.writeText==='function'){
+        navigator.clipboard.writeText(clean).then(()=>toast(msg)).catch(()=>fallbackCopy(clean,msg));
         return;
       }
     }catch(e){}
