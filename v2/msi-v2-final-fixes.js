@@ -1,4 +1,4 @@
-/* MSI V2 — FINAL UI / SIMPLE COPY REPAIR v2 */
+/* MSI V2 — FINAL UI / SIMPLE COPY REPAIR v3 */
 (function(){
   'use strict';
 
@@ -66,19 +66,35 @@
   }
 
   function toast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+
+  /* Proven iOS/Safari repair: keep the visible/output format exactly
+     "Unit: ...", but protect the leading colon only inside the clipboard
+     payload so Messages/SMS/Viber do not interpret it as URI-like data. */
+  const INVISIBLE='\u2066';
+  function protectLeadingColon(text){
+    const s=String(text||'').replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+    return s.replace(/^([^\s\n][^\n]*?):/,function(_,prefix){
+      return prefix+INVISIBLE+':';
+    });
+  }
+
   function fallbackCopy(text,msg){
+    const clean=protectLeadingColon(cleanCopyText(text));
     const ta=document.createElement('textarea');
-    ta.value=cleanCopyText(text);ta.setAttribute('readonly','');
+    ta.value=clean;ta.setAttribute('readonly','');
     ta.style.position='fixed';ta.style.left='-10000px';ta.style.top='-10000px';ta.style.opacity='0';ta.style.fontSize='16px';
     document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);
     let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();
     toast(ok?msg:'Copy failed. Please try again.');
   }
+
   function copyPlain(text,msg){
-    const clean=cleanCopyText(text);
+    const clean=protectLeadingColon(cleanCopyText(text));
     try{
-      if(navigator.clipboard&&navigator.clipboard.writeText){
-        navigator.clipboard.writeText(clean).then(()=>toast(msg)).catch(()=>fallbackCopy(clean,msg));
+      if(navigator.clipboard&&navigator.clipboard.write&&typeof ClipboardItem!=='undefined'){
+        const blob=new Blob([clean],{type:'text/plain'});
+        const item=new ClipboardItem({'text/plain':blob});
+        navigator.clipboard.write([item]).then(()=>toast(msg)).catch(()=>fallbackCopy(clean,msg));
         return;
       }
     }catch(e){}
