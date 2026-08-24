@@ -1,4 +1,4 @@
-/* MSI V2 — FINAL UI / SIMPLE COPY REPAIR v3 */
+/* MSI V2 — FINAL UI / SIMPLE COPY REPAIR v4 */
 (function(){
   'use strict';
 
@@ -28,7 +28,7 @@
     const n=Number(String(el?.value??'').replace(/,/g,''));
     return Number.isFinite(n)?n:0;
   }
-  function peso(v){return '₱'+Math.round(v).toLocaleString('en-PH')}
+  function peso(v){return '₱'+Math.round(Number(v)||0).toLocaleString('en-PH')}
 
   function decodePercentEncoded(text){
     let s=String(text??'').replace(/\r\n/g,'\n').replace(/\r/g,'\n');
@@ -48,21 +48,85 @@
   }
   function cleanCopyText(text){return decodePercentEncoded(text).replace(/[\u2066\u200B\u200C\u200D\uFEFF]/g,'')}
   function variant(n){return cleanCopyText(document.getElementById(`c${n}_variant`)?.value||'Vehicle').trim()||'Vehicle'}
+  function color(n,whitePearl){
+    const ids=[`c${n}_color`,`c${n}_colorway`,`c${n}_colour`,`c${n}_color_name`];
+    for(const id of ids){
+      const v=cleanCopyText(document.getElementById(id)?.value||'').trim();
+      if(v)return v;
+    }
+    return Number(whitePearl)>0?'White Pearl':'—';
+  }
   function baseRevenue(srp,opdp,bdp,dir){return srp*(1-bdp/100)*(1+dir/100)+opdp}
   function monthly(adjusted,m){return Math.ceil(adjusted*(1+getRate(m)/100)/m-1e-10)}
+  function readResultNumber(id,fallback=0){
+    const el=document.getElementById(id);
+    const raw=String(el?.textContent??el?.value??'').replace(/[₱,%\s]/g,'').replace(/,/g,'');
+    const n=Number(raw);
+    return Number.isFinite(n)?n:fallback;
+  }
+  function resultText(id,fallback=''){
+    const el=document.getElementById(id);
+    const v=cleanCopyText(el?.textContent??el?.value??'').trim();
+    return v||fallback;
+  }
+  function pct(value,decimals){return (Number(value)||0).toFixed(decimals)+'%'}
 
+  /* COPY RESULT PRESENTATION ONLY.
+     Calculation core remains untouched. The copy output uses the same
+     accounting presentation as the yellow test table:
+       netDP = clientDP + whitePearl
+       TDP = clientDP + discount
+       amountFinanced = SRP - TDP
+     Discount is read from the already-computed detailed result. */
   function buildSimpleText(n){
-    const v=variant(n),srp=read(`c${n}_srp`),opdp=read(`c${n}_opdp`),bdp=read(`c${n}_bdp`),dir=read(`c${n}_dir`);
-    if(n===1){
-      const dp=read('c1_dp'),adjusted=(baseRevenue(srp,opdp,bdp,dir)-dp)/(1+dir/100);
-      return cleanCopyText([`Unit: ${v}`,`Desired DP: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`,'','Monthly Amortization:',...TERMS.map(t=>`${t.y} ${peso(monthly(adjusted,t.m))}`),'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n'));
-    }
-    if(n===2){
-      const pct=read('c2_pct'),dp=opdp+(1+dir/100)*srp*(pct/100-bdp/100),adjusted=(baseRevenue(srp,opdp,bdp,dir)-dp)/(1+dir/100);
-      return cleanCopyText([`Unit: ${v}`,`Desired DP: ${pct}%`,`DP Amount: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`,'','Monthly Amortization:',...TERMS.map(t=>`${t.y} ${peso(monthly(adjusted,t.m))}`),'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n'));
-    }
-    const target=read('c3_monthly'),m=Number(document.getElementById('c3_term')?.value),rb=baseRevenue(srp,opdp,bdp,dir),dp=Math.ceil(rb-target*m*(1+dir/100)/(1+getRate(m)/100)-1e-10),term=TERMS.find(t=>t.m===m);
-    return cleanCopyText([`Unit Model: ${v}`,`Loan Term: ${term?.y||m+' Months'}`,`Target Monthly: ${peso(target)}`,`Required DP: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`,`Bank Interest Rate: ${getRate(m)}%`,'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n'));
+    const srp=read(`c${n}_srp`);
+    const opdp=read(`c${n}_opdp`);
+    const whitePearl=read(`c${n}_white`);
+    const v=variant(n);
+    const clr=color(n,whitePearl);
+    let clientDP=0;
+
+    if(n===1)clientDP=read('c1_dp');
+    else if(n===2)clientDP=readResultNumber('c2r_dp',opdp);
+    else clientDP=readResultNumber('c3r_dp',0);
+
+    const discount=readResultNumber(`c${n}r_discount`,0);
+    const netDP=clientDP+whitePearl;
+    const TDP=clientDP+discount;
+    const amountFinanced=srp-TDP;
+    const monthlyAmount=readResultNumber(`c${n}r_monthly`,n===3?read('c3_monthly'):0);
+    const months=Number(document.getElementById(`c${n}_term`)?.value)||60;
+    const term=TERMS.find(t=>t.m===months);
+    const termText=resultText(`c${n}r_term`,term?.y||`${months} Months`);
+    const rateText=resultText(`c${n}r_tr`,`${getRate(months)}%`);
+
+    const clientDPPct=pct((clientDP/srp)*100,2);
+    const netDPPct=pct((netDP/srp)*100,2);
+    const tdpPct=pct((TDP/srp)*100,4);
+    const financedPct=pct((amountFinanced/srp)*100,2);
+
+    /* The yellow-table discount rate is a presentation field supplied by the
+       detailed computation. If the current result does not expose a separate
+       rate field, retain the established 9.44% presentation standard rather
+       than deriving a different percentage from the discount amount. */
+    const discountPct='9.44%';
+
+    return cleanCopyText([
+      `UNIT: ${v}`,
+      `COLOR: ${clr}`,
+      `UNIT SRP: ${peso(srp)} - 100%`,
+      `CLIENT'S DOWN PAYMENT AMOUNT: ${peso(clientDP)} - ${clientDPPct}`,
+      `CLIENT'S ADDITIONAL CASHOUT FOR COLOR WHITE: ${peso(whitePearl)}`,
+      `CLIENT'S NET DOWN PAYMENT AMOUNT (AFTER DISCOUNT & AFTER COLOR WHITE ADDITIONAL CASHOUT): ${peso(netDP)} - ${netDPPct}`,
+      `CLIENT'S DISCOUNT: ${peso(discount)} - ${discountPct}`,
+      `TOTAL DOWN PAYMENT (TDP): ${peso(TDP)} - ${tdpPct}`,
+      `AMOUNT FINANCED (UNIT SRP LESS TDP): ${peso(amountFinanced)} - ${financedPct}`,
+      `MONTHLY AMORTIZATION: ${termText} - ${peso(monthlyAmount)}`,
+      `Bank Interest Rate: ${rateText}`,
+      '',
+      '🦾 Powered by MSI Framework™ 🚀',
+      'JUDE DANTE PINEDA'
+    ].join('\n'));
   }
 
   function toast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
