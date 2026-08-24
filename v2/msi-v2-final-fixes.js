@@ -56,8 +56,6 @@
     }
     return Number(whitePearl)>0?'White Pearl':'—';
   }
-  function baseRevenue(srp,opdp,bdp,dir){return srp*(1-bdp/100)*(1+dir/100)+opdp}
-  function monthly(adjusted,m){return Math.ceil(adjusted*(1+getRate(m)/100)/m-1e-10)}
   function readResultNumber(id,fallback=0){
     const el=document.getElementById(id);
     const raw=String(el?.textContent??el?.value??'').replace(/[₱,%\s]/g,'').replace(/,/g,'');
@@ -104,11 +102,6 @@
     const netDPPct=pct((netDP/srp)*100,2);
     const tdpPct=pct((TDP/srp)*100,4);
     const financedPct=pct((amountFinanced/srp)*100,2);
-
-    /* The yellow-table discount rate is a presentation field supplied by the
-       detailed computation. If the current result does not expose a separate
-       rate field, retain the established 9.44% presentation standard rather
-       than deriving a different percentage from the discount amount. */
     const discountPct='9.44%';
 
     return cleanCopyText([
@@ -197,10 +190,7 @@
     document.addEventListener('click',interceptSimpleCopy,true);
     window.copySimple=function(n){copyPlain(buildSimpleText(Number(n)),'Simple computation copied.');};
     window.simpleCopyText=function(n){return buildSimpleText(Number(n));};
-    window.copyResult=function(n){
-      let text='';try{if(typeof copyStore!=='undefined')text=copyStore[n]||''}catch(e){}
-      copyPlain(text||buildSimpleText(Number(n)),'Result copied successfully.');
-    };
+    window.copyResult=function(n){copyPlain(buildSimpleText(Number(n)),'Result copied successfully.');};
   }
 
   function installStyle(){
