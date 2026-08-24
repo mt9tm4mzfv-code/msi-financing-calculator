@@ -14,7 +14,20 @@
     Object.entries(labels).forEach(([id,text])=>{const label=document.querySelector(`label[for="${id}"]`);if(label)label.textContent=text});
     const c3=document.querySelector('.calculator-3 h2');if(c3)c3.innerHTML='Monthly Amortization → <span class="c3-title-line2">Down Payment Amount</span>';
   }
-  function updatePrimaryButtons(){document.querySelectorAll('.calculator-card').forEach(card=>{const button=card.querySelector('button.primary');if(!button)return;button.textContent=button.getAttribute('data-msi-simple-primary')==='1'?'CLICK TO GENERATE SIMPLE COMPUTATION':'CLICK TO GENERATE DETAILED COMPUTATION';button.setAttribute('aria-label','Click to generate detailed computation')})}
+  function hideBankInterestRateFields(){
+    ['c1','c2','c3'].forEach(prefix=>{
+      const input=document.getElementById(prefix+'_tr');
+      const label=document.querySelector(`label[for="${prefix}_tr"]`);
+      if(input){
+        const holder=input.closest('.grid > div');
+        if(holder){holder.style.display='none';const grid=holder.parentElement;if(grid)grid.style.gridTemplateColumns='1fr'}
+        input.setAttribute('aria-hidden','true');
+        input.tabIndex=-1;
+      }
+      if(label){label.style.display='none';label.setAttribute('aria-hidden','true')}
+    });
+  }
+  function updatePrimaryButtons(){document.querySelectorAll('.calculator-card').forEach(card=>{const button=card.querySelector('button.primary');if(!button)return;if(button.getAttribute('data-msi-simple-primary')==='1'){button.textContent='CLICK TO GENERATE SIMPLE COMPUTATION';}else{button.innerHTML='CLICK TO GENERATE<br>DETAILED COMPUTATION';}button.setAttribute('aria-label','Click to generate detailed computation')})}
   function syncHeaderHeights(){document.querySelectorAll('.calculator-card').forEach(card=>{const boundary=card.querySelector('.note')||card.querySelector('h2');if(!boundary)return;const cardRect=card.getBoundingClientRect(),boundaryRect=boundary.getBoundingClientRect(),height=Math.max(190,Math.ceil(boundaryRect.bottom-cardRect.top+24));card.style.setProperty('--calc-header-height',height+'px')})}
   function placeLogout(){const buttons=[...document.querySelectorAll('button')].filter(b=>b.textContent.trim().toUpperCase()==='LOG OUT');buttons.forEach(button=>{const holder=button.parentElement||button;if(holder.dataset.msiLogoutMoved==='1')return;let dock=document.getElementById('msi-logout-dock');if(!dock){dock=document.createElement('div');dock.id='msi-logout-dock';dock.className='msi-logout-dock';document.body.appendChild(dock)}holder.classList.add('msi-mobile-logout');holder.dataset.msiLogoutMoved='1';dock.appendChild(holder)})}
   function addCalculatorIcons(){
@@ -25,7 +38,24 @@
     };
     document.querySelectorAll('.calculator-card').forEach((card,i)=>{if(i>=3||card.querySelector('.calculator-icon'))return;const icon=document.createElement('div');icon.className='calculator-icon';icon.setAttribute('aria-hidden','true');icon.innerHTML=icons[i+1];card.appendChild(icon)});
   }
+  function ensureInterestRateBanner(){
+    if(document.getElementById('msi-interest-banner'))return;
+    const footer=document.querySelector('footer');
+    if(!footer)return;
+    if(!document.getElementById('msi-interest-banner-style')){
+      const style=document.createElement('style');
+      style.id='msi-interest-banner-style';
+      style.textContent=`#msi-interest-banner{width:100%;max-width:760px;margin:8px auto 12px;padding:0;background:#fff45c;border:2px solid #4b5563;border-radius:8px;overflow:hidden;color:#111827;font-weight:900;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.12)}#msi-interest-banner .msi-interest-title{padding:9px 8px 7px;font-size:18px;line-height:1.2;border-bottom:2px solid #4b5563;background:#fff45c}#msi-interest-banner .msi-interest-row{display:grid;grid-template-columns:repeat(6,1fr)}#msi-interest-banner .msi-interest-cell{padding:7px 3px;border-right:2px solid #4b5563;font-size:15px;line-height:1.15}#msi-interest-banner .msi-interest-cell:last-child{border-right:0}#msi-interest-banner .msi-interest-values{background:#fffde8;border-top:2px solid #4b5563}#msi-interest-banner .msi-interest-values .msi-interest-cell{padding-top:8px;padding-bottom:8px}@media(max-width:600px){#msi-interest-banner{margin:8px 0 12px;border-radius:7px}#msi-interest-banner .msi-interest-title{font-size:15px;padding:7px 5px}#msi-interest-banner .msi-interest-cell{font-size:11px;padding:6px 1px}#msi-interest-banner .msi-interest-values .msi-interest-cell{padding-top:7px;padding-bottom:7px}}@media(max-width:360px){#msi-interest-banner .msi-interest-title{font-size:14px}#msi-interest-banner .msi-interest-cell{font-size:10px}}`;
+      document.head.appendChild(style);
+    }
+    const banner=document.createElement('div');
+    banner.id='msi-interest-banner';
+    banner.setAttribute('role','note');
+    banner.setAttribute('aria-label','Bank Interest Rate information');
+    banner.innerHTML='<div class="msi-interest-title">Bank Interest Rate (%)</div><div class="msi-interest-row msi-interest-years"><div class="msi-interest-cell">7 Years</div><div class="msi-interest-cell">6 Years</div><div class="msi-interest-cell">5 Years</div><div class="msi-interest-cell">4 Years</div><div class="msi-interest-cell">3 Years</div><div class="msi-interest-cell">2 Years</div></div><div class="msi-interest-row msi-interest-values"><div class="msi-interest-cell">78</div><div class="msi-interest-cell">67</div><div class="msi-interest-cell">57</div><div class="msi-interest-cell">49</div><div class="msi-interest-cell">39</div><div class="msi-interest-cell">23</div></div>';
+    footer.parentNode.insertBefore(banner,footer);
+  }
   function protectCalculationInputs(){document.addEventListener('click',function(event){const button=event.target.closest('.calculator-card button.primary');if(!button)return;const card=button.closest('.calculator-card');normalizeAllNumericInputs(card);setTimeout(()=>formatAllNumericInputs(card),0)},true)}
-  function init(){applyCalculatorClasses();renameCalculatorBadges();updateCalculatorLabels();replaceVariantInputs();replaceNumericInputs();updatePrimaryButtons();addCalculatorIcons();placeLogout();protectCalculationInputs();syncHeaderHeights();window.addEventListener('resize',syncHeaderHeights);window.addEventListener('orientationchange',()=>setTimeout(syncHeaderHeights,100));setTimeout(()=>{renameCalculatorBadges();updateCalculatorLabels();addCalculatorIcons();placeLogout();updatePrimaryButtons();syncHeaderHeights()},50);setTimeout(()=>{renameCalculatorBadges();updateCalculatorLabels();addCalculatorIcons();placeLogout();updatePrimaryButtons();syncHeaderHeights()},500)}
+  function init(){applyCalculatorClasses();renameCalculatorBadges();updateCalculatorLabels();replaceVariantInputs();replaceNumericInputs();hideBankInterestRateFields();updatePrimaryButtons();addCalculatorIcons();placeLogout();ensureInterestRateBanner();protectCalculationInputs();syncHeaderHeights();window.addEventListener('resize',syncHeaderHeights);window.addEventListener('orientationchange',()=>setTimeout(syncHeaderHeights,100));setTimeout(()=>{renameCalculatorBadges();updateCalculatorLabels();replaceVariantInputs();replaceNumericInputs();hideBankInterestRateFields();addCalculatorIcons();placeLogout();updatePrimaryButtons();ensureInterestRateBanner();syncHeaderHeights()},50);setTimeout(()=>{renameCalculatorBadges();updateCalculatorLabels();replaceVariantInputs();replaceNumericInputs();hideBankInterestRateFields();addCalculatorIcons();placeLogout();updatePrimaryButtons();ensureInterestRateBanner();syncHeaderHeights()},500)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
