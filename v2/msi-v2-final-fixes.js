@@ -1,4 +1,4 @@
-/* MSI V2 — FINAL UI / SIMPLE COPY REPAIR */
+/* MSI V2 — FINAL UI / SIMPLE COPY REPAIR v2 */
 (function(){
   'use strict';
 
@@ -29,103 +29,108 @@
     return Number.isFinite(n)?n:0;
   }
   function peso(v){return '₱'+Math.round(v).toLocaleString('en-PH')}
-  function variant(n){return (document.getElementById(`c${n}_variant`)?.value||'Vehicle').trim()||'Vehicle'}
-  function baseRevenue(srp,opdp,bdp,dir){return srp*(1-bdp/100)*(1+dir/100)+opdp}
-  function monthly(adjusted,m){return Math.ceil(adjusted*(1+getRate(m)/100)/m-1e-10)}
+
   function decodePercentEncoded(text){
     let s=String(text??'').replace(/\r\n/g,'\n').replace(/\r/g,'\n');
-    if(!/%(?:20|0A|0D|[89A-Fa-f][0-9A-Fa-f])/i.test(s))return s;
-    try{return decodeURIComponent(s)}catch(e){}
-    return s.replace(/%(?:[0-9A-Fa-f]{2})+/g,seq=>{try{return decodeURIComponent(seq)}catch(e){return seq}});
+    s=s.replace(/[\u2066\u200B\u200C\u200D\uFEFF]/g,'');
+    for(let i=0;i<3;i++){
+      if(!/%[0-9A-Fa-f]{2}/.test(s))break;
+      try{
+        const decoded=decodeURIComponent(s);
+        if(decoded===s)break;
+        s=decoded;
+      }catch(e){
+        s=s.replace(/%(?:[0-9A-Fa-f]{2})/g,seq=>{try{return decodeURIComponent(seq)}catch(err){return seq}});
+        break;
+      }
+    }
+    return s;
   }
   function cleanCopyText(text){return decodePercentEncoded(text).replace(/\u2066/g,'')}
+  function variant(n){return cleanCopyText(document.getElementById(`c${n}_variant`)?.value||'Vehicle').trim()||'Vehicle'}
+  function baseRevenue(srp,opdp,bdp,dir){return srp*(1-bdp/100)*(1+dir/100)+opdp}
+  function monthly(adjusted,m){return Math.ceil(adjusted*(1+getRate(m)/100)/m-1e-10)}
 
-  function copyPlain(text,msg){
-    const clean=cleanCopyText(text);
-    if(navigator.clipboard?.writeText){
-      navigator.clipboard.writeText(clean).then(()=>toast(msg)).catch(()=>fallbackCopy(clean,msg));
-      return;
+  function buildSimpleText(n){
+    const v=variant(n),srp=read(`c${n}_srp`),opdp=read(`c${n}_opdp`),bdp=read(`c${n}_bdp`),dir=read(`c${n}_dir`);
+    if(n===1){
+      const dp=read('c1_dp'),adjusted=(baseRevenue(srp,opdp,bdp,dir)-dp)/(1+dir/100);
+      return cleanCopyText([`Unit: ${v}`,`Desired DP: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`,'','Monthly Amortization:',...TERMS.map(t=>`${t.y} ${peso(monthly(adjusted,t.m))}`),'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n'));
     }
-    fallbackCopy(clean,msg);
+    if(n===2){
+      const pct=read('c2_pct'),dp=opdp+(1+dir/100)*srp*(pct/100-bdp/100),adjusted=(baseRevenue(srp,opdp,bdp,dir)-dp)/(1+dir/100);
+      return cleanCopyText([`Unit: ${v}`,`Desired DP: ${pct}%`,`DP Amount: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`,'','Monthly Amortization:',...TERMS.map(t=>`${t.y} ${peso(monthly(adjusted,t.m))}`),'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n'));
+    }
+    const target=read('c3_monthly'),m=Number(document.getElementById('c3_term')?.value),rb=baseRevenue(srp,opdp,bdp,dir),dp=Math.ceil(rb-target*m*(1+dir/100)/(1+getRate(m)/100)-1e-10),term=TERMS.find(t=>t.m===m);
+    return cleanCopyText([`Unit Model: ${v}`,`Loan Term: ${term?.y||m+' Months'}`,`Target Monthly: ${peso(target)}`,`Required DP: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`,`Bank Interest Rate: ${getRate(m)}%`,'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n'));
   }
+
+  function toast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
   function fallbackCopy(text,msg){
     const ta=document.createElement('textarea');
-    ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-10000px';ta.style.top='-10000px';ta.style.opacity='0';ta.style.fontSize='16px';
+    ta.value=cleanCopyText(text);ta.setAttribute('readonly','');
+    ta.style.position='fixed';ta.style.left='-10000px';ta.style.top='-10000px';ta.style.opacity='0';ta.style.fontSize='16px';
     document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);
     let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();
     toast(ok?msg:'Copy failed. Please try again.');
   }
-  function toast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
-
-  function buildSimpleText(n){
-    const v=decodePercentEncoded(variant(n));
-    const srp=read(`c${n}_srp`),opdp=read(`c${n}_opdp`),bdp=read(`c${n}_bdp`),dir=read(`c${n}_dir`);
-    if(n===1){
-      const dp=read('c1_dp'),adjusted=(baseRevenue(srp,opdp,bdp,dir)-dp)/(1+dir/100);
-      return [`Unit: ${v}`,`Desired DP: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`,'','Monthly Amortization:',...TERMS.map(t=>`${t.y} — ${peso(monthly(adjusted,t.m))}`),'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n');
-    }
-    if(n===2){
-      const pct=read('c2_pct'),dp=opdp+(1+dir/100)*srp*(pct/100-bdp/100),adjusted=(baseRevenue(srp,opdp,bdp,dir)-dp)/(1+dir/100);
-      return [`Unit: ${v}`,`Desired DP: ${pct}%`,`DP Amount: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`,'','Monthly Amortization:',...TERMS.map(t=>`${t.y} — ${peso(monthly(adjusted,t.m))}`),'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n');
-    }
-    const target=read('c3_monthly'),m=Number(document.getElementById('c3_term')?.value),rb=baseRevenue(srp,opdp,bdp,dir),dp=Math.ceil(rb-target*m*(1+dir/100)/(1+getRate(m)/100)-1e-10),term=TERMS.find(t=>t.m===m);
-    return [`Unit Model: ${v}`,`Loan Term: ${term?.y||m+' Months'}`,`Target Monthly: ${peso(target)}`,`Required DP: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`,`Bank Interest Rate: ${getRate(m)}%`,'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n');
+  function copyPlain(text,msg){
+    const clean=cleanCopyText(text);
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(clean).then(()=>toast(msg)).catch(()=>fallbackCopy(clean,msg));
+        return;
+      }
+    }catch(e){}
+    fallbackCopy(clean,msg);
   }
 
   function renderBanner(){
-    const b=document.getElementById('msi-interest-banner');
-    if(!b)return;
+    const b=document.getElementById('msi-interest-banner');if(!b)return;
     b.innerHTML='<div class="msi-final-rate-title">Bank Interest Rate (%)</div><div class="msi-final-rate-grid"></div>';
     const grid=b.querySelector('.msi-final-rate-grid');
     TERMS.forEach(t=>{
       const tile=document.createElement('div');tile.className='msi-final-rate-tile';
       tile.innerHTML=`<div class="msi-final-rate-term">${t.y.replace(/ \(\d+ Months\)$/,'')}</div><input class="msi-final-rate-input" type="number" min="0" max="100" step="0.01" value="${getRate(t.m)}" data-msi-interest-term="${t.m}" aria-label="${t.y} bank interest rate">`;
       const input=tile.querySelector('input');
-      input.addEventListener('input',()=>{
-        const n=Math.max(0,Math.min(100,Number(input.value)));
-        if(!Number.isFinite(n))return;
-        window.MSI_INTEREST_RATES[t.m]=n;
-        try{localStorage.setItem(KEY,JSON.stringify(window.MSI_INTEREST_RATES))}catch(e){}
-        document.querySelectorAll(`[data-msi-interest-term="${t.m}"]`).forEach(other=>{if(other!==input)other.value=n});
-        syncRates();refreshCalculations();
-      });
+      input.addEventListener('input',()=>{const n=Math.max(0,Math.min(100,Number(input.value)));if(!Number.isFinite(n))return;window.MSI_INTEREST_RATES[t.m]=n;try{localStorage.setItem(KEY,JSON.stringify(window.MSI_INTEREST_RATES))}catch(e){}document.querySelectorAll(`[data-msi-interest-term="${t.m}"]`).forEach(other=>{if(other!==input)other.value=n});syncRates();refreshCalculations()});
       grid.appendChild(tile);
     });
   }
-  function syncRates(){
-    [1,2,3].forEach(n=>{const m=Number(document.getElementById(`c${n}_term`)?.value),tr=document.getElementById(`c${n}_tr`);if(tr)tr.value=getRate(m)});
-  }
+  function syncRates(){[1,2,3].forEach(n=>{const m=Number(document.getElementById(`c${n}_term`)?.value),tr=document.getElementById(`c${n}_tr`);if(tr)tr.value=getRate(m)})}
   function refreshCalculations(){
     syncRates();
-    [1,2,3].forEach(n=>{
-      const fn=window[`calculate${n}`];
-      if(typeof fn==='function'&&document.getElementById(`c${n}_results`)?.classList.contains('show')){try{fn()}catch(e){}}
-    });
-    document.querySelectorAll('.msi-simple-results.show, .simple-results.show').forEach(out=>{
-      const m=out.id?.match(/^c([123])_/);if(m)updateSimpleDisplay(Number(m[1]));
-    });
+    [1,2,3].forEach(n=>{const fn=window[`calculate${n}`];if(typeof fn==='function'&&document.getElementById(`c${n}_results`)?.classList.contains('show')){try{fn()}catch(e){}}});
+    document.querySelectorAll('.msi-simple-results.show,.simple-results.show').forEach(out=>{const m=out.id?.match(/^c([123])_/);if(m)updateSimpleDisplay(Number(m[1]))});
   }
-  function updateSimpleDisplay(n){
-    const card=document.querySelector(`.calculator-${n}`);if(!card)return;
-    const content=card.querySelector('.msi-simple-results.show .simple-content, .simple-results.show .simple-content');
-    if(!content)return;
-    content.textContent=buildSimpleText(n);
+  function updateSimpleDisplay(n){const card=document.querySelector(`.calculator-${n}`);if(!card)return;const content=card.querySelector('.msi-simple-results.show .simple-content,.simple-results.show .simple-content');if(content)content.textContent=buildSimpleText(n)}
+
+  function interceptSimpleCopy(event){
+    const button=event.target?.closest?.('button');if(!button)return;
+    const text=button.textContent.trim().replace(/\s+/g,' ').toUpperCase();
+    if(text!=='COPY RESULT')return;
+    const simple=button.closest('.msi-simple-results,.simple-results');
+    const inline=button.getAttribute('onclick')||'';
+    const isSimple=!!simple||/copySimple/i.test(inline)||button.classList.contains('simple-copy')||button.hasAttribute('data-msi-simple-copy');
+    if(!isSimple)return;
+    let n=0;
+    const id=simple?.id||'';
+    const match=id.match(/^c([123])_/);if(match)n=Number(match[1]);
+    if(!n){const card=button.closest('.calculator-card');const cm=card?.className.match(/calculator-([123])\b/);if(cm)n=Number(cm[1])}
+    if(!n){const dm=button.getAttribute('data-msi-simple-copy');if(dm)n=Number(dm)}
+    if(!n)return;
+    event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
+    copyPlain(buildSimpleText(n),'Simple computation copied.');
   }
 
   function installClipboardInterceptors(){
-    document.addEventListener('click',event=>{
-      const simpleCopy=event.target.closest('.simple-copy');
-      if(simpleCopy){
-        const simple=simpleCopy.closest('.simple-results');
-        const match=simple?.id?.match(/^c([123])_simple_results$/);
-        if(match){event.preventDefault();event.stopImmediatePropagation();copyPlain(buildSimpleText(Number(match[1])),'Simple computation copied.');return;}
-      }
-      const copySimple=event.target.closest('[data-msi-simple-copy]');
-      if(copySimple){
-        const n=Number(copySimple.getAttribute('data-msi-simple-copy'));
-        if(n){event.preventDefault();event.stopImmediatePropagation();copyPlain(buildSimpleText(n),'Simple computation copied.');return;}
-      }
-    },true);
+    document.addEventListener('click',interceptSimpleCopy,true);
+    window.copySimple=function(n){copyPlain(buildSimpleText(Number(n)),'Simple computation copied.');};
+    window.simpleCopyText=function(n){return buildSimpleText(Number(n));};
+    window.copyResult=function(n){
+      let text='';try{if(typeof copyStore!=='undefined')text=copyStore[n]||''}catch(e){}
+      copyPlain(text||buildSimpleText(Number(n)),'Result copied successfully.');
+    };
   }
 
   function installStyle(){
@@ -142,20 +147,6 @@
     `;document.head.appendChild(s);
   }
 
-  function init(){
-    installStyle();
-    rates();
-    renderBanner();
-    syncRates();
-    installClipboardInterceptors();
-    window.copyResult=function(n){
-      let text='';
-      try{if(typeof copyStore!=='undefined')text=copyStore[n]||''}catch(e){}
-      if(!text)text=buildSimpleText(n);
-      copyPlain(text,'Result copied successfully.');
-    };
-    setTimeout(()=>{installStyle();renderBanner();syncRates()},100);
-    setTimeout(()=>{renderBanner();syncRates()},500);
-  }
+  function init(){installStyle();rates();renderBanner();syncRates();installClipboardInterceptors();setTimeout(()=>{installStyle();renderBanner();syncRates();installClipboardInterceptors()},100);setTimeout(()=>{renderBanner();syncRates();installClipboardInterceptors()},500);setTimeout(()=>{installClipboardInterceptors()},1500)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
