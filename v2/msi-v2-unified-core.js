@@ -75,7 +75,59 @@
   }
   window.MSI_V625_SYNC=sync;
 
+  // V62.8 BDP-ONLY RESTORE: Promo DP Percentage (%) was present in the
+  // template/authority but is hidden or absent in the live deployment.
+  // Restore only c1_bdp / c2_bdp / c3_bdp; do not modify TR inputs.
+  function ensureBDPInputs(){
+    [1,2,3].forEach(n=>{
+      const prefix=`c${n}`;
+      const dir=document.getElementById(`${prefix}_dir`);
+      if(!dir)return;
+
+      let bdp=document.getElementById(`${prefix}_bdp`);
+      if(!bdp){
+        const wrap=document.createElement('div');
+        const label=document.createElement('label');
+        label.htmlFor=`${prefix}_bdp`;
+        label.textContent='Promo DP Percentage (%)';
+        bdp=document.createElement('input');
+        bdp.id=`${prefix}_bdp`;
+        bdp.type='number';
+        bdp.step='0.01';
+        bdp.min='15';
+        bdp.max='60';
+        bdp.value='20';
+        wrap.append(label,bdp);
+        dir.parentNode.insertBefore(wrap,dir);
+      }
+
+      const label=document.querySelector(`label[for="${prefix}_bdp"]`);
+      const holder=bdp.parentElement;
+      if(holder)holder.style.removeProperty('display');
+      if(label){label.textContent='Promo DP Percentage (%)';label.style.removeProperty('display');label.removeAttribute('aria-hidden');}
+      bdp.removeAttribute('aria-hidden');
+      bdp.tabIndex=0;
+      bdp.type='number';
+      bdp.step='0.01';
+      bdp.min='15';
+      bdp.max='60';
+      if(bdp.value===''||bdp.value===null)bdp.value='20';
+
+      if(!bdp.dataset.msiV628BDPValidation){
+        const validate=()=>{
+          const value=Number(bdp.value);
+          bdp.setCustomValidity(Number.isFinite(value)&&value>=15&&value<=60?'':'Promo DP Percentage must be between 15% and 60%.');
+        };
+        bdp.addEventListener('input',validate);
+        bdp.addEventListener('change',validate);
+        bdp.dataset.msiV628BDPValidation='1';
+        validate();
+      }
+    });
+  }
+
   function install(){
+    ensureBDPInputs();
     [1,2,3].forEach(n=>{
       const name=`calculate${n}`;
       const original=window[name];
