@@ -19,6 +19,10 @@
   function pct(value,decimals){return (Number(value)||0).toFixed(decimals)+'%'}
 
   function buildSimpleText(n){
+    n=Number(n);
+    if(window.__MSI_V625_AUTHORITY&&typeof window.MSI_V625_COPY==='function'){
+      try{return cleanCopyText(window.MSI_V625_COPY(n))}catch(e){console.log('V62.7 clipboard authority fallback',e)}
+    }
     const srp=read(`c${n}_srp`),opdp=read(`c${n}_opdp`),whitePearl=read(`c${n}_white`),v=variant(n),clr=color(n,whitePearl);
     let clientDP=0;
     if(n===1)clientDP=read('c1_dp');
@@ -42,53 +46,9 @@
     const colorLabel=clr&&clr!=='—' ? clr : (whitePearl>0?'White Pearl / White Diamond':'—');
     const termLabel=termText;
     let lines=[];
-    if(n===1){
-      lines=[
-        `Client Desired DP Amount: ${peso(clientDP)} (${clientDPPct})`,
-        `Unit: ${v}`,
-        `Color: ${colorLabel}`,
-        `Unit SRP: ${peso(srp)} (100%)`,
-        `Official Promo DP: ${officialPromoDP}`,
-        `Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,
-        `Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,
-        `Client Discount: ${peso(discount)} (${discountPct})`,
-        `Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,
-        `Amount Financed: ${peso(amountFinanced)} (${financedPct})`,
-        `Monthly (${termLabel}): ${peso(monthlyAmount)}`,
-        `Bank Interest Rate: ${rateText}`
-      ];
-    } else if(n===2){
-      lines=[
-        `Client Desired DP (Percentage): ${tdpPct}`,
-        `Unit: ${v}`,
-        `Color: ${colorLabel}`,
-        `Unit SRP: ${peso(srp)} (100%)`,
-        `Official Promo DP: ${officialPromoDP}`,
-        `Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,
-        `Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,
-        `Client Discount: ${peso(discount)} (${discountPct})`,
-        `Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,
-        `Amount Financed: ${peso(amountFinanced)} (${financedPct})`,
-        `Monthly (${termLabel}): ${peso(monthlyAmount)}`,
-        `Bank Interest Rate: ${rateText}`
-      ];
-    } else {
-      lines=[
-        `Client Desired Monthly (${termLabel}): ${peso(monthlyAmount)}`,
-        `Unit: ${v}`,
-        `Color: ${colorLabel}`,
-        `Unit SRP: ${peso(srp)} (100%)`,
-        `Official Promo DP: ${officialPromoDP}`,
-        `Client Required DP Amount: ${peso(clientDP)} (${clientDPPct})`,
-        `Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,
-        `Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,
-        `Client Discount: ${peso(discount)} (${discountPct})`,
-        `Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,
-        `Amount Financed: ${peso(amountFinanced)} (${financedPct})`,
-        `Monthly (${termLabel}): ${peso(monthlyAmount)}`,
-        `Bank Interest Rate: ${rateText}`
-      ];
-    }
+    if(n===1){lines=[`Client Desired DP Amount: ${peso(clientDP)} (${clientDPPct})`,`Unit: ${v}`,`Color: ${colorLabel}`,`Unit SRP: ${peso(srp)} (100%)`,`Official Promo DP: ${officialPromoDP}`,`Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,`Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,`Client Discount: ${peso(discount)} (${discountPct})`,`Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,`Amount Financed: ${peso(amountFinanced)} (${financedPct})`,`Monthly (${termLabel}): ${peso(monthlyAmount)}`,`Bank Interest Rate: ${rateText}`]}
+    else if(n===2){lines=[`Client Desired DP (Percentage): ${tdpPct}`,`Unit: ${v}`,`Color: ${colorLabel}`,`Unit SRP: ${peso(srp)} (100%)`,`Official Promo DP: ${officialPromoDP}`,`Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,`Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,`Client Discount: ${peso(discount)} (${discountPct})`,`Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,`Amount Financed: ${peso(amountFinanced)} (${financedPct})`,`Monthly (${termLabel}): ${peso(monthlyAmount)}`,`Bank Interest Rate: ${rateText}`]}
+    else {lines=[`Client Desired Monthly (${termLabel}): ${peso(monthlyAmount)}`,`Unit: ${v}`,`Color: ${colorLabel}`,`Unit SRP: ${peso(srp)} (100%)`,`Official Promo DP: ${officialPromoDP}`,`Client Required DP Amount: ${peso(clientDP)} (${clientDPPct})`,`Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,`Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,`Client Discount: ${peso(discount)} (${discountPct})`,`Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,`Amount Financed: ${peso(amountFinanced)} (${financedPct})`,`Monthly (${termLabel}): ${peso(monthlyAmount)}`,`Bank Interest Rate: ${rateText}`]}
     lines.push('', 'Prices and promotions are subject to change without prior notice. Financing is subject to bank approval.', '', '🦾 Powered by MSI Framework™ 🚀', 'JUDE DANTE PINEDA');
     return cleanCopyText(lines.join('\n'));
   }
