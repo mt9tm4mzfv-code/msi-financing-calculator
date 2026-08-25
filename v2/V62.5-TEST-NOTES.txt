@@ -1,0 +1,23 @@
+V62.5 TEST 08 expected mirror:
+SRP=4000000
+Official Promo DP=18000
+White Pearl=15000
+BDP=20%
+DIR=17%
+Loan Term=84 months
+Bank Interest Rate=78%
+Desired DP=2381703
+
+Expected:
+Client Net DP=2396703
+Client Discount=438556
+Total DP Deductible=2820259
+Amount Financed=1179741
+Monthly=25000
+
+Authoritative formulas:
+Base Revenue = SRP*(1-BDP)*(1+DIR)+Official Promo DP
+Amount Financed = (Base Revenue-Desired DP)/(1+DIR)
+Client Discount = SRP-Desired DP-Amount Financed
+Total DP Deductible = Desired DP+Client Discount
+Client Net DP = Desired DP+White Pearl
