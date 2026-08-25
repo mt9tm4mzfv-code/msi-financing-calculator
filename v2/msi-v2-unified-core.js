@@ -62,8 +62,8 @@ function computeDPFromMonthly(MT, S, BDP, DIR, OPDP, TR, M) {
       const D=readNumber('c1_dp');
       const result=computeMonthlyFromDP(D,S,BDP,DIR,OPDP,TR,M);
       set('c1r_monthly',money(result.ceiled));
-      set('c1r_financed',money(RB-D));
-      set('c1r_totaldp',money(D));
+      set('c1r_financed',money(S-(D+readNumber('c1r_discount'))));
+      set('c1r_totaldp',money(D+readNumber('c1r_discount')));
       return;
     }
 
@@ -73,8 +73,8 @@ function computeDPFromMonthly(MT, S, BDP, DIR, OPDP, TR, M) {
       const result=computeMonthlyFromDP(D,S,BDP,DIR,OPDP,TR,M);
       set('c2r_dp',money(D));
       set('c2r_monthly',money(result.ceiled));
-      set('c2r_financed',money(RB-D));
-      set('c2r_totaldp',money(D));
+      set('c2r_financed',money(S-(D+readNumber('c2r_discount'))));
+      set('c2r_totaldp',money(D+readNumber('c2r_discount')));
       return;
     }
 
@@ -82,8 +82,8 @@ function computeDPFromMonthly(MT, S, BDP, DIR, OPDP, TR, M) {
     const result=computeDPFromMonthly(MT,S,BDP,DIR,OPDP,TR,M);
     const D=result.ceiled;
     set('c3r_dp',money(D));
-    set('c3r_financed',money(RB-D));
-    set('c3r_totaldp',money(D));
+    set('c3r_financed',money(S-(D+readNumber('c3r_discount'))));
+    set('c3r_totaldp',money(D+readNumber('c3r_discount')));
   }
 
   function install(){
