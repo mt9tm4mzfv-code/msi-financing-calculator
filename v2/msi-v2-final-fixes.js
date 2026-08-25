@@ -1,7 +1,6 @@
 /* MSI V2 — FINAL UI / SIMPLE COPY REPAIR v4 */
 (function(){
   'use strict';
-
   const TERMS=[
     {m:84,y:'7 Years (84 Months)',r:78},{m:72,y:'6 Years (72 Months)',r:67},{m:60,y:'5 Years (60 Months)',r:57},
     {m:48,y:'4 Years (48 Months)',r:49},{m:36,y:'3 Years (36 Months)',r:39},{m:24,y:'2 Years (24 Months)',r:23}
@@ -21,13 +20,77 @@
 
   function buildSimpleText(n){
     const srp=read(`c${n}_srp`),opdp=read(`c${n}_opdp`),whitePearl=read(`c${n}_white`),v=variant(n),clr=color(n,whitePearl);
-    let clientDP=0;if(n===1)clientDP=read('c1_dp');else if(n===2)clientDP=readResultNumber('c2r_dp',opdp);else clientDP=readResultNumber('c3r_dp',0);
-    const discount=readResultNumber(`c${n}r_discount`,0),netDP=clientDP+whitePearl,TDP=clientDP+discount,amountFinanced=srp-TDP;
-    const monthlyAmount=readResultNumber(`c${n}r_monthly`,n===3?read('c3_monthly'):0),months=Number(document.getElementById(`c${n}_term`)?.value)||60,term=TERMS.find(t=>t.m===months);
-    const termText=resultText(`c${n}r_term`,term?.y||`${months} Months`),rateText=resultText(`c${n}r_tr`,`${getRate(months)}%`);
-    const clientDPPct=pct(clientDP/srp*100,2),netDPPct=pct(netDP/srp*100,2),tdpPct=pct(TDP/srp*100,4),financedPct=pct(amountFinanced/srp*100,2);
+    let clientDP=0;
+    if(n===1)clientDP=read('c1_dp');
+    else if(n===2)clientDP=readResultNumber('c2r_dp',opdp);
+    else clientDP=readResultNumber('c3r_dp',0);
+    const discount=readResultNumber(`c${n}r_discount`,0);
+    const netDP=clientDP+whitePearl;
+    const TDP=clientDP+discount;
+    const amountFinanced=srp-TDP;
+    const monthlyAmount=readResultNumber(`c${n}r_monthly`,n===3?read('c3_monthly'):0);
+    const months=Number(document.getElementById(`c${n}_term`)?.value)||60;
+    const term=TERMS.find(t=>t.m===months);
+    const termText=resultText(`c${n}r_term`,term?.y||`${months} Months`);
+    const rateText=resultText(`c${n}r_tr`,`${getRate(months)}%`);
+    const clientDPPct=pct(clientDP/srp*100,2);
+    const netDPPct=pct(netDP/srp*100,2);
+    const tdpPct=pct(TDP/srp*100,4);
+    const financedPct=pct(amountFinanced/srp*100,2);
     const discountPct=pct(discount/srp*100,2);
-    return cleanCopyText([`UNIT: ${v}`,`COLOR: ${clr}`,`UNIT SRP: ${peso(srp)} - 100%`,`CLIENT'S DOWN PAYMENT AMOUNT: ${peso(clientDP)} - ${clientDPPct}`,`CLIENT'S ADDITIONAL CASHOUT FOR COLOR WHITE: ${peso(whitePearl)}`,`CLIENT'S NET DOWN PAYMENT AMOUNT (AFTER DISCOUNT & AFTER COLOR WHITE ADDITIONAL CASHOUT): ${peso(netDP)} - ${netDPPct}`,`CLIENT'S DISCOUNT: ${peso(discount)} - ${discountPct}`,`TOTAL DOWN PAYMENT (TDP): ${peso(TDP)} - ${tdpPct}`,`AMOUNT FINANCED (UNIT SRP LESS TDP): ${peso(amountFinanced)} - ${financedPct}`,`MONTHLY AMORTIZATION: ${termText} - ${peso(monthlyAmount)}`,`Bank Interest Rate: ${rateText}`,'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n'))
+    const officialPromoDP=peso(opdp);
+    const colorLabel=clr&&clr!=='—' ? clr : (whitePearl>0?'White Pearl / White Diamond':'—');
+    const termLabel=termText;
+    let lines=[];
+    if(n===1){
+      lines=[
+        `Client Desired DP Amount: ${peso(clientDP)} (${clientDPPct})`,
+        `Unit: ${v}`,
+        `Color: ${colorLabel}`,
+        `Unit SRP: ${peso(srp)} (100%)`,
+        `Official Promo DP: ${officialPromoDP}`,
+        `Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,
+        `Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,
+        `Client Discount: ${peso(discount)} (${discountPct})`,
+        `Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,
+        `Amount Financed: ${peso(amountFinanced)} (${financedPct})`,
+        `Monthly (${termLabel}): ${peso(monthlyAmount)}`,
+        `Bank Interest Rate: ${rateText}`
+      ];
+    } else if(n===2){
+      lines=[
+        `Client Desired DP (Percentage): ${tdpPct}`,
+        `Unit: ${v}`,
+        `Color: ${colorLabel}`,
+        `Unit SRP: ${peso(srp)} (100%)`,
+        `Official Promo DP: ${officialPromoDP}`,
+        `Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,
+        `Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,
+        `Client Discount: ${peso(discount)} (${discountPct})`,
+        `Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,
+        `Amount Financed: ${peso(amountFinanced)} (${financedPct})`,
+        `Monthly (${termLabel}): ${peso(monthlyAmount)}`,
+        `Bank Interest Rate: ${rateText}`
+      ];
+    } else {
+      lines=[
+        `Client Desired Monthly (${termLabel}): ${peso(monthlyAmount)}`,
+        `Unit: ${v}`,
+        `Color: ${colorLabel}`,
+        `Unit SRP: ${peso(srp)} (100%)`,
+        `Official Promo DP: ${officialPromoDP}`,
+        `Client Required DP Amount: ${peso(clientDP)} (${clientDPPct})`,
+        `Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,
+        `Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,
+        `Client Discount: ${peso(discount)} (${discountPct})`,
+        `Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,
+        `Amount Financed: ${peso(amountFinanced)} (${financedPct})`,
+        `Monthly (${termLabel}): ${peso(monthlyAmount)}`,
+        `Bank Interest Rate: ${rateText}`
+      ];
+    }
+    lines.push('', 'Prices and promotions are subject to change without prior notice. Financing is subject to bank approval.', '', '🦾 Powered by MSI Framework™ 🚀', 'JUDE DANTE PINEDA');
+    return cleanCopyText(lines.join('\n'));
   }
   function toast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
   function fallbackCopy(text,msg){const clean=cleanCopyText(text),ta=document.createElement('textarea');ta.value=clean;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.left='-10000px';ta.style.top='-10000px';ta.style.opacity='0';ta.style.fontSize='16px';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();toast(ok?msg:'Copy failed. Please try again.')}
