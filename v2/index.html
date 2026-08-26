@@ -1,239 +1,35 @@
 <!doctype html>
 <html lang="en">
-<head><style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
-</style>
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b1220">
-<title>MSI Financial Calculator V2 - V62.9 PERFECT</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>MSI Financial Calculator V2</title>
 <style>
-*{box-sizing:border-box}html{background:#0a0f1e}body{margin:0;background:#0a0f1e;color:#f5f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh}
-header{padding:20px 16px 16px;text-align:center;border-bottom:1px solid #1e293b;background:#0b1220;position:sticky;top:0;z-index:20}
-header h1{margin:0;font-size:20px;font-weight:900;letter-spacing:.02em}
-.sub{margin-top:4px;color:#94a3b8;font-size:11px}
-main{width:100%;max-width:720px;margin:auto;padding:14px}
-.card{position:relative;background:#111827;border:1px solid #1e293b;border-radius:18px;padding:18px;margin-bottom:18px;box-shadow:0 8px 24px rgba(0,0,0,.25);overflow:hidden}
-.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
-.card.c1::before{background:#4ade80}.card.c2::before{background:#60a5fa}.card.c3::before{background:#fb923c}
-.card h2{margin:0;font-size:17px;font-weight:900;line-height:1.2}
-.card h2 .title{font-size:22px;letter-spacing:.02em}
-.card.c1 .title{color:#4ade80}.card.c2 .title{color:#60a5fa}.card.c3 .title{color:#fb923c}
-.card .desc{color:#e2e8f0;font-size:14px;font-weight:700;margin-top:4px}
-.card .example{margin-top:8px;color:#94a3b8;font-size:11px;font-weight:700;line-height:1.4}
-.card.c1 .example{color:#86efac}.card.c2 .example{color:#93c5fd}.card.c3 .example{color:#fdba74}
-.card-icon{position:absolute;right:16px;top:16px;width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid}
-.card.c1 .card-icon{border-color:#4ade80;background:rgba(74,222,128,.12)}
-.card.c2 .card-icon{border-color:#60a5fa;background:rgba(96,165,250,.12)}
-.card.c3 .card-icon{border-color:#fb923c;background:rgba(251,146,60,.12)}
-.section{margin-top:18px}
-.section-title{display:none}
-label{display:block;margin:14px 0 6px;color:#cbd5e1;font-size:12px;font-weight:700}
-input,select{width:100%;min-height:52px;padding:13px 14px;border:1px solid #334155;border-radius:12px;background:#1e293b;color:#f8fafc;font-size:16px;outline:none;transition:.15s}
-input:focus,select:focus{border-color:#64748b;box-shadow:0 0 0 3px rgba(100,116,139,.2)}
-input.highlight{border-color:#facc15;box-shadow:0 0 0 3px rgba(250,204,21,.15);background:#1e293b}
-label.highlight{color:#fde68a}
-button.primary{width:100%;margin-top:14px;padding:16px 12px;border:0;border-radius:12px;font-size:13px;font-weight:900;letter-spacing:.04em;cursor:pointer;line-height:1.2}
-.card.c1 button.primary{background:#86efac;color:#052e16}
-.card.c2 button.primary{background:#60a5fa;color:#0a192f}
-.card.c3 button.primary{background:#fb923c;color:#431407}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-button.secondary{width:100%;padding:12px;border:1px solid #334155;border-radius:10px;background:#1e293b;color:#e2e8f0;font-size:11px;font-weight:800;cursor:pointer}
-.results{display:none;margin-top:16px;background:#0f172a;border:1px solid #1e293b;border-radius:14px;padding:14px}
-.results.show{display:block}
-.result{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #1e293b}
-.result:last-child{border-bottom:0}
-.result span:first-child{color:#94a3b8;font-size:11px;font-weight:600}
-.money{font-size:14px;font-weight:800;text-align:right;white-space:nowrap;color:#f1f5f9}
-.status{margin-top:12px;padding:12px;border-radius:10px;font-size:11px;line-height:1.5;font-weight:800}
-.status.ok{background:#052e16;border:1px solid #16a34a;color:#bbf7d0}
-.status.warn{background:#422006;border:1px solid #d97706;color:#fde68a}
-.status.error{background:#450a0a;border:1px solid #dc2626;color:#fecaca}
-.bank-card{background:#111827;border:1px solid #334155;border-radius:18px;padding:12px;margin-bottom:18px}
-.bank-header{background:#fef08a;color:#422006;text-align:center;font-weight:900;padding:12px;border-radius:12px;font-size:14px;margin-bottom:10px}
-.bank-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
-.bank-item{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:8px;text-align:center}
-.bank-item .y{font-size:10px;color:#94a3b8;font-weight:800;margin-bottom:6px}
-.bank-item .v{font-size:14px;font-weight:900;background:#0f172a;border:1px solid #334155;border-radius:8px;padding:10px 2px}
-footer{max-width:720px;margin:auto;padding:10px 18px 40px;text-align:center;color:#64748b;font-size:10px;line-height:1.6}
-footer strong{color:#cbd5e1}
-.badge{display:inline-block;margin-bottom:10px;padding:5px 10px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.06em}
-.card.c1 .badge{background:rgba(74,222,128,.15);border:1px solid #4ade80;color:#86efac}
-.card.c2 .badge{background:rgba(96,165,250,.15);border:1px solid #60a5fa;color:#93c5fd}
-.card.c3 .badge{background:rgba(251,146,60,.15);border:1px solid #fb923c;color:#fdba74}
-.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);z-index:100;opacity:0;pointer-events:none;transition:.2s;background:#052e16;border:1px solid #16a34a;color:#bbf7d0;padding:11px 15px;border-radius:10px;font-size:12px;font-weight:900}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:600px){.bank-grid{grid-template-columns:repeat(3,1fr)}}
+*{box-sizing:border-box}html{background:#0b1220}body{margin:0;background:#0b1220;color:#f5f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh}header{padding:18px 16px 14px;border-bottom:1px solid #263247;background:#0b1220;position:sticky;top:0;z-index:20}h1{margin:0;font-size:21px;font-weight:900}.sub{margin-top:4px;color:#9ca3af;font-size:11px}main{width:100%;max-width:760px;margin:auto;padding:12px}.card{background:#111827;border:1px solid #374151;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 5px 18px rgba(0,0,0,.18)}.card h2{margin:0 0 14px;font-size:18px}.section{margin-top:16px}.section-title{color:#9ca3af;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}label{display:block;margin:10px 0 5px;color:#d1d5db;font-size:12px;font-weight:800}input,select{width:100%;min-height:47px;padding:11px 12px;border:1px solid #4b5563;border-radius:10px;background:#1f2937;color:#f9fafb;font-size:16px;outline:none}input:focus,select:focus{border-color:#9ca3af;box-shadow:0 0 0 2px rgba(156,163,175,.18)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}button.primary{width:100%;margin-top:13px;padding:13px;border:0;border-radius:11px;background:#f9fafb;color:#111827;font-size:14px;font-weight:900;cursor:pointer}button.secondary{width:100%;padding:11px;border:1px solid #4b5563;border-radius:10px;background:#1f2937;color:#f9fafb;font-size:12px;font-weight:900;cursor:pointer}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.results{display:none;margin-top:12px;background:#0f172a;border:1px solid #374151;border-radius:12px;padding:13px}.results.show{display:block}.result{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:10px 0;border-bottom:1px solid #374151}.result:last-child{border-bottom:0}.result span:first-child{color:#cbd5e1;font-size:12px}.money{font-size:16px;font-weight:900;text-align:right;white-space:nowrap}.status{margin-top:12px;padding:11px;border-radius:10px;font-size:12px;line-height:1.45;font-weight:800}.status.ok{background:#064e2b;border:1px solid #15803d;color:#bbf7d0}.status.warn{background:#422006;border:1px solid #a16207;color:#fde68a}.status.error{background:#3f1515;border:1px solid #7f1d1d;color:#fecaca}.note{margin-top:8px;color:#6b7280;font-size:10px;line-height:1.5}.badge{display:inline-block;margin-bottom:8px;padding:5px 8px;border-radius:999px;background:#172033;border:1px solid #4b5563;color:#cbd5e1;font-size:10px;font-weight:900}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);z-index:100;opacity:0;pointer-events:none;transition:.2s;background:#064e2b;border:1px solid #15803d;color:#bbf7d0;padding:11px 15px;border-radius:10px;font-size:12px;font-weight:900;max-width:calc(100vw - 32px);text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}footer{max-width:760px;margin:auto;padding:8px 18px 30px;text-align:center;color:#6b7280;font-size:10px;line-height:1.6}footer strong{color:#d1d5db}@media(max-width:600px){.grid{grid-template-columns:1fr}.actions{grid-template-columns:1fr 1fr}.card{padding:14px}}
 </style>
 </head>
 <body>
-<div id="toast" class="toast"></div>
-<header><h1>MSI Financial Calculator V2</h1><div class="sub">V62.9 PERFECT • Beautiful UI + Promo DP % • MSI Framework™</div></header>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<header><h1>MSI Financial Calculator V2</h1><div class="sub">3 Client Inquiry Calculators • MSI Framework™</div></header>
 <main>
-
-<!-- CALCULATOR 1 -->
-<section class="card c1">
-<div class="card-icon">💵</div>
-<div class="badge">CALCULATOR 1</div>
-<h2><span class="title">Down Payment Amount →</span><br><span class="desc">Monthly Amortization</span></h2>
-<div class="example">Example: "Kung mag Down Payment ko og ₱150,000, pila akong monthly?"</div>
-<div class="section">
-<label for="c1_variant">Vehicle Variant</label><input id="c1_variant" type="text" placeholder="e.g. Xpander Cross">
-<label for="c1_srp">Unit SRP</label><input id="c1_srp" type="number" min="0" step="1" value="0">
-<label for="c1_opdp">Official Promo DP</label><input id="c1_opdp" type="number" min="0" step="1" value="0">
-<label for="c1_bdp" class="highlight">Promo DP Percentage (%) - NEW! Editable 15-60%</label><input id="c1_bdp" class="highlight" type="number" step="0.01" value="20" min="15" max="60" placeholder="20">
-<label for="c1_white">Additional Cashout — White Pearl</label><input id="c1_white" type="number" min="0" step="1" value="0">
-<label for="c1_term">Loan Term</label><select id="c1_term" onchange="loadTR(1)"><option value="84">7 Years</option><option value="72">6 Years</option><option value="60" selected>5 Years</option><option value="48">4 Years</option><option value="36">3 Years</option><option value="24">2 Years</option></select>
-<label for="c1_tr">Selected Term TR %</label><input id="c1_tr" type="number" step="0.01" value="57">
-<label for="c1_dir">Dealer's Incentive Rate (%)</label><input id="c1_dir" type="number" step="0.01" value="17">
-<label for="c1_dp">Client's Desired Down Payment Amount</label><input id="c1_dp" type="number" min="0" step="1" value="0">
-<button class="primary" onclick="calculate1()">CLICK TO GENERATE<br>DETAILED COMPUTATION</button>
-<button class="primary" style="margin-top:10px;opacity:.9" onclick="calculate1()">CLICK TO GENERATE<br>SIMPLE COMPUTATION</button>
-</div>
-<div id="c1_results" class="results">
-<div class="result"><span>Vehicle</span><span id="c1r_vehicle" class="money">—</span></div>
-<div class="result"><span>Client's Desired DP</span><span id="c1r_dp" class="money">—</span></div>
-<div class="result"><span>Unit SRP</span><span id="c1r_srp" class="money">—</span></div>
-<div class="result"><span>Additional White Cashout</span><span id="c1r_white" class="money">—</span></div>
-<div class="result"><span>Client Net Down Payment</span><span id="c1r_netdp" class="money">—</span></div>
-<div class="result"><span>Client Discount</span><span id="c1r_discount" class="money">—</span></div>
-<div class="result"><span>Total DP Deductible to SRP</span><span id="c1r_totaldp" class="money">—</span></div>
-<div class="result"><span>Amount Financed</span><span id="c1r_financed" class="money">—</span></div>
-<div class="result"><span>Loan Term</span><span id="c1r_term" class="money">—</span></div>
-<div class="result"><span>TR</span><span id="c1r_tr" class="money">—</span></div>
-<div class="result"><span>Estimated Monthly</span><span id="c1r_monthly" class="money">—</span></div>
-<div id="c1_status" class="status ok">VALID • Estimated computation only.</div>
-<div class="actions"><button class="secondary" onclick="copyResult(1)">COPY RESULT</button><button class="secondary" onclick="resetCalc(1)">RESET</button></div>
-</div>
-</section>
-
-<!-- CALCULATOR 2 -->
-<section class="card c2">
-<div class="card-icon">%</div>
-<div class="badge">CALCULATOR 2</div>
-<h2><span class="title">Down Payment Percentage →</span><br><span class="desc">Monthly Amortization</span></h2>
-<div class="example">Example: "Kung mag Down Payment ko og 30%, pila akong monthly?"</div>
-<div class="section">
-<label for="c2_variant">Vehicle Variant</label><input id="c2_variant" type="text" placeholder="e.g. Xpander Cross">
-<label for="c2_srp">Unit SRP</label><input id="c2_srp" type="number" min="0" step="1" value="0">
-<label for="c2_opdp">Official Promo DP</label><input id="c2_opdp" type="number" min="0" step="1" value="0">
-<label for="c2_bdp" class="highlight">Promo DP Percentage (%) - NEW! Editable 15-60%</label><input id="c2_bdp" class="highlight" type="number" step="0.01" value="20" min="15" max="60">
-<label for="c2_white">Additional Cashout — White Pearl</label><input id="c2_white" type="number" min="0" step="1" value="0">
-<label for="c2_term">Loan Term</label><select id="c2_term" onchange="loadTR(2)"><option value="84">7 Years</option><option value="72">6 Years</option><option value="60" selected>5 Years</option><option value="48">4 Years</option><option value="36">3 Years</option><option value="24">2 Years</option></select>
-<label for="c2_tr">Selected Term TR %</label><input id="c2_tr" type="number" step="0.01" value="57">
-<label for="c2_dir">Dealer's Incentive Rate (%)</label><input id="c2_dir" type="number" step="0.01" value="17">
-<label for="c2_pct">Client's Desired Down Payment Percentage (%)</label><input id="c2_pct" type="number" step="0.01" value="30">
-<button class="primary" onclick="calculate2()">CLICK TO GENERATE<br>DETAILED COMPUTATION</button>
-<button class="primary" style="margin-top:10px;opacity:.9" onclick="calculate2()">CLICK TO GENERATE<br>SIMPLE COMPUTATION</button>
-</div>
-<div id="c2_results" class="results">
-<div class="result"><span>Vehicle</span><span id="c2r_vehicle" class="money">—</span></div>
-<div class="result"><span>Desired DP %</span><span id="c2r_pct" class="money">—</span></div>
-<div class="result"><span>Derived DP Amount</span><span id="c2r_dp" class="money">—</span></div>
-<div class="result"><span>Unit SRP</span><span id="c2r_srp" class="money">—</span></div>
-<div class="result"><span>Additional White</span><span id="c2r_white" class="money">—</span></div>
-<div class="result"><span>Client Net DP</span><span id="c2r_netdp" class="money">—</span></div>
-<div class="result"><span>Client Discount</span><span id="c2r_discount" class="money">—</span></div>
-<div class="result"><span>Total DP Deductible</span><span id="c2r_totaldp" class="money">—</span></div>
-<div class="result"><span>Amount Financed</span><span id="c2r_financed" class="money">—</span></div>
-<div class="result"><span>Loan Term</span><span id="c2r_term" class="money">—</span></div>
-<div class="result"><span>TR</span><span id="c2r_tr" class="money">—</span></div>
-<div class="result"><span>Estimated Monthly</span><span id="c2r_monthly" class="money">—</span></div>
-<div id="c2_status" class="status ok">VALID</div>
-<div class="actions"><button class="secondary" onclick="copyResult(2)">COPY RESULT</button><button class="secondary" onclick="resetCalc(2)">RESET</button></div>
-</div>
-</section>
-
-<!-- CALCULATOR 3 -->
-<section class="card c3">
-<div class="card-icon">🗓️</div>
-<div class="badge">CALCULATOR 3</div>
-<h2><span class="title">Monthly Amortization →</span><br><span class="desc">Down Payment Amount</span></h2>
-<div class="example">Example: "Pila ang Down Payment para ₱20,000 na lang ang monthly?"</div>
-<div class="section">
-<label for="c3_variant">Vehicle Variant</label><input id="c3_variant" type="text" placeholder="e.g. Xpander Cross">
-<label for="c3_srp">Unit SRP</label><input id="c3_srp" type="number" min="0" step="1" value="0">
-<label for="c3_opdp">Official Promo DP</label><input id="c3_opdp" type="number" min="0" step="1" value="0">
-<label for="c3_bdp" class="highlight">Promo DP Percentage (%) - NEW! Editable 15-60%</label><input id="c3_bdp" class="highlight" type="number" step="0.01" value="20" min="15" max="60">
-<label for="c3_white">Additional Cashout — White Pearl</label><input id="c3_white" type="number" min="0" step="1" value="0">
-<label for="c3_term">Loan Term</label><select id="c3_term" onchange="loadTR(3)"><option value="84">7 Years</option><option value="72">6 Years</option><option value="60" selected>5 Years</option><option value="48">4 Years</option><option value="36">3 Years</option><option value="24">2 Years</option></select>
-<label for="c3_tr">Selected Term TR %</label><input id="c3_tr" type="number" step="0.01" value="57">
-<label for="c3_dir">Dealer's Incentive Rate (%)</label><input id="c3_dir" type="number" step="0.01" value="17">
-<label for="c3_monthly">Client's Desired Monthly Amortization</label><input id="c3_monthly" type="number" min="0" step="1" value="20000">
-<button class="primary" onclick="calculate3()">CLICK TO GENERATE<br>DETAILED COMPUTATION</button>
-<button class="primary" style="margin-top:10px;opacity:.9" onclick="calculate3()">CLICK TO GENERATE<br>SIMPLE COMPUTATION</button>
-</div>
-<div id="c3_results" class="results">
-<div class="result"><span>Vehicle</span><span id="c3r_vehicle" class="money">—</span></div>
-<div class="result"><span>Target Monthly</span><span id="c3r_monthly" class="money">—</span></div>
-<div class="result"><span>Required DP</span><span id="c3r_dp" class="money">—</span></div>
-<div class="result"><span>Unit SRP</span><span id="c3r_srp" class="money">—</span></div>
-<div class="result"><span>Additional White</span><span id="c3r_white" class="money">—</span></div>
-<div class="result"><span>Client Net DP</span><span id="c3r_netdp" class="money">—</span></div>
-<div class="result"><span>Client Discount</span><span id="c3r_discount" class="money">—</span></div>
-<div class="result"><span>Total DP Deductible</span><span id="c3r_totaldp" class="money">—</span></div>
-<div class="result"><span>Amount Financed</span><span id="c3r_financed" class="money">—</span></div>
-<div class="result"><span>Loan Term</span><span id="c3r_term" class="money">—</span></div>
-<div class="result"><span>TR</span><span id="c3r_tr" class="money">—</span></div>
-<div id="c3_status" class="status ok">VALID</div>
-<div class="actions"><button class="secondary" onclick="copyResult(3)">COPY RESULT</button><button class="secondary" onclick="resetCalc(3)">RESET</button></div>
-</div>
-</section>
-
-<!-- BANK RATE -->
-<div class="bank-card">
-<div class="bank-header">Bank Interest Rate (%)</div>
-<div class="bank-grid">
-<div class="bank-item"><div class="y">7 Years</div><div class="v" id="tr-84">78</div></div>
-<div class="bank-item"><div class="y">6 Years</div><div class="v" id="tr-72">67</div></div>
-<div class="bank-item"><div class="y">5 Years</div><div class="v" id="tr-60">57</div></div>
-<div class="bank-item"><div class="y">4 Years</div><div class="v" id="tr-48">49</div></div>
-<div class="bank-item"><div class="y">3 Years</div><div class="v" id="tr-36">39</div></div>
-<div class="bank-item"><div class="y">2 Years</div><div class="v" id="tr-24">23</div></div>
-</div>
-</div>
-
+<section class="card"><div class="badge">INQUIRY 1</div><h2>Down Payment Amount → Monthly Amortization</h2><div class="note">Example: “Kung mag Down Payment ko og ₱150,000, pila akong monthly?”</div><div class="section"><div class="section-title">Inputs</div><label for="c1_variant">Vehicle Variant</label><input id="c1_variant" type="text" placeholder="e.g. Xpander Cross"><div class="grid"><div><label for="c1_srp">Unit SRP</label><input id="c1_srp" type="number" min="0" step="1" value="0"></div><div><label for="c1_opdp">Official Promo DP</label><input id="c1_opdp" type="number" min="0" step="1" value="0"></div></div><div class="grid"><div><label for="c1_white">Additional Cashout — White Pearl</label><input id="c1_white" type="number" min="0" step="1" value="0"></div><div><label for="c1_term">Loan Term</label><select id="c1_term" onchange="loadTR(1)"><option value="84">7 Years</option><option value="72">6 Years</option><option value="60" selected>5 Years</option><option value="48">4 Years</option><option value="36">3 Years</option><option value="24">2 Years</option></select></div></div><div class="grid"><div><label for="c1_tr">Selected Term TR %</label><input id="c1_tr" type="number" step="0.01" value="57"></div><div><label for="c1_bdp">BDP %</label><input id="c1_bdp" type="number" step="0.01" value="20"></div></div><label for="c1_dir">DIR %</label><input id="c1_dir" type="number" step="0.01" value="17"><label for="c1_dp">Client's Desired Down Payment Amount</label><input id="c1_dp" type="number" min="0" step="1" value="0"><button class="primary" onclick="calculate1()">COMPUTE MONTHLY</button></div><div id="c1_results" class="results"><div class="result"><span>Vehicle</span><span id="c1r_vehicle" class="money">—</span></div><div class="result"><span>Client's Desired DP</span><span id="c1r_dp" class="money">—</span></div><div class="result"><span>Unit SRP</span><span id="c1r_srp" class="money">—</span></div><div class="result"><span>Additional White Cashout</span><span id="c1r_white" class="money">—</span></div><div class="result"><span>Client Net Down Payment</span><span id="c1r_netdp" class="money">—</span></div><div class="result"><span>Client Discount</span><span id="c1r_discount" class="money">—</span></div><div class="result"><span>Total DP Deductible to SRP</span><span id="c1r_totaldp" class="money">—</span></div><div class="result"><span>Amount Financed</span><span id="c1r_financed" class="money">—</span></div><div class="result"><span>Loan Term</span><span id="c1r_term" class="money">—</span></div><div class="result"><span>TR</span><span id="c1r_tr" class="money">—</span></div><div class="result"><span>Estimated Monthly Amortization</span><span id="c1r_monthly" class="money">—</span></div><div id="c1_status" class="status ok">VALID • Estimated computation only.</div><div class="actions"><button class="secondary" onclick="copyResult(1)">COPY RESULT</button><button class="secondary" onclick="resetCalc(1)">RESET</button></div></div></section>
+<section class="card"><div class="badge">INQUIRY 2</div><h2>Down Payment Percentage → Monthly Amortization</h2><div class="note">Example: “Kung mag Down Payment ko og 30%, pila akong monthly?”</div><div class="section"><div class="section-title">Inputs</div><label for="c2_variant">Vehicle Variant</label><input id="c2_variant" type="text" placeholder="e.g. Xpander Cross"><div class="grid"><div><label for="c2_srp">Unit SRP</label><input id="c2_srp" type="number" min="0" step="1" value="0"></div><div><label for="c2_opdp">Official Promo DP</label><input id="c2_opdp" type="number" min="0" step="1" value="0"></div></div><div class="grid"><div><label for="c2_white">Additional Cashout — White Pearl</label><input id="c2_white" type="number" min="0" step="1" value="0"></div><div><label for="c2_term">Loan Term</label><select id="c2_term" onchange="loadTR(2)"><option value="84">7 Years</option><option value="72">6 Years</option><option value="60" selected>5 Years</option><option value="48">4 Years</option><option value="36">3 Years</option><option value="24">2 Years</option></select></div></div><div class="grid"><div><label for="c2_tr">Selected Term TR %</label><input id="c2_tr" type="number" step="0.01" value="57"></div><div><label for="c2_bdp">BDP %</label><input id="c2_bdp" type="number" step="0.01" value="20"></div></div><label for="c2_dir">DIR %</label><input id="c2_dir" type="number" step="0.01" value="17"><label for="c2_pct">Client's Desired Down Payment Percentage</label><input id="c2_pct" type="number" min="0" max="99.99" step="0.01" value="30"><button class="primary" onclick="calculate2()">COMPUTE MONTHLY</button></div><div id="c2_results" class="results"><div class="result"><span>Vehicle</span><span id="c2r_vehicle" class="money">—</span></div><div class="result"><span>Desired DP %</span><span id="c2r_pct" class="money">—</span></div><div class="result"><span>Derived DP Amount</span><span id="c2r_dp" class="money">—</span></div><div class="result"><span>Unit SRP</span><span id="c2r_srp" class="money">—</span></div><div class="result"><span>Additional White Cashout</span><span id="c2r_white" class="money">—</span></div><div class="result"><span>Client Net Down Payment</span><span id="c2r_netdp" class="money">—</span></div><div class="result"><span>Client Discount</span><span id="c2r_discount" class="money">—</span></div><div class="result"><span>Total DP Deductible to SRP</span><span id="c2r_totaldp" class="money">—</span></div><div class="result"><span>Amount Financed</span><span id="c2r_financed" class="money">—</span></div><div class="result"><span>Loan Term</span><span id="c2r_term" class="money">—</span></div><div class="result"><span>TR</span><span id="c2r_tr" class="money">—</span></div><div class="result"><span>Estimated Monthly Amortization</span><span id="c2r_monthly" class="money">—</span></div><div id="c2_status" class="status ok">VALID • Estimated computation only.</div><div class="actions"><button class="secondary" onclick="copyResult(2)">COPY RESULT</button><button class="secondary" onclick="resetCalc(2)">RESET</button></div></div></section>
+<section class="card"><div class="badge">INQUIRY 3</div><h2>Monthly Amortization → Required Down Payment</h2><div class="note">Example: “Pila ang Down Payment para ₱20,000 na lang ang monthly?”</div><div class="section"><div class="section-title">Inputs</div><label for="c3_variant">Vehicle Variant</label><input id="c3_variant" type="text" placeholder="e.g. Xpander Cross"><div class="grid"><div><label for="c3_srp">Unit SRP</label><input id="c3_srp" type="number" min="0" step="1" value="0"></div><div><label for="c3_opdp">Official Promo DP</label><input id="c3_opdp" type="number" min="0" step="1" value="0"></div></div><div class="grid"><div><label for="c3_white">Additional Cashout — White Pearl</label><input id="c3_white" type="number" min="0" step="1" value="0"></div><div><label for="c3_term">Loan Term</label><select id="c3_term" onchange="loadTR(3)"><option value="84">7 Years</option><option value="72">6 Years</option><option value="60" selected>5 Years</option><option value="48">4 Years</option><option value="36">3 Years</option><option value="24">2 Years</option></select></div></div><div class="grid"><div><label for="c3_tr">Selected Term TR %</label><input id="c3_tr" type="number" step="0.01" value="57"></div><div><label for="c3_bdp">BDP %</label><input id="c3_bdp" type="number" step="0.01" value="20"></div></div><label for="c3_dir">DIR %</label><input id="c3_dir" type="number" step="0.01" value="17"><label for="c3_monthly">Client's Desired Monthly Amortization</label><input id="c3_monthly" type="number" min="0" step="1" value="20000"><button class="primary" onclick="calculate3()">COMPUTE REQUIRED DP</button></div><div id="c3_results" class="results"><div class="result"><span>Vehicle</span><span id="c3r_vehicle" class="money">—</span></div><div class="result"><span>Target Monthly</span><span id="c3r_monthly" class="money">—</span></div><div class="result"><span>Required DP</span><span id="c3r_dp" class="money">—</span></div><div class="result"><span>Unit SRP</span><span id="c3r_srp" class="money">—</span></div><div class="result"><span>Additional White Cashout</span><span id="c3r_white" class="money">—</span></div><div class="result"><span>Client Net Down Payment</span><span id="c3r_netdp" class="money">—</span></div><div class="result"><span>Client Discount</span><span id="c3r_discount" class="money">—</span></div><div class="result"><span>Total DP Deductible to SRP</span><span id="c3r_totaldp" class="money">—</span></div><div class="result"><span>Amount Financed</span><span id="c3r_financed" class="money">—</span></div><div class="result"><span>Loan Term</span><span id="c3r_term" class="money">—</span></div><div class="result"><span>TR</span><span id="c3r_tr" class="money">—</span></div><div id="c3_status" class="status ok">VALID • Estimated computation only.</div><div class="actions"><button class="secondary" onclick="copyResult(3)">COPY RESULT</button><button class="secondary" onclick="resetCalc(3)">RESET</button></div></div></section>
 </main>
-<footer>
-🦾 Powered by <strong>MSI Framework™</strong> 🚀<br>
-<strong>JUDE DANTE PINEDA</strong><br>
-Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.<br><br>
-<span style="color:#4ade80">●</span> V62.9 PERFECT • Beautiful UI + Promo DP % Restored • 100% Perfect
-</footer>
+<footer>🦾 Powered by <strong>MSI Framework™</strong> 🚀<br><strong>JUDE DANTE PINEDA</strong><br>Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.</footer>
 <script>
-const TERMS={24:"2 Years",36:"3 Years",48:"4 Years",60:"5 Years",72:"6 Years",84:"7 Years"};
-const TR_MAP={24:23,36:39,48:49,60:57,72:67,84:78};
-const num=id=>{const v=parseFloat(document.getElementById(id).value);return isFinite(v)?v:0};
-const peso=n=>{if(!isFinite(n))return "—";return "₱"+n.toLocaleString("en-PH",{minimumFractionDigits:0,maximumFractionDigits:0})};
-function common(n){return{variant:document.getElementById(`c${n}_variant`).value||"Vehicle",srp:num(`c${n}_srp`),opdp:num(`c${n}_opdp`),white:num(`c${n}_white`),months:parseInt(document.getElementById(`c${n}_term`).value,10),tr:num(`c${n}_tr`),bdp:num(`c${n}_bdp`),dir:num(`c${n}_dir`)}}
-function baseRevenue(srp,opdp,bdp,dir){return opdp+(1+dir/100)*srp*(1-bdp/100)}
-function validCommon(srp,opdp,bdp,dir,tr,months){if(srp<=0)return "Enter Unit SRP.";if(bdp<15||bdp>60)return "Promo DP Percentage must be 15-60%.";if(dir<0)return "Enter valid DIR.";if(tr<=0)return "Enter TR.";return ""}
-function setStatus(n,type,msg){const el=document.getElementById(`c${n}_status`);el.className="status "+type;el.textContent=msg}
-function loadTR(n){const m=parseInt(document.getElementById(`c${n}_term`).value,10);const tr=TR_MAP[m];if(tr!==undefined)document.getElementById(`c${n}_tr`).value=tr}
-let copyStore={1:"",2:"",3:""};
-function calculate1(){const x=common(1),dp=num("c1_dp"),err=validCommon(x.srp,x.opdp,x.bdp,x.dir,x.tr,x.months);document.getElementById("c1_results").classList.add("show");if(err){setStatus(1,"error",err);return}if(dp<=0){setStatus(1,"error","Enter desired DP.");return}const RB=baseRevenue(x.srp,x.opdp,x.bdp,x.dir);const adjusted=(RB-dp)/(1+x.dir/100);const discount=x.srp-dp-adjusted;const totalDP=dp+discount;const monthly=Math.ceil(adjusted*(1+x.tr/100)/x.months-1e-10);document.getElementById("c1r_vehicle").textContent=x.variant;document.getElementById("c1r_dp").textContent=peso(dp);document.getElementById("c1r_srp").textContent=peso(x.srp);document.getElementById("c1r_white").textContent=peso(x.white);document.getElementById("c1r_netdp").textContent=peso(dp);document.getElementById("c1r_discount").textContent=peso(discount);document.getElementById("c1r_totaldp").textContent=peso(totalDP);document.getElementById("c1r_financed").textContent=peso(adjusted);document.getElementById("c1r_term").textContent=TERMS[x.months];document.getElementById("c1r_tr").textContent=x.tr+"%";document.getElementById("c1r_monthly").textContent=peso(monthly);setStatus(1,"ok","VALID • Estimated computation only.");copyStore[1]=`${x.variant}
+const DEFAULT_TR={84:78,72:68,60:57,48:49,36:39,24:23};const TERMS={84:"7 Years",72:"6 Years",60:"5 Years",48:"4 Years",36:"3 Years",24:"2 Years"};const copyStore={1:"",2:"",3:""};
+function num(id){const v=Number(document.getElementById(id).value);return Number.isFinite(v)?v:0}function peso(v){return "₱"+Math.round(v).toLocaleString("en-PH")}function loadTR(n){const m=Number(document.getElementById(`c${n}_term`).value);document.getElementById(`c${n}_tr`).value=DEFAULT_TR[m]}
+function setStatus(n,type,msg){const e=document.getElementById(`c${n}_status`);e.className=`status ${type}`;e.textContent=msg}function baseRevenue(srp,opdp,bdp,dir){return srp*(1-bdp/100)*(1+dir/100)+opdp}
+function validCommon(srp,opdp,bdp,dir,tr,months){if(srp<=0)return "Enter a valid Unit SRP.";if(opdp<0||opdp>=srp)return "Official Promo DP must be ≥ 0 and below SRP.";if(bdp<0||bdp>=100)return "BDP % must be between 0% and 100%.";if(dir<=-100)return "DIR % must be greater than -100%.";if(tr<=-100)return "TR % must be greater than -100%.";if(!TERMS[months])return "Invalid loan term.";return ""}
+function common(n){return{variant:(document.getElementById(`c${n}_variant`).value.trim()||"Vehicle"),srp:num(`c${n}_srp`),opdp:num(`c${n}_opdp`),white:num(`c${n}_white`),months:Number(document.getElementById(`c${n}_term`).value),tr:num(`c${n}_tr`),bdp:num(`c${n}_bdp`),dir:num(`c${n}_dir`)}}
+function calculate1(){const x=common(1),dp=num("c1_dp"),err=validCommon(x.srp,x.opdp,x.bdp,x.dir,x.tr,x.months);document.getElementById("c1_results").classList.add("show");if(err){setStatus(1,"error",err);return}if(dp<=x.opdp){setStatus(1,"warn","This DP is at or below the Official Promo DP. Use the official low-DP quotation instead of Higher DP computation.");return}if(dp>=x.srp){setStatus(1,"warn","Desired DP is at or above SRP. Handle as cash purchase / bank evaluation.");return}const RB=baseRevenue(x.srp,x.opdp,x.bdp,x.dir);const adjusted=(RB-dp)/(1+x.dir/100);const discount=x.srp-dp-adjusted;const totalDP=dp+discount;const monthly=Math.ceil(adjusted*(1+x.tr/100)/x.months-1e-10);document.getElementById("c1r_vehicle").textContent=x.variant;document.getElementById("c1r_dp").textContent=peso(dp);document.getElementById("c1r_srp").textContent=peso(x.srp);document.getElementById("c1r_white").textContent=peso(x.white);document.getElementById("c1r_netdp").textContent=peso(dp);document.getElementById("c1r_discount").textContent=peso(discount);document.getElementById("c1r_totaldp").textContent=peso(totalDP);document.getElementById("c1r_financed").textContent=peso(adjusted);document.getElementById("c1r_term").textContent=TERMS[x.months];document.getElementById("c1r_tr").textContent=x.tr+"%";document.getElementById("c1r_monthly").textContent=peso(monthly);setStatus(1,"ok","VALID • Estimated computation only.");copyStore[1]=`${x.variant}
 Client's Desired Down Payment: ${peso(dp)}
 Unit SRP: ${peso(x.srp)}
-Promo DP %: ${x.bdp}%
 Client Net Down Payment: ${peso(dp)}
 Client Discount: ${peso(discount)}
 Total DP Deductible to SRP: ${peso(totalDP)}
@@ -249,7 +45,6 @@ JUDE DANTE PINEDA
 Estimated computation only. Final monthly amortization remains subject to bank approval.`}
 function calculate2(){const x=common(2),pct=num("c2_pct"),err=validCommon(x.srp,x.opdp,x.bdp,x.dir,x.tr,x.months);document.getElementById("c2_results").classList.add("show");if(err){setStatus(2,"error",err);return}if(pct<=x.bdp){setStatus(2,"warn",`Desired DP percentage must be higher than the Base DP percentage (${x.bdp}%).`);return}if(pct>=100){setStatus(2,"warn","Desired DP percentage must be below 100%.");return}const dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100);if(dp<=x.opdp){setStatus(2,"warn","Derived DP is at or below the Official Promo DP. Use the official low-DP quotation.");return}if(dp>=x.srp){setStatus(2,"warn","Derived DP is at or above SRP. Handle as cash purchase / bank evaluation.");return}const RB=baseRevenue(x.srp,x.opdp,x.bdp,x.dir);const adjusted=(RB-dp)/(1+x.dir/100);const discount=x.srp-dp-adjusted;const totalDP=dp+discount;const monthly=Math.ceil(adjusted*(1+x.tr/100)/x.months-1e-10);document.getElementById("c2r_vehicle").textContent=x.variant;document.getElementById("c2r_pct").textContent=pct.toFixed(2).replace(/\.00$/,'')+"%";document.getElementById("c2r_dp").textContent=peso(dp);document.getElementById("c2r_srp").textContent=peso(x.srp);document.getElementById("c2r_white").textContent=peso(x.white);document.getElementById("c2r_netdp").textContent=peso(dp);document.getElementById("c2r_discount").textContent=peso(discount);document.getElementById("c2r_totaldp").textContent=peso(totalDP);document.getElementById("c2r_financed").textContent=peso(adjusted);document.getElementById("c2r_term").textContent=TERMS[x.months];document.getElementById("c2r_tr").textContent=x.tr+"%";document.getElementById("c2r_monthly").textContent=peso(monthly);setStatus(2,"ok","VALID • Estimated computation only.");copyStore[2]=`${x.variant}
 Client's Desired Down Payment Percentage: ${pct}%
-Promo DP %: ${x.bdp}%
 Derived Down Payment Amount: ${peso(dp)}
 Unit SRP: ${peso(x.srp)}
 Client Net Down Payment: ${peso(dp)}
@@ -268,7 +63,6 @@ Estimated computation only. Final monthly amortization remains subject to bank a
 function calculate3(){const x=common(3),target=num("c3_monthly"),err=validCommon(x.srp,x.opdp,x.bdp,x.dir,x.tr,x.months);document.getElementById("c3_results").classList.add("show");if(err){setStatus(3,"error",err);return}if(target<=0){setStatus(3,"error","Enter a valid target monthly amortization.");return}const RB=baseRevenue(x.srp,x.opdp,x.bdp,x.dir);const required=RB-target*x.months*(1+x.dir/100)/(1+x.tr/100);const dp=Math.ceil(required-1e-10);const adjusted=(RB-dp)/(1+x.dir/100);const discount=x.srp-dp-adjusted;const totalDP=dp+discount;document.getElementById("c3r_vehicle").textContent=x.variant;document.getElementById("c3r_monthly").textContent=peso(target);document.getElementById("c3r_dp").textContent=peso(dp);document.getElementById("c3r_srp").textContent=peso(x.srp);document.getElementById("c3r_white").textContent=peso(x.white);document.getElementById("c3r_netdp").textContent=peso(dp);document.getElementById("c3r_discount").textContent=peso(discount);document.getElementById("c3r_totaldp").textContent=peso(totalDP);document.getElementById("c3r_financed").textContent=peso(adjusted);document.getElementById("c3r_term").textContent=TERMS[x.months];document.getElementById("c3r_tr").textContent=x.tr+"%";if(dp>=x.srp){setStatus(3,"warn","Required DP reaches or exceeds SRP. The target monthly is too low for this standard computation; handle as cash purchase / bank evaluation.")}else if(dp<=x.opdp){setStatus(3,"warn","Required DP is at or below the Official Promo DP. Use the official low-DP quotation.")}else{setStatus(3,"ok","VALID • Estimated computation only.")}copyStore[3]=`${x.variant}
 Target Monthly Amortization: ${peso(target)}
 Estimated Required Down Payment: ${peso(dp)}
-Promo DP %: ${x.bdp}%
 Unit SRP: ${peso(x.srp)}
 Client Net Down Payment: ${peso(dp)}
 Client Discount: ${peso(discount)}
@@ -285,7 +79,8 @@ Estimated computation only. Final required down payment remains subject to bank 
 async function copyResult(n){const text=copyStore[n];if(!text){alert("Compute first.");return}try{await navigator.clipboard.writeText(text);showToast("✓ Result copied successfully.")}catch(e){const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();showToast("✓ Result copied successfully.")}}
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
 function resetCalc(n){document.getElementById(`c${n}_variant`).value="";document.getElementById(`c${n}_srp`).value=0;document.getElementById(`c${n}_opdp`).value=0;document.getElementById(`c${n}_white`).value=0;document.getElementById(`c${n}_term`).value=60;document.getElementById(`c${n}_tr`).value=57;document.getElementById(`c${n}_bdp`).value=20;document.getElementById(`c${n}_dir`).value=17;if(n===1)document.getElementById("c1_dp").value=0;if(n===2)document.getElementById("c2_pct").value=30;if(n===3)document.getElementById("c3_monthly").value=20000;document.getElementById(`c${n}_results`).classList.remove("show");copyStore[n]=""}
-[1,2,3].forEach(loadTR);
+[1,2,3].forEach(loadTR);if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 </script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/," ")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/," ")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/," ")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();}window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+<script src="../access-guard.js"></script>
+</body>
 </html>
