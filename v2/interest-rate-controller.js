@@ -1,7 +1,7 @@
 /* MSI V2 — Editable Interest Rate Controller */
 (function(){
   'use strict';
-  const DEFAULT_RATES={84:78,72:67,60:57,48:49,36:39,24:23};
+  const DEFAULT_RATES={84:78,72:67,60:56.19,48:49,36:39,24:23};
   const TERMS={84:'7 Years (84 Months)',72:'6 Years (72 Months)',60:'5 Years (60 Months)',48:'4 Years (48 Months)',36:'3 Years (36 Months)',24:'2 Years (24 Months)'};
   const ORDER=[84,72,60,48,36,24];
   window.MSI_INTEREST_RATES=Object.assign({},DEFAULT_RATES,window.MSI_INTEREST_RATES||{});
