@@ -25,10 +25,19 @@
       holder.dataset.msiAttachedIcon=src;
     });
   }
+  function loadV628(){
+    if(document.querySelector('script[data-msi-v628-promo-footer-c4]'))return;
+    const s=document.createElement('script');
+    s.src='./v62-8-promo-footer-c4.js?v=62.9';
+    s.dataset.msiV628PromoFooterC4='1';
+    document.head.appendChild(s);
+  }
   function init(){
     apply();
+    loadV628();
     setTimeout(apply,100);
     setTimeout(apply,500);
+    setTimeout(loadV628,100);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
   new MutationObserver(apply).observe(document.documentElement,{childList:true,subtree:true});
