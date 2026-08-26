@@ -1,7 +1,7 @@
 /* MSI V2 — Editable Interest Rate Controller */
 (function(){
   'use strict';
-  const DEFAULT_RATES={84:78,72:67,60:56.19,48:49,36:39,24:23};
+  const DEFAULT_RATES={84:78,72:67,60:57,48:49,36:39,24:23};
   const TERMS={84:'7 Years (84 Months)',72:'6 Years (72 Months)',60:'5 Years (60 Months)',48:'4 Years (48 Months)',36:'3 Years (36 Months)',24:'2 Years (24 Months)'};
   const ORDER=[84,72,60,48,36,24];
   window.MSI_INTEREST_RATES=Object.assign({},DEFAULT_RATES,window.MSI_INTEREST_RATES||{});
@@ -53,7 +53,7 @@
     const x={srp:read(`c${n}_srp`),opdp:read(`c${n}_opdp`),bdp:read(`c${n}_bdp`),dir:read(`c${n}_dir`)},v=variant(n);
     if(n===1){const dp=read('c1_dp'),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return `<div class="simple-line"><strong>Unit:</strong> ${escapeHtml(v)}</div><div class="simple-line"><strong>Desired DP:</strong> ${peso(dp)}</div><div class="simple-line"><strong>Unit SRP:</strong> ${peso(x.srp)}</div><div class="simple-heading">Monthly Amortization:</div><div class="simple-monthly">${ORDER.map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`).join('<br>')}</div>`}
     if(n===2){const pct=read('c2_pct'),dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return `<div class="simple-line"><strong>Unit:</strong> ${escapeHtml(v)}</div><div class="simple-line"><strong>Desired DP:</strong> ${pct.toFixed(2).replace(/\.00$/,'')}%</div><div class="simple-line"><strong>DP Amount:</strong> ${peso(dp)}</div><div class="simple-line"><strong>SRP:</strong> ${peso(x.srp)}</div><div class="simple-heading">Monthly Amortization:</div><div class="simple-monthly">${ORDER.map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`).join('<br>')}</div>`}
-    const target=read('c3_monthly'),months=Number(document.getElementById('c3_term')?.value),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),dp=Math.ceil(rb-target*months*(1+x.dir/100)/(1+rate(months)/100)-1e-10);return `<div class="simple-line"><strong>Unit Model:</strong> ${escapeHtml(v)}</div><div class="simple-line"><strong>Loan Term:</strong> ${escapeHtml(TERMS[months]||'')}</div><div class="simple-line"><strong>Target Monthly:</strong> ${peso(target)}</div><div class="simple-line"><strong>Required DP:</strong> ${peso(dp)}</div><div class="simple-line"><strong>Unit SRP:</strong> ${peso(x.srp)}</div>`
+    const target=read('c3_monthly'),months=Number(document.getElementById('c3_term')?.value),x={srp:read('c3_srp'),opdp:read('c3_opdp'),bdp:read('c3_bdp'),dir:read('c3_dir')},rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),dp=Math.ceil(rb-target*months*(1+x.dir/100)/(1+rate(months)/100)-1e-10);return `<div class="simple-line"><strong>Unit Model:</strong> ${escapeHtml(v)}</div><div class="simple-line"><strong>Loan Term:</strong> ${escapeHtml(TERMS[months]||'')}</div><div class="simple-line"><strong>Target Monthly:</strong> ${peso(target)}</div><div class="simple-line"><strong>Required DP:</strong> ${peso(dp)}</div><div class="simple-line"><strong>Unit SRP:</strong> ${peso(x.srp)}</div>`
   }
   function simpleCopyText(n){
     const x={srp:read(`c${n}_srp`),opdp:read(`c${n}_opdp`),bdp:read(`c${n}_bdp`),dir:read(`c${n}_dir`)},v=variant(n);
