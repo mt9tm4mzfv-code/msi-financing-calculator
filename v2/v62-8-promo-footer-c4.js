@@ -1,10 +1,10 @@
-/* MSI V62.9 package: Promo DP placement, copy footers, Calculator 4. */
+/* MSI V62.10 package: Promo DP placement, copy footers, Calculator 4. */
 (function(){
   'use strict';
   const FOOTER='Prices and promotions are subject to change without prior notice. Final quotation is subject to bank approval and unit availability.';
   const POWER='🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA';
   const TERMS={84:'7 Years (84 Months)',72:'6 Years (72 Months)',60:'5 Years (60 Months)',48:'4 Years (48 Months)',36:'3 Years (36 Months)',24:'2 Years (24 Months)'};
-  const RATE={84:78,72:67,60:56.19,48:49,36:39,24:23};
+  const RATE={84:78,72:67,60:57,48:49,36:39,24:23};
   function num(id){const e=document.getElementById(id);const n=Number(String(e?.value??'').replace(/,/g,'').trim());return Number.isFinite(n)?n:0}
   function peso(v){return '₱'+Math.round(Number(v)||0).toLocaleString('en-PH')}
   function pct(v){return Number(v).toFixed(2).replace(/\.00$/,'')+'%'}
