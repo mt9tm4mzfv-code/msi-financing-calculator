@@ -40,13 +40,11 @@
     const s=String(text||'');
     return s.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
   }
-  function protectLeadingColon(text){
-    const s=plainText(text);
-    const invisible='\u2066';
-    return s.replace(/^([^\s\n][^\n]*?):/,function(_,prefix){return prefix+invisible+':'});
+  function cleanClipboardText(text){
+    return plainText(text).replace(/[\u2066\u200B\u200C\u200D\uFEFF]/g,'');
   }
   async function writePlainClipboard(text,msg){
-    const clean=protectLeadingColon(text);
+    const clean=cleanClipboardText(text);
     try{
       if(navigator.clipboard&&navigator.clipboard.write&&typeof ClipboardItem!=='undefined'){
         const blob=new Blob([clean],{type:'text/plain'});
