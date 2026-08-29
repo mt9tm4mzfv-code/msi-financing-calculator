@@ -45,42 +45,6 @@
       .replace(/[\u00A0\u2000-\u200A\u202F\u205F\u3000]/g,' ')
       .replace(/[\u2066\u200B\u200C\u200D\uFEFF]/g,'');
   }
-  // iOS Notes Data Detectors can turn numeric-heavy Simple Computation lines into
-  // tappable links. Keep the visible text unchanged, but insert an invisible break
-  // inside long digit/comma runs so they cannot be interpreted as phone-like tokens.
-  function cleanSimpleClipboardText(text){
-    return cleanClipboardText(text)
-      .replace(/\b\d{1,3}(?:,\d{3})+(?:\.\d+)?\b/g,m=>m.replace(/,/g,',\u200B'))
-      .replace(/\b\d{5,}\b/g,m=>m.replace(/(\d{3})(?=\d)/g,'$1\u200B'));
-  }
-  function isIOS(){
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
-  }
-  async function writeSimplePlainClipboard(text,msg){
-    const clean=cleanSimpleClipboardText(text);
-    // On iOS Safari prefer the textarea copy path. It avoids Notes receiving a
-    // ClipboardItem payload that can trigger Data Detectors on pasted content.
-    if(isIOS()){
-      const ta=document.createElement('textarea');
-      ta.value=clean;
-      ta.setAttribute('readonly','');
-      ta.setAttribute('aria-hidden','true');
-      ta.style.position='fixed';ta.style.top='0';ta.style.left='-9999px';
-      ta.style.width='1px';ta.style.height='1px';ta.style.opacity='0';
-      document.body.appendChild(ta);ta.focus();ta.select();
-      ta.setSelectionRange(0,ta.value.length);
-      let copied=false;try{copied=document.execCommand('copy')}catch(e){}
-      ta.remove();
-      if(copied){showToast(msg);return true}
-    }
-    try{
-      if(navigator.clipboard&&navigator.clipboard.writeText){
-        await navigator.clipboard.writeText(clean);showToast(msg);return true;
-      }
-    }catch(e){}
-    return writePlainClipboard(clean,msg);
-  }
   async function writePlainClipboard(text,msg){
     const clean=cleanClipboardText(text);
     try{
@@ -123,7 +87,7 @@
   function simpleCopyText(n){const x=getCommon(n),v=variant(n);if(n===1){const dp=inputNumber('c1_dp'),rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return `Unit: ${v}\nDesired DP: ${peso(dp)}\nUnit SRP: ${peso(x.srp)}\n\nMonthly Amortization:\n${SIMPLE_TERMS.map(m=>`${SIMPLE_NAMES[m]} ${peso(calcMonthly(adjusted,m))}`).join('\n')}\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA`}if(n===2){const pct=inputNumber('c2_pct'),dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100),rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return `Unit: ${v}\nDesired DP: ${pct.toFixed(2).replace(/\.00$/,'')}%\nDP Amount: ${peso(dp)}\nSRP: ${peso(x.srp)}\n\nMonthly Amortization:\n${SIMPLE_TERMS.map(m=>`${SIMPLE_NAMES[m]} ${peso(calcMonthly(adjusted,m))}`).join('\n')}\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA`}const months=Number(document.getElementById('c3_term').value),target=inputNumber('c3_monthly'),tr=inputNumber('c3_tr'),rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),dp=Math.ceil(rb-target*months*(1+x.dir/100)/(1+tr/100)-1e-10),term=(document.getElementById('c3_term')?.selectedOptions?.[0]?.textContent||'')+` (${months} Months)`;return `Unit Model: ${v}\nLoan Term: ${term}\nTarget Monthly: ${peso(target)}\nRequired DP: ${peso(dp)}\nUnit SRP: ${peso(x.srp)}\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA`}
   async function copySimple(n){
     const text=simpleCopyText(n);
-    return writeSimplePlainClipboard(text,'Simple computation copied.');
+    return writePlainClipboard(text,'Simple computation copied.');
   }
   window.MSI_COPY_SIMPLE=function(n){return copySimple(Number(n));}
   function showToast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
