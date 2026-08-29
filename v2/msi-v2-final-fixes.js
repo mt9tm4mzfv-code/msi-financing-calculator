@@ -11,7 +11,7 @@
   function read(id){const el=document.getElementById(id);const n=Number(String(el?.value??'').replace(/,/g,''));return Number.isFinite(n)?n:0}
   function peso(v){return '₱'+Math.round(Number(v)||0).toLocaleString('en-PH')}
   function decodePercentEncoded(text){let s=String(text??'').replace(/\r\n/g,'\n').replace(/\r/g,'\n').replace(/[\u2066\u200B\u200C\u200D\uFEFF]/g,'');for(let i=0;i<3;i++){if(!/%[0-9A-Fa-f]{2}/.test(s))break;try{const d=decodeURIComponent(s);if(d===s)break;s=d}catch(e){break}}return s}
-  function cleanCopyText(text){return decodePercentEncoded(text).replace(/[\u2066\u200B\u200C\u200D\uFEFF]/g,'')}
+  function cleanCopyText(text){return decodePercentEncoded(text).replace(/[\u200B\u200C\u200D\uFEFF]/g,'')}
   function variant(n){return cleanCopyText(document.getElementById(`c${n}_variant`)?.value||'Vehicle').trim()||'Vehicle'}
   function color(n,whitePearl){for(const id of [`c${n}_color`,`c${n}_colorway`,`c${n}_colour`,`c${n}_color_name`]){const v=cleanCopyText(document.getElementById(id)?.value||'').trim();if(v)return v}return Number(whitePearl)>0?'White Pearl':'—'}
   function readResultNumber(id,fallback=0){const el=document.getElementById(id);const raw=String(el?.textContent??el?.value??'').replace(/[₱,%\s]/g,'').replace(/,/g,'');const n=Number(raw);return Number.isFinite(n)?n:fallback}
