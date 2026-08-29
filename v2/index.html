@@ -111,20 +111,12 @@ Estimated computation only. Final required down payment remains subject to bank 
 async function copyResult(n){const text=copyStore[n];if(!text){alert("Compute first.");return}try{await navigator.clipboard.writeText(text);showToast("✓ Result copied successfully")}catch(e){const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();showToast("✓ Result copied successfully")}}
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
 function resetCalc(n){document.getElementById(`c${n}_variant`).value="";document.getElementById(`c${n}_srp`).value=0;document.getElementById(`c${n}_opdp`).value=0;document.getElementById(`c${n}_white`).value=0;document.getElementById(`c${n}_term`).value=60;document.getElementById(`c${n}_tr`).value=57;document.getElementById(`c${n}_bdp`).value=20;document.getElementById(`c${n}_dir`).value=17;if(n===1)document.getElementById("c1_dp").value=0;if(n===2)document.getElementById("c2_pct").value=30;if(n===3)document.getElementById("c3_monthly").value=20000;document.getElementById(`c${n}_results`).classList.remove("show");copyStore[n]=""}
-[1,2,3].forEach(loadTR);const MSI_APP_VERSION="62.12";
+[1,2,3].forEach(loadTR);// MSI V2 no longer relies on a service worker to assemble the interface.
 if("serviceWorker" in navigator){
-  window.addEventListener("load",async()=>{
-    try{
-      const registration=await navigator.serviceWorker.register("./sw.js?v="+MSI_APP_VERSION,{updateViaCache:"none"});
-      await registration.update();
-      if(registration.waiting) registration.waiting.postMessage({type:"SKIP_WAITING"});
-      navigator.serviceWorker.addEventListener("controllerchange",()=>{
-        if(!window.__msiReloading){
-          window.__msiReloading=true;
-          window.location.reload();
-        }
-      });
-    }catch(e){}
+  window.addEventListener("load",()=>{
+    navigator.serviceWorker.getRegistrations()
+      .then(registrations=>Promise.all(registrations.map(registration=>registration.unregister())))
+      .catch(()=>{});
   });
 }
 </script>
