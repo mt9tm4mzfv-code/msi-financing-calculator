@@ -2,7 +2,15 @@
 (function(){
   'use strict';
 
-  function moneyFromText(text){const n=Number(String(text||'').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:0}
+  function moneyFromText(text){
+    // Result rows may contain both a peso amount and a percentage, e.g.
+    // "₱177,350 (17.74%)". Extract only the first numeric token.
+    const clean=String(text||'').replace(/[\u2066\u200B\u200C\u200D\uFEFF]/g,'');
+    const match=clean.match(/-?\d[\d,]*(?:\.\d+)?/);
+    if(!match)return 0;
+    const n=Number(match[0].replace(/,/g,''));
+    return Number.isFinite(n)?n:0;
+  }
   function inputNumber(id){const el=document.getElementById(id);return moneyFromText(el?el.value:'')}
   function variant(n){return (document.getElementById(`c${n}_variant`)?.value||'Vehicle').trim()||'Vehicle'}
   function setResultLabel(n,oldLabel,newLabel){const results=document.getElementById(`c${n}_results`);if(!results)return;results.querySelectorAll('.result span:first-child').forEach(el=>{if(el.textContent.trim()===oldLabel)el.textContent=newLabel})}
