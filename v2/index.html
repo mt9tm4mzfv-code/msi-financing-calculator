@@ -11,6 +11,24 @@
 <style>
 *{box-sizing:border-box}html{background:#0b1220}body{margin:0;background:#0b1220;color:#f5f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh}header{padding:18px 16px 14px;border-bottom:1px solid #263247;background:#0b1220;position:sticky;top:0;z-index:20}h1{margin:0;font-size:21px;font-weight:900}.sub{margin-top:4px;color:#9ca3af;font-size:11px}main{width:100%;max-width:760px;margin:auto;padding:12px}.card{background:#111827;border:1px solid #374151;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 5px 18px rgba(0,0,0,.18)}.card h2{margin:0 0 14px;font-size:18px}.section{margin-top:16px}.section-title{color:#9ca3af;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}label{display:block;margin:10px 0 5px;color:#d1d5db;font-size:12px;font-weight:800}input,select{width:100%;min-height:47px;padding:11px 12px;border:1px solid #4b5563;border-radius:10px;background:#1f2937;color:#f9fafb;font-size:16px;outline:none}input:focus,select:focus{border-color:#9ca3af;box-shadow:0 0 0 2px rgba(156,163,175,.18)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}button.primary{width:100%;margin-top:13px;padding:13px;border:0;border-radius:11px;background:#f9fafb;color:#111827;font-size:14px;font-weight:900;cursor:pointer}button.secondary{width:100%;padding:11px;border:1px solid #4b5563;border-radius:10px;background:#1f2937;color:#f9fafb;font-size:12px;font-weight:900;cursor:pointer}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.results{display:none;margin-top:12px;background:#0f172a;border:1px solid #374151;border-radius:12px;padding:13px}.results.show{display:block}.result{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:10px 0;border-bottom:1px solid #374151}.result:last-child{border-bottom:0}.result span:first-child{color:#cbd5e1;font-size:12px}.money{font-size:16px;font-weight:900;text-align:right;white-space:nowrap}.status{margin-top:12px;padding:11px;border-radius:10px;font-size:12px;line-height:1.45;font-weight:800}.status.ok{background:#064e2b;border:1px solid #15803d;color:#bbf7d0}.status.warn{background:#422006;border:1px solid #a16207;color:#fde68a}.status.error{background:#3f1515;border:1px solid #7f1d1d;color:#fecaca}.note{margin-top:8px;color:#6b7280;font-size:10px;line-height:1.5}.badge{display:inline-block;margin-bottom:8px;padding:5px 8px;border-radius:999px;background:#172033;border:1px solid #4b5563;color:#cbd5e1;font-size:10px;font-weight:900}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);z-index:100;opacity:0;pointer-events:none;transition:.2s;background:#064e2b;border:1px solid #15803d;color:#bbf7d0;padding:11px 15px;border-radius:10px;font-size:12px;font-weight:900;max-width:calc(100vw - 32px);text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}footer{max-width:760px;margin:auto;padding:8px 18px 30px;text-align:center;color:#6b7280;font-size:10px;line-height:1.6}footer strong{color:#d1d5db}@media(max-width:600px){.grid{grid-template-columns:1fr}.actions{grid-template-columns:1fr 1fr}.card{padding:14px}}
 </style>
+<script>
+(function(){
+  const VERSION="62.11";
+  const KEY="msi-financial-calculator-version";
+  if(localStorage.getItem(KEY)!==VERSION){
+    localStorage.setItem(KEY,VERSION);
+    if("serviceWorker" in navigator){
+      navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.unregister()))).finally(()=>{
+        const u=new URL(window.location.href);
+        if(!u.searchParams.has("msi_updated")){
+          u.searchParams.set("msi_updated","1");
+          window.location.replace(u.toString());
+        }
+      });
+    }
+  }
+})();
+</script>
 </head>
 <body>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -79,10 +97,25 @@ Estimated computation only. Final required down payment remains subject to bank 
 async function copyResult(n){const text=copyStore[n];if(!text){alert("Compute first.");return}try{await navigator.clipboard.writeText(text);showToast("✓ Result copied successfully")}catch(e){const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();showToast("✓ Result copied successfully")}}
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
 function resetCalc(n){document.getElementById(`c${n}_variant`).value="";document.getElementById(`c${n}_srp`).value=0;document.getElementById(`c${n}_opdp`).value=0;document.getElementById(`c${n}_white`).value=0;document.getElementById(`c${n}_term`).value=60;document.getElementById(`c${n}_tr`).value=57;document.getElementById(`c${n}_bdp`).value=20;document.getElementById(`c${n}_dir`).value=17;if(n===1)document.getElementById("c1_dp").value=0;if(n===2)document.getElementById("c2_pct").value=30;if(n===3)document.getElementById("c3_monthly").value=20000;document.getElementById(`c${n}_results`).classList.remove("show");copyStore[n]=""}
-[1,2,3].forEach(loadTR);if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=62.10").catch(()=>{}));
+[1,2,3].forEach(loadTR);const MSI_APP_VERSION="62.11";
+if("serviceWorker" in navigator){
+  window.addEventListener("load",async()=>{
+    try{
+      const registration=await navigator.serviceWorker.register("./sw.js?v="+MSI_APP_VERSION,{updateViaCache:"none"});
+      await registration.update();
+      if(registration.waiting) registration.waiting.postMessage({type:"SKIP_WAITING"});
+      navigator.serviceWorker.addEventListener("controllerchange",()=>{
+        if(!window.__msiReloading){
+          window.__msiReloading=true;
+          window.location.reload();
+        }
+      });
+    }catch(e){}
+  });
+}
 </script>
 <script src="../access-guard.js"></script>
-<script src="./interest-rate-controller.js?v=62.10"></script>
-<script src="./v62-8-promo-footer-c4.js?v=62.10"></script>
+<script src="./interest-rate-controller.js?v=62.11"></script>
+<script src="./v62-8-promo-footer-c4.js?v=62.11"></script>
 </body>
 </html>
