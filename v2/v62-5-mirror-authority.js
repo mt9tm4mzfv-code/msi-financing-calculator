@@ -65,7 +65,9 @@
   }
   window.MSI_V625_COPY=buildCopy;
   window.simpleCopyText=buildCopy;
-  window.copyResult=function(n){const text=buildCopy(Number(n));try{if(typeof copyStore!=='undefined')copyStore[n]=text}catch(e){}try{if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text);else{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}}catch(e){}return text};
+  // Detailed COPY RESULT is intentionally not owned here.
+  // ui-result-enhancements.js is the single authority for detailed clipboard output.
+
 
   function installCalculatorWrappers(){[1,2,3].forEach(n=>{const name=`calculate${n}`,original=window[name];if(typeof original!=='function'||original.__msiV625Authority)return;const wrapped=function(){const result=original.apply(this,arguments);try{render(n)}catch(e){}startNuclearRepair(n);return result};wrapped.__msiV625Authority=true;window[name]=wrapped})}
   function startNuclearRepair(n){let attempts=0;const timer=setInterval(()=>{attempts++;try{render(n)}catch(e){}if(attempts>=50)clearInterval(timer)},100)}
