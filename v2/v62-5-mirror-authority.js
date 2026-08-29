@@ -64,7 +64,6 @@
     ].join('\n')
   }
   window.MSI_V625_COPY=buildCopy;
-  window.simpleCopyText=buildCopy;
   // Detailed COPY RESULT is intentionally not owned here.
   // ui-result-enhancements.js is the single authority for detailed clipboard output.
 
