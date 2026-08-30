@@ -134,7 +134,12 @@
   const SIMPLE_TERMS=[84,72,60,48,36,24];
   const SIMPLE_NAMES={84:'7 Years (84 Months)',72:'6 Years (72 Months)',60:'5 Years (60 Months)',48:'4 Years (48 Months)',36:'3 Years (36 Months)',24:'2 Years (24 Months)'};
   const SIMPLE_TR={84:78,72:68,60:57,48:49,36:39,24:23};
-  function calcMonthly(adjusted,months){return Math.ceil(adjusted*(1+SIMPLE_TR[months]/100)/months-1e-10)}
+  function calcMonthly(adjusted,months){
+    const liveRate = window.MSI_GET_INTEREST_RATE? window.MSI_GET_INTEREST_RATE(months) : (window.MSI_INTEREST_RATES?.[months]?? SIMPLE_TR[months]);
+    return Math.ceil(
+      adjusted*(1+liveRate/100)/months-1e-10
+    )
+  }
   function baseRevenueLocal(srp,opdp,bdp,dir){return srp*(1-bdp/100)*(1+dir/100)+opdp}
   function validSimple(x){if(x.srp<=0)return'Enter a valid Unit SRP.';if(x.opdp<0||x.opdp>=x.srp)return'Official Promo DP must be ≥ 0 and below SRP.';if(x.bdp<0||x.bdp>=100)return'BDP % must be between 0% and 100%.';if(x.dir<=-100)return'DIR % must be greater than -100%.';return''}
   function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
