@@ -10,7 +10,7 @@
   function renameCalculatorBadges(){document.querySelectorAll('.calculator-card .badge').forEach((badge,i)=>{if(i>=3)return;badge.textContent='CALCULATOR '+(i+1)})}
   function updateCalculatorLabels(){
     document.querySelectorAll('.calculator-card .section-title').forEach(title=>{title.textContent=''});
-    const labels={c1_tr:'Bank Interest Rate (%)',c2_tr:'Bank Interest Rate (%)',c3_tr:'Bank Interest Rate (%)',c1_bdp:'Base Down Payment Percentage (%)',c2_bdp:'Base Down Payment Percentage (%)',c3_bdp:'Base Down Payment Percentage (%)',c1_dir:'Dealer’s Incentive Rate (%)',c2_dir:'Dealer’s Incentive Rate (%)',c3_dir:'Dealer’s Incentive Rate (%)',c2_pct:"Client's Desired Down Payment Percentage (%)"};
+    const labels={c1_tr:'Bank Interest Rate (%)',c2_tr:'Bank Interest Rate (%)',c3_tr:'Bank Interest Rate (%)',c1_bdp:'Base Down Payment (%)',c2_bdp:'Base Down Payment (%)',c3_bdp:'Base Down Payment (%)',c1_dir:'Dealer’s Incentive Rate (%)',c2_dir:'Dealer’s Incentive Rate (%)',c3_dir:'Dealer’s Incentive Rate (%)',c2_pct:"Client's Desired Down Payment Percentage (%)"};
     Object.entries(labels).forEach(([id,text])=>{const label=document.querySelector(`label[for="${id}"]`);if(label)label.textContent=text});
     const c3=document.querySelector('.calculator-3 h2');if(c3)c3.innerHTML='Monthly Amortization → <span class="c3-title-line2">Down Payment Amount</span>';
   }
