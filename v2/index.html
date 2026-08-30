@@ -70,55 +70,58 @@ function num(id){const v=Number(document.getElementById(id).value);return Number
 function setStatus(n,type,msg){const e=document.getElementById(`c${n}_status`);e.className=`status ${type}`;e.textContent=msg}function baseRevenue(srp,opdp,bdp,dir){return srp*(1-bdp/100)*(1+dir/100)+opdp}
 function validCommon(srp,opdp,bdp,dir,tr,months){if(srp<=0)return "Enter a valid Unit SRP.";if(opdp<0||opdp>=srp)return "Official Promo DP must be ≥ 0 and below SRP.";if(bdp<0||bdp>=100)return "BDP % must be between 0% and 100%.";if(dir<=-100)return "DIR % must be greater than -100%.";if(tr<=-100)return "TR % must be greater than -100%.";if(!TERMS[months])return "Invalid loan term.";return ""}
 function common(n){return{variant:(document.getElementById(`c${n}_variant`).value.trim()||"Vehicle"),srp:num(`c${n}_srp`),opdp:num(`c${n}_opdp`),white:num(`c${n}_white`),months:Number(document.getElementById(`c${n}_term`).value),tr:num(`c${n}_tr`),bdp:num(`c${n}_bdp`),dir:num(`c${n}_dir`)}}
-function calculate1(){const x=common(1),dp=num("c1_dp"),err=validCommon(x.srp,x.opdp,x.bdp,x.dir,x.tr,x.months);document.getElementById("c1_results").classList.add("show");if(err){setStatus(1,"error",err);return}if(dp<=x.opdp){setStatus(1,"warn","This DP is at or below the Official Promo DP. Use the official low-DP quotation instead of Higher DP computation.");return}if(dp>=x.srp){setStatus(1,"warn","Desired DP is at or above SRP. Handle as cash purchase / bank evaluation.");return}const RB=baseRevenue(x.srp,x.opdp,x.bdp,x.dir);const adjusted=(RB-dp)/(1+x.dir/100);const discount=x.srp-dp-adjusted;const totalDP=dp+discount;const monthly=Math.ceil(adjusted*(1+x.tr/100)/x.months-1e-10);document.getElementById("c1r_vehicle").textContent=x.variant;document.getElementById("c1r_dp").textContent=peso(dp);document.getElementById("c1r_srp").textContent=peso(x.srp);document.getElementById("c1r_white").textContent=peso(x.white);document.getElementById("c1r_netdp").textContent=peso(dp);document.getElementById("c1r_discount").textContent=peso(discount);document.getElementById("c1r_totaldp").textContent=peso(totalDP);document.getElementById("c1r_financed").textContent=peso(adjusted);document.getElementById("c1r_term").textContent=TERMS[x.months];document.getElementById("c1r_tr").textContent=x.tr+"%";document.getElementById("c1r_monthly").textContent=peso(monthly);setStatus(1,"ok","VALID • Estimated computation only.");copyStore[1]=`${x.variant}
-Client's Desired Down Payment: ${peso(dp)}
-Unit SRP: ${peso(x.srp)}
-Client Net Down Payment: ${peso(dp)}
-Client Discount: ${peso(discount)}
-Total DP Deductible to SRP: ${peso(totalDP)}
-Amount Financed: ${peso(adjusted)}
-Additional Cashout for White Pearl: ${peso(x.white)}
-Estimated Monthly Amortization: ${peso(monthly)}
-Loan Term: ${TERMS[x.months]} (${x.months} Months)
-Interest / TR: ${x.tr}%
+function calculate1(){const x=common(1),dp=num("c1_dp"),err=validCommon(x.srp,x.opdp,x.bdp,x.dir,x.tr,x.months);document.getElementById("c1_results").classList.add("show");if(err){setStatus(1,"error",err);return}if(dp<=x.opdp){setStatus(1,"warn","This DP is at or below the Official Promo DP. Use the official low-DP quotation instead of Higher DP computation.");return}if(dp>=x.srp){setStatus(1,"warn","Desired DP is at or above SRP. Handle as cash purchase / bank evaluation.");return}const RB=baseRevenue(x.srp,x.opdp,x.bdp,x.dir);const adjusted=(RB-dp)/(1+x.dir/100);const discount=x.srp-dp-adjusted;const totalDP=dp+discount;const monthly=Math.ceil(adjusted*(1+x.tr/100)/x.months-1e-10);document.getElementById("c1r_vehicle").textContent=x.variant;document.getElementById("c1r_dp").textContent=peso(dp);document.getElementById("c1r_srp").textContent=peso(x.srp);document.getElementById("c1r_white").textContent=peso(x.white);document.getElementById("c1r_netdp").textContent=peso(dp);document.getElementById("c1r_discount").textContent=peso(discount);document.getElementById("c1r_totaldp").textContent=peso(totalDP);document.getElementById("c1r_financed").textContent=peso(adjusted);document.getElementById("c1r_term").textContent=TERMS[x.months];document.getElementById("c1r_tr").textContent=x.tr+"%";document.getElementById("c1r_monthly").textContent=peso(monthly);setStatus(1,"ok","VALID • Estimated computation only.");const netDP=dp+x.white,pct2=v=>(v/x.srp*100).toFixed(2),pct4=v=>(v/x.srp*100).toFixed(4);copyStore[1]=`Client Desired DP Amount: ${peso(dp)} (${pct2(dp)}%)
+Unit: ${x.variant}
+Color: White Pearl
+Unit SRP: ${peso(x.srp)} (100%)
+Official Promo DP: ${peso(x.opdp)}
+Additional Cashout for White Pearl Color: ${peso(x.white)}
+Client Net DP (Actual Client Cashout): ${peso(netDP)} (${pct2(netDP)}%)
+Client Discount: ${peso(discount)} (${pct2(discount)}%)
+Total DP Deductible to Unit SRP: ${peso(totalDP)} (${pct4(totalDP)}%)
+Amount Financed: ${peso(adjusted)} (${pct2(adjusted)}%)
+Monthly (${TERMS[x.months]}): ${peso(monthly)}
+Bank Interest Rate: ${x.tr}%
+
+Prices and promotions are subject to change without prior notice. Financing is subject to bank approval.
 
 🦾 Powered by MSI Framework™ 🚀
-JUDE DANTE PINEDA
+JUDE DANTE PINEDA`}
+function calculate2(){const x=common(2),pct=num("c2_pct"),err=validCommon(x.srp,x.opdp,x.bdp,x.dir,x.tr,x.months);document.getElementById("c2_results").classList.add("show");if(err){setStatus(2,"error",err);return}if(pct<=x.bdp){setStatus(2,"warn",`Desired DP percentage must be higher than the Base DP percentage (${x.bdp}%).`);return}if(pct>=100){setStatus(2,"warn","Desired DP percentage must be below 100%.");return}const dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100);if(dp<=x.opdp){setStatus(2,"warn","Derived DP is at or below the Official Promo DP. Use the official low-DP quotation.");return}if(dp>=x.srp){setStatus(2,"warn","Derived DP is at or above SRP. Handle as cash purchase / bank evaluation.");return}const RB=baseRevenue(x.srp,x.opdp,x.bdp,x.dir);const adjusted=(RB-dp)/(1+x.dir/100);const discount=x.srp-dp-adjusted;const totalDP=dp+discount;const monthly=Math.ceil(adjusted*(1+x.tr/100)/x.months-1e-10);document.getElementById("c2r_vehicle").textContent=x.variant;document.getElementById("c2r_pct").textContent=pct.toFixed(2).replace(/\.00$/,'')+"%";document.getElementById("c2r_dp").textContent=peso(dp);document.getElementById("c2r_srp").textContent=peso(x.srp);document.getElementById("c2r_white").textContent=peso(x.white);document.getElementById("c2r_netdp").textContent=peso(dp);document.getElementById("c2r_discount").textContent=peso(discount);document.getElementById("c2r_totaldp").textContent=peso(totalDP);document.getElementById("c2r_financed").textContent=peso(adjusted);document.getElementById("c2r_term").textContent=TERMS[x.months];document.getElementById("c2r_tr").textContent=x.tr+"%";document.getElementById("c2r_monthly").textContent=peso(monthly);setStatus(2,"ok","VALID • Estimated computation only.");const netDP=dp+x.white,pct2=v=>(v/x.srp*100).toFixed(2),pct4=v=>(v/x.srp*100).toFixed(4);copyStore[2]=`Client Desired DP (Percentage): ${pct4(totalDP)}%
+Unit: ${x.variant}
+Color: White Pearl
+Unit SRP: ${peso(x.srp)} (100%)
+Official Promo DP: ${peso(x.opdp)}
+Additional Cashout for White Pearl Color: ${peso(x.white)}
+Client Net DP (Actual Client Cashout): ${peso(netDP)} (${pct2(netDP)}%)
+Client Discount: ${peso(discount)} (${pct2(discount)}%)
+Total DP Deductible to Unit SRP: ${peso(totalDP)} (${pct4(totalDP)}%)
+Amount Financed: ${peso(adjusted)} (${pct2(adjusted)}%)
+Monthly (${TERMS[x.months]}): ${peso(monthly)}
+Bank Interest Rate: ${x.tr}%
 
-Estimated computation only. Final monthly amortization remains subject to bank approval.`}
-function calculate2(){const x=common(2),pct=num("c2_pct"),err=validCommon(x.srp,x.opdp,x.bdp,x.dir,x.tr,x.months);document.getElementById("c2_results").classList.add("show");if(err){setStatus(2,"error",err);return}if(pct<=x.bdp){setStatus(2,"warn",`Desired DP percentage must be higher than the Base DP percentage (${x.bdp}%).`);return}if(pct>=100){setStatus(2,"warn","Desired DP percentage must be below 100%.");return}const dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100);if(dp<=x.opdp){setStatus(2,"warn","Derived DP is at or below the Official Promo DP. Use the official low-DP quotation.");return}if(dp>=x.srp){setStatus(2,"warn","Derived DP is at or above SRP. Handle as cash purchase / bank evaluation.");return}const RB=baseRevenue(x.srp,x.opdp,x.bdp,x.dir);const adjusted=(RB-dp)/(1+x.dir/100);const discount=x.srp-dp-adjusted;const totalDP=dp+discount;const monthly=Math.ceil(adjusted*(1+x.tr/100)/x.months-1e-10);document.getElementById("c2r_vehicle").textContent=x.variant;document.getElementById("c2r_pct").textContent=pct.toFixed(2).replace(/\.00$/,'')+"%";document.getElementById("c2r_dp").textContent=peso(dp);document.getElementById("c2r_srp").textContent=peso(x.srp);document.getElementById("c2r_white").textContent=peso(x.white);document.getElementById("c2r_netdp").textContent=peso(dp);document.getElementById("c2r_discount").textContent=peso(discount);document.getElementById("c2r_totaldp").textContent=peso(totalDP);document.getElementById("c2r_financed").textContent=peso(adjusted);document.getElementById("c2r_term").textContent=TERMS[x.months];document.getElementById("c2r_tr").textContent=x.tr+"%";document.getElementById("c2r_monthly").textContent=peso(monthly);setStatus(2,"ok","VALID • Estimated computation only.");copyStore[2]=`${x.variant}
-Client's Desired Down Payment Percentage: ${pct}%
-Derived Down Payment Amount: ${peso(dp)}
-Unit SRP: ${peso(x.srp)}
-Client Net Down Payment: ${peso(dp)}
-Client Discount: ${peso(discount)}
-Total DP Deductible to SRP: ${peso(totalDP)}
-Amount Financed: ${peso(adjusted)}
-Additional Cashout for White Pearl: ${peso(x.white)}
-Estimated Monthly Amortization: ${peso(monthly)}
-Loan Term: ${TERMS[x.months]} (${x.months} Months)
-Interest / TR: ${x.tr}%
-
-🦾 Powered by MSI Framework™ 🚀
-JUDE DANTE PINEDA
-
-Estimated computation only. Final monthly amortization remains subject to bank approval.`}
-function calculate3(){const x=common(3),target=num("c3_monthly"),err=validCommon(x.srp,x.opdp,x.bdp,x.dir,x.tr,x.months);document.getElementById("c3_results").classList.add("show");if(err){setStatus(3,"error",err);return}if(target<=0){setStatus(3,"error","Enter a valid target monthly amortization.");return}const RB=baseRevenue(x.srp,x.opdp,x.bdp,x.dir);const required=RB-target*x.months*(1+x.dir/100)/(1+x.tr/100);const dp=Math.ceil(required-1e-10);const adjusted=(RB-dp)/(1+x.dir/100);const discount=x.srp-dp-adjusted;const totalDP=dp+discount;document.getElementById("c3r_vehicle").textContent=x.variant;document.getElementById("c3r_monthly").textContent=peso(target);document.getElementById("c3r_dp").textContent=peso(dp);document.getElementById("c3r_srp").textContent=peso(x.srp);document.getElementById("c3r_white").textContent=peso(x.white);document.getElementById("c3r_netdp").textContent=peso(dp);document.getElementById("c3r_discount").textContent=peso(discount);document.getElementById("c3r_totaldp").textContent=peso(totalDP);document.getElementById("c3r_financed").textContent=peso(adjusted);document.getElementById("c3r_term").textContent=TERMS[x.months];document.getElementById("c3r_tr").textContent=x.tr+"%";if(dp>=x.srp){setStatus(3,"warn","Required DP reaches or exceeds SRP. The target monthly is too low for this standard computation; handle as cash purchase / bank evaluation")}else if(dp<=x.opdp){setStatus(3,"warn","Required DP is at or below the Official Promo DP. Use the official low-DP quotation.")}else{setStatus(3,"ok","VALID • Estimated computation only.")}copyStore[3]=`${x.variant}
-Target Monthly Amortization: ${peso(target)}
-Estimated Required Down Payment: ${peso(dp)}
-Unit SRP: ${peso(x.srp)}
-Client Net Down Payment: ${peso(dp)}
-Client Discount: ${peso(discount)}
-Total DP Deductible to SRP: ${peso(totalDP)}
-Amount Financed: ${peso(adjusted)}
-Additional Cashout for White Pearl: ${peso(x.white)}
-Loan Term: ${TERMS[x.months]} (${x.months} Months)
-Interest / TR: ${x.tr}%
+Prices and promotions are subject to change without prior notice. Financing is subject to bank approval.
 
 🦾 Powered by MSI Framework™ 🚀
-JUDE DANTE PINEDA
+JUDE DANTE PINEDA`}
+function calculate3(){const x=common(3),target=num("c3_monthly"),err=validCommon(x.srp,x.opdp,x.bdp,x.dir,x.tr,x.months);document.getElementById("c3_results").classList.add("show");if(err){setStatus(3,"error",err);return}if(target<=0){setStatus(3,"error","Enter a valid target monthly amortization.");return}const RB=baseRevenue(x.srp,x.opdp,x.bdp,x.dir);const required=RB-target*x.months*(1+x.dir/100)/(1+x.tr/100);const dp=Math.ceil(required-1e-10);const adjusted=(RB-dp)/(1+x.dir/100);const discount=x.srp-dp-adjusted;const totalDP=dp+discount;document.getElementById("c3r_vehicle").textContent=x.variant;document.getElementById("c3r_monthly").textContent=peso(target);document.getElementById("c3r_dp").textContent=peso(dp);document.getElementById("c3r_srp").textContent=peso(x.srp);document.getElementById("c3r_white").textContent=peso(x.white);document.getElementById("c3r_netdp").textContent=peso(dp);document.getElementById("c3r_discount").textContent=peso(discount);document.getElementById("c3r_totaldp").textContent=peso(totalDP);document.getElementById("c3r_financed").textContent=peso(adjusted);document.getElementById("c3r_term").textContent=TERMS[x.months];document.getElementById("c3r_tr").textContent=x.tr+"%";if(dp>=x.srp){setStatus(3,"warn","Required DP reaches or exceeds SRP. The target monthly is too low for this standard computation; handle as cash purchase / bank evaluation")}else if(dp<=x.opdp){setStatus(3,"warn","Required DP is at or below the Official Promo DP. Use the official low-DP quotation.")}else{setStatus(3,"ok","VALID • Estimated computation only.")}const netDP=dp+x.white,pct2=v=>(v/x.srp*100).toFixed(2),pct4=v=>(v/x.srp*100).toFixed(4);copyStore[3]=`Client Desired Monthly (${TERMS[x.months]}): ${peso(target)}
+Unit: ${x.variant}
+Color: White Pearl
+Unit SRP: ${peso(x.srp)} (100%)
+Official Promo DP: ${peso(x.opdp)}
+Client Required DP Amount: ${peso(dp)} (${pct2(dp)}%)
+Additional Cashout for White Pearl Color: ${peso(x.white)}
+Client Net DP (Actual Client Cashout): ${peso(netDP)} (${pct2(netDP)}%)
+Client Discount: ${peso(discount)} (${pct2(discount)}%)
+Total DP Deductible to Unit SRP: ${peso(totalDP)} (${pct4(totalDP)}%)
+Amount Financed: ${peso(adjusted)} (${pct2(adjusted)}%)
+Monthly (${TERMS[x.months]}): ${peso(target)}
+Bank Interest Rate: ${x.tr}%
 
-Estimated computation only. Final required down payment remains subject to bank approval.`}
+Estimated computation only and subject to bank approval. Price/promo indicated in this quotation are subject to change without prior notice.
+
+🦾 Powered by MSI Framework™ 🚀
+JUDE DANTE PINEDA`}
 async function copyResult(n){const text=copyStore[n];if(!text){alert("Compute first.");return}try{await navigator.clipboard.writeText(text);showToast("✓ Result copied successfully")}catch(e){const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();showToast("✓ Result copied successfully")}}
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
 function resetCalc(n){document.getElementById(`c${n}_variant`).value="";document.getElementById(`c${n}_srp`).value=0;document.getElementById(`c${n}_opdp`).value=0;document.getElementById(`c${n}_white`).value=0;document.getElementById(`c${n}_term`).value=60;document.getElementById(`c${n}_tr`).value=57;document.getElementById(`c${n}_bdp`).value=20;document.getElementById(`c${n}_dir`).value=17;if(n===1)document.getElementById("c1_dp").value=0;if(n===2)document.getElementById("c2_pct").value=30;if(n===3)document.getElementById("c3_monthly").value=20000;document.getElementById(`c${n}_results`).classList.remove("show");copyStore[n]=""}
