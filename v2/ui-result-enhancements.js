@@ -21,19 +21,97 @@
   function line(label,value){return `${label}: ${value}`}
   function buildDetailedCopy(n){
     const v=variant(n),x=getCommon(n);
+    const pct=(amount,decimals=2)=>{
+      const srp=Number(x.srp)||0;
+      return srp>0?((Number(amount)||0)/srp*100).toFixed(decimals):Number(0).toFixed(decimals);
+    };
+    const termName=(n,months)=>{
+      const raw=(document.getElementById(`c${n}r_term`)?.textContent||'').trim();
+      return raw||({84:'7 Years',72:'6 Years',60:'5 Years',48:'4 Years',36:'3 Years',24:'2 Years'}[months]||`${months} Months`);
+    };
     if(n===1){
-      const dp=inputNumber('c1_dp'),discount=moneyFromText(document.getElementById('c1r_discount')?.textContent),total=moneyFromText(document.getElementById('c1r_totaldp')?.textContent),financed=moneyFromText(document.getElementById('c1r_financed')?.textContent),monthly=moneyFromText(document.getElementById('c1r_monthly')?.textContent),months=Number(document.getElementById('c1_term').value),tr=inputNumber('c1_tr');
-      const term=(document.getElementById('c1r_term')?.textContent||'')+` (${months} Months)`;
-      return [line('Unit Model',v),line("Client's Desired Down Payment",peso(dp)),line('Official Promo DP',peso(x.opdp)),line('Unit SRP',peso(x.srp)),line('Client Net Down Payment',peso(dp+x.white)),line('Client Discount',peso(discount)),line('Total DP Deductible to SRP',peso(total)),line('Amount Financed',peso(financed)),line('Additional Cashout for White Pearl',peso(x.white)),line('Estimated Monthly Amortization',peso(monthly)),line('Loan Term',term),line('Bank Interest Rate',tr+'%'),'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n');
+      const dp=inputNumber('c1_dp');
+      const discount=moneyFromText(document.getElementById('c1r_discount')?.textContent);
+      const total=moneyFromText(document.getElementById('c1r_totaldp')?.textContent);
+      const financed=moneyFromText(document.getElementById('c1r_financed')?.textContent);
+      const monthly=moneyFromText(document.getElementById('c1r_monthly')?.textContent);
+      const months=Number(document.getElementById('c1_term').value);
+      const tr=inputNumber('c1_tr'),term=termName(1,months),net=dp+x.white;
+      return [
+        line('Client Desired DP Amount',`${peso(dp)} (${pct(dp)}%)`),
+        line('Unit',v),
+        line('Color','White Pearl'),
+        line('Unit SRP',`${peso(x.srp)} (100%)`),
+        line('Official Promo DP',peso(x.opdp)),
+        line('Additional Cashout for White Pearl Color',peso(x.white)),
+        line('Client Net DP (Actual Client Cashout)',`${peso(net)} (${pct(net)}%)`),
+        line('Client Discount',`${peso(discount)} (${pct(discount)}%)`),
+        line('Total DP Deductible to Unit SRP',`${peso(total)} (${pct(total,4)}%)`),
+        line('Amount Financed',`${peso(financed)} (${pct(financed)}%)`),
+        line(`Monthly (${term})`,peso(monthly)),
+        line('Bank Interest Rate',tr+'%'),
+        '',
+        'Prices and promotions are subject to change without prior notice. Financing is subject to bank approval.',
+        '',
+        '🦾 Powered by MSI Framework™ 🚀',
+        'JUDE DANTE PINEDA'
+      ].join('\n');
     }
     if(n===2){
-      const pct=inputNumber('c2_pct'),dp=moneyFromText(document.getElementById('c2r_dp')?.textContent),discount=moneyFromText(document.getElementById('c2r_discount')?.textContent),total=moneyFromText(document.getElementById('c2r_totaldp')?.textContent),financed=moneyFromText(document.getElementById('c2r_financed')?.textContent),monthly=moneyFromText(document.getElementById('c2r_monthly')?.textContent),months=Number(document.getElementById('c2_term').value),tr=inputNumber('c2_tr');
-      const term=(document.getElementById('c2r_term')?.textContent||'')+` (${months} Months)`;
-      return [line('Unit Model',v),line("Client's Desired Down Payment Percentage",pct+'%'),line('Client Down Payment Amount',peso(dp)),line('Official Promo DP',peso(x.opdp)),line('Unit SRP',peso(x.srp)),line('Client Net Down Payment',peso(dp+x.white)),line('Client Discount',peso(discount)),line('Total DP Deductible to SRP',peso(total)),line('Amount Financed',peso(financed)),line('Additional Cashout for White Pearl',peso(x.white)),line('Estimated Monthly Amortization',peso(monthly)),line('Loan Term',term),line('Bank Interest Rate',tr+'%'),'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n');
+      const dp=moneyFromText(document.getElementById('c2r_dp')?.textContent);
+      const discount=moneyFromText(document.getElementById('c2r_discount')?.textContent);
+      const total=moneyFromText(document.getElementById('c2r_totaldp')?.textContent);
+      const financed=moneyFromText(document.getElementById('c2r_financed')?.textContent);
+      const monthly=moneyFromText(document.getElementById('c2r_monthly')?.textContent);
+      const months=Number(document.getElementById('c2_term').value);
+      const tr=inputNumber('c2_tr'),term=termName(2,months),net=dp+x.white;
+      return [
+        line('Client Desired DP (Percentage)',pct(total,4)+'%'),
+        line('Unit',v),
+        line('Color','White Pearl'),
+        line('Unit SRP',`${peso(x.srp)} (100%)`),
+        line('Official Promo DP',peso(x.opdp)),
+        line('Additional Cashout for White Pearl Color',peso(x.white)),
+        line('Client Net DP (Actual Client Cashout)',`${peso(net)} (${pct(net)}%)`),
+        line('Client Discount',`${peso(discount)} (${pct(discount)}%)`),
+        line('Total DP Deductible to Unit SRP',`${peso(total)} (${pct(total,4)}%)`),
+        line('Amount Financed',`${peso(financed)} (${pct(financed)}%)`),
+        line(`Monthly (${term})`,peso(monthly)),
+        line('Bank Interest Rate',tr+'%'),
+        '',
+        'Prices and promotions are subject to change without prior notice. Financing is subject to bank approval.',
+        '',
+        '🦾 Powered by MSI Framework™ 🚀',
+        'JUDE DANTE PINEDA'
+      ].join('\n');
     }
-    const target=moneyFromText(document.getElementById('c3r_monthly')?.textContent),dp=moneyFromText(document.getElementById('c3r_dp')?.textContent),discount=moneyFromText(document.getElementById('c3r_discount')?.textContent),total=moneyFromText(document.getElementById('c3r_totaldp')?.textContent),financed=moneyFromText(document.getElementById('c3r_financed')?.textContent),months=Number(document.getElementById('c3_term').value),tr=inputNumber('c3_tr');
-    const term=(document.getElementById('c3r_term')?.textContent||'')+` (${months} Months)`;
-    return [line('Unit Model',v),line('Desired Monthly Amortization',peso(target)),line('Required Down Payment',peso(dp)),line('Official Promo DP',peso(x.opdp)),line('Unit SRP',peso(x.srp)),line('Client Net Down Payment',peso(dp+x.white)),line('Client Discount',peso(discount)),line('Total DP Deductible to SRP',peso(total)),line('Amount Financed',peso(financed)),line('Additional Cashout for White Pearl',peso(x.white)),line('Loan Term',term),line('Bank Interest Rate',tr+'%'),'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n');
+    const target=moneyFromText(document.getElementById('c3r_monthly')?.textContent);
+    const dp=moneyFromText(document.getElementById('c3r_dp')?.textContent);
+    const discount=moneyFromText(document.getElementById('c3r_discount')?.textContent);
+    const total=moneyFromText(document.getElementById('c3r_totaldp')?.textContent);
+    const financed=moneyFromText(document.getElementById('c3r_financed')?.textContent);
+    const months=Number(document.getElementById('c3_term').value);
+    const tr=inputNumber('c3_tr'),term=termName(3,months),net=dp+x.white;
+    return [
+      line(`Client Desired Monthly (${term})`,peso(target)),
+      line('Unit',v),
+      line('Color','White Pearl'),
+      line('Unit SRP',`${peso(x.srp)} (100%)`),
+      line('Official Promo DP',peso(x.opdp)),
+      line('Client Required DP Amount',`${peso(dp)} (${pct(dp)}%)`),
+      line('Additional Cashout for White Pearl Color',peso(x.white)),
+      line('Client Net DP (Actual Client Cashout)',`${peso(net)} (${pct(net)}%)`),
+      line('Client Discount',`${peso(discount)} (${pct(discount)}%)`),
+      line('Total DP Deductible to Unit SRP',`${peso(total)} (${pct(total,4)}%)`),
+      line('Amount Financed',`${peso(financed)} (${pct(financed)}%)`),
+      line(`Monthly (${term})`,peso(target)),
+      line('Bank Interest Rate',tr+'%'),
+      '',
+      'Estimated computation only and subject to bank approval. Price/promo indicated in this quotation are subject to change without prior notice.',
+      '',
+      '🦾 Powered by MSI Framework™ 🚀',
+      'JUDE DANTE PINEDA'
+    ].join('\n');
   }
 
   function plainText(text){
