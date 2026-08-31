@@ -2,6 +2,9 @@
 (function(){
   'use strict';
 
+  const COPY_RESULT_FOOTER=window.MSI_COPY_RESULT_FOOTER||'Estimated computation only. Subject to change without prior notice.\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA';
+  window.MSI_COPY_RESULT_FOOTER=COPY_RESULT_FOOTER;
+
   const ORDER=[84,72,60,48,36,24];
   const TERMS={84:'7 Years (84 Months)',72:'6 Years (72 Months)',60:'5 Years (60 Months)',48:'4 Years (48 Months)',36:'3 Years (36 Months)',24:'2 Years (24 Months)'};
   const FALLBACK={84:78,72:67,60:57,48:49,36:39,24:23};
@@ -149,18 +152,18 @@
     if(n===1){
       const dp=read('c1_dp'),white=read('c1_white'),rb=baseRevenue(x),adjusted=(rb-dp)/(1+x.dir/100),discount=x.srp-dp-adjusted,total=dp+discount,months=Number(document.getElementById('c1_term')?.value),m=monthly(adjusted,months);
       return [
-        'Client Desired DP Amount: '+peso(dp)+' ('+pct(dp)+'%)','Unit: '+v,'Color: White Pearl','Unit SRP: '+peso(x.srp)+' (100%)','Official Promo DP: '+peso(x.opdp),'Additional Cashout for White Pearl Color: '+peso(white),'Client Net DP (Actual Client Cashout): '+peso(dp+white)+' ('+pct(dp+white)+'%)','Client Discount: '+peso(discount)+' ('+pct(discount)+'%)','Total DP Deductible to Unit SRP: '+peso(total)+' ('+pct(total,4)+'%)','Amount Financed: '+peso(adjusted)+' ('+pct(adjusted)+'%)','Monthly ('+(TERMS[months]||'')+'): '+peso(m),'Bank Interest Rate: '+rate(months)+'%','','Prices and promotions are subject to change without prior notice. Financing is subject to bank approval.','','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'
+        'Client Desired DP Amount: '+peso(dp)+' ('+pct(dp)+'%)','Unit: '+v,'Color: White Pearl','Unit SRP: '+peso(x.srp)+' (100%)','Official Promo DP: '+peso(x.opdp),'Additional Cashout for White Pearl Color: '+peso(white),'Client Net DP (Actual Client Cashout): '+peso(dp+white)+' ('+pct(dp+white)+'%)','Client Discount: '+peso(discount)+' ('+pct(discount)+'%)','Total DP Deductible to Unit SRP: '+peso(total)+' ('+pct(total,4)+'%)','Amount Financed: '+peso(adjusted)+' ('+pct(adjusted)+'%)','Monthly ('+(TERMS[months]||'')+'): '+peso(m),'Bank Interest Rate: '+rate(months)+'%','',COPY_RESULT_FOOTER
       ].join('\n');
     }
     if(n===2){
       const pctInput=read('c2_pct'),white=read('c2_white'),dp=x.opdp+(1+x.dir/100)*x.srp*(pctInput/100-x.bdp/100),rb=baseRevenue(x),adjusted=(rb-dp)/(1+x.dir/100),discount=x.srp-dp-adjusted,total=dp+discount,months=Number(document.getElementById('c2_term')?.value),m=monthly(adjusted,months);
       return [
-        'Client Desired DP (Percentage): '+pct(total,4)+'%','Unit: '+v,'Color: White Pearl','Unit SRP: '+peso(x.srp)+' (100%)','Official Promo DP: '+peso(x.opdp),'Additional Cashout for White Pearl Color: '+peso(white),'Client Net DP (Actual Client Cashout): '+peso(dp+white)+' ('+pct(dp+white)+'%)','Client Discount: '+peso(discount)+' ('+pct(discount)+'%)','Total DP Deductible to Unit SRP: '+peso(total)+' ('+pct(total,4)+'%)','Amount Financed: '+peso(adjusted)+' ('+pct(adjusted)+'%)','Monthly ('+(TERMS[months]||'')+'): '+peso(m),'Bank Interest Rate: '+rate(months)+'%','','Prices and promotions are subject to change without prior notice. Financing is subject to bank approval.','','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'
+        'Client Desired DP (Percentage): '+pct(total,4)+'%','Unit: '+v,'Color: White Pearl','Unit SRP: '+peso(x.srp)+' (100%)','Official Promo DP: '+peso(x.opdp),'Additional Cashout for White Pearl Color: '+peso(white),'Client Net DP (Actual Client Cashout): '+peso(dp+white)+' ('+pct(dp+white)+'%)','Client Discount: '+peso(discount)+' ('+pct(discount)+'%)','Total DP Deductible to Unit SRP: '+peso(total)+' ('+pct(total,4)+'%)','Amount Financed: '+peso(adjusted)+' ('+pct(adjusted)+'%)','Monthly ('+(TERMS[months]||'')+'): '+peso(m),'Bank Interest Rate: '+rate(months)+'%','',COPY_RESULT_FOOTER
       ].join('\n');
     }
     const white=read('c3_white'),months=Number(document.getElementById('c3_term')?.value),target=read('c3_monthly'),dp=Math.ceil(baseRevenue(x)-target*months*(1+x.dir/100)/(1+rate(months)/100)-1e-10),adjusted=(baseRevenue(x)-dp)/(1+x.dir/100),discount=x.srp-dp-adjusted,total=dp+discount;
     return [
-      'Client Desired Monthly ('+(TERMS[months]||'')+'): '+peso(target),'Unit: '+v,'Color: White Pearl','Unit SRP: '+peso(x.srp)+' (100%)','Official Promo DP: '+peso(x.opdp),'Client Required DP Amount: '+peso(dp)+' ('+pct(dp)+'%)','Additional Cashout for White Pearl Color: '+peso(white),'Client Net DP (Actual Client Cashout): '+peso(dp+white)+' ('+pct(dp+white)+'%)','Client Discount: '+peso(discount)+' ('+pct(discount)+'%)','Total DP Deductible to Unit SRP: '+peso(total)+' ('+pct(total,4)+'%)','Amount Financed: '+peso(adjusted)+' ('+pct(adjusted)+'%)','Monthly ('+(TERMS[months]||'')+'): '+peso(target),'Bank Interest Rate: '+rate(months)+'%','','Estimated computation only and subject to bank approval. Price/promo indicated in this quotation are subject to change without prior notice.','','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'
+      'Client Desired Monthly ('+(TERMS[months]||'')+'): '+peso(target),'Unit: '+v,'Color: White Pearl','Unit SRP: '+peso(x.srp)+' (100%)','Official Promo DP: '+peso(x.opdp),'Client Required DP Amount: '+peso(dp)+' ('+pct(dp)+'%)','Additional Cashout for White Pearl Color: '+peso(white),'Client Net DP (Actual Client Cashout): '+peso(dp+white)+' ('+pct(dp+white)+'%)','Client Discount: '+peso(discount)+' ('+pct(discount)+'%)','Total DP Deductible to Unit SRP: '+peso(total)+' ('+pct(total,4)+'%)','Amount Financed: '+peso(adjusted)+' ('+pct(adjusted)+'%)','Monthly ('+(TERMS[months]||'')+'): '+peso(target),'Bank Interest Rate: '+rate(months)+'%','',COPY_RESULT_FOOTER
     ].join('\n');
   }
 
@@ -207,7 +210,8 @@
       }
     },true);
 
-    window.MSI_COPY_SIMPLE=function(n){return write(simpleCopyText(Number(n)),'Simple computation copied.');};
+    window.simpleCopyText=function(n){return simpleCopyText(Number(n));};
+    window.MSI_COPY_SIMPLE=function(n){return write(window.simpleCopyText(Number(n)),'Simple computation copied.');};
     window.copyResult=function(n){
       const text=detailedCopy(Number(n));
       if(typeof copyStore!=='undefined')copyStore[n]=text;
