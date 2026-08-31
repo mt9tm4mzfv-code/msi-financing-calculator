@@ -126,7 +126,7 @@
 
   const SIMPLE_TERMS=[84,72,60,48,36,24];
   const SIMPLE_NAMES={84:'7 Years (84 Months)',72:'6 Years (72 Months)',60:'5 Years (60 Months)',48:'4 Years (48 Months)',36:'3 Years (36 Months)',24:'2 Years (24 Months)'};
-  const SIMPLE_TR={84:78,72:68,60:57,48:49,36:39,24:23};
+  const SIMPLE_TR={84:78,72:68,60:57,48:49,36:42,24:23};
   function calcMonthly(adjusted,months){
     const liveRate = window.MSI_GET_INTEREST_RATE? window.MSI_GET_INTEREST_RATE(months) : (window.MSI_INTEREST_RATES?.[months]?? SIMPLE_TR[months]);
     return Math.ceil(
