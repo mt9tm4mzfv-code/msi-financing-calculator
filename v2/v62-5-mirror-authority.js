@@ -3,7 +3,7 @@
   'use strict';
   window.__MSI_V625_AUTHORITY=true;
   const TERMS={84:'7 Years',72:'6 Years',60:'5 Years',48:'4 Years',36:'3 Years',24:'2 Years'};
-  const DEFAULT_RATES={84:78,72:67,60:57,48:49,36:39,24:23};
+  const DEFAULT_RATES={84:78,72:67,60:57,48:49,36:42,24:23};
 
   function safeParseFirstNumber(value){
     if(value===null||value===undefined||value==='')return 0;
