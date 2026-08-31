@@ -19,6 +19,7 @@
 
   function getCommon(n){return{srp:inputNumber(`c${n}_srp`),opdp:inputNumber(`c${n}_opdp`),white:inputNumber(`c${n}_white`),bdp:inputNumber(`c${n}_bdp`),dir:inputNumber(`c${n}_dir`)}}
   function line(label,value){return `${label}: ${value}`}
+  const COPY_RESULT_FOOTER='Estimated computation only. Subject to change without prior notice.\n\n${COPY_RESULT_FOOTER}';
   function buildDetailedCopy(n){
     const v=variant(n),x=getCommon(n);
     const pct=(amount,decimals=2)=>{
@@ -51,10 +52,7 @@
         line(`Monthly (${term})`,peso(monthly)),
         line('Bank Interest Rate',tr+'%'),
         '',
-        'Prices and promotions are subject to change without prior notice. Financing is subject to bank approval.',
-        '',
-        '🦾 Powered by MSI Framework™ 🚀',
-        'JUDE DANTE PINEDA'
+        COPY_RESULT_FOOTER
       ].join('\n');
     }
     if(n===2){
@@ -79,10 +77,7 @@
         line(`Monthly (${term})`,peso(monthly)),
         line('Bank Interest Rate',tr+'%'),
         '',
-        'Prices and promotions are subject to change without prior notice. Financing is subject to bank approval.',
-        '',
-        '🦾 Powered by MSI Framework™ 🚀',
-        'JUDE DANTE PINEDA'
+        COPY_RESULT_FOOTER
       ].join('\n');
     }
     const target=moneyFromText(document.getElementById('c3r_monthly')?.textContent);
@@ -107,10 +102,7 @@
       line(`Monthly (${term})`,peso(target)),
       line('Bank Interest Rate',tr+'%'),
       '',
-      'Estimated computation only and subject to bank approval. Price/promo indicated in this quotation are subject to change without prior notice.',
-      '',
-      '🦾 Powered by MSI Framework™ 🚀',
-      'JUDE DANTE PINEDA'
+      COPY_RESULT_FOOTER
     ].join('\n');
   }
 
@@ -159,7 +151,7 @@
       };
     }simple.querySelector('.simple-reset').addEventListener('click',()=>resetSimple(n))}
   function simpleText(n){const x=getCommon(n),v=variant(n);if(n===1){const dp=inputNumber('c1_dp'),err=validSimple(x);if(err||dp<=x.opdp||dp>=x.srp)return err||'The desired DP must be above Official Promo DP and below SRP.';const rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100),rows=SIMPLE_TERMS.map(m=>`${SIMPLE_NAMES[m]} ${peso(calcMonthly(adjusted,m))}`).join('<br>');return `<div class="simple-line"><strong>Unit:</strong> ${escapeHtml(v)}</div><div class="simple-line"><strong>Desired DP:</strong> ${peso(dp)}</div><div class="simple-line"><strong>Unit SRP:</strong> ${peso(x.srp)}</div><div class="simple-heading">Monthly Amortization:</div><div class="simple-monthly">${rows}</div>`}if(n===2){const pct=inputNumber('c2_pct'),err=validSimple(x);if(err||pct<=x.bdp||pct>=100)return err||'The desired DP percentage must be above BDP % and below 100%.';const dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100);if(dp<=x.opdp||dp>=x.srp)return'The calculated DP must be above Official Promo DP and below SRP.';const rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100),rows=SIMPLE_TERMS.map(m=>`${SIMPLE_NAMES[m]} ${peso(calcMonthly(adjusted,m))}`).join('<br>');return `<div class="simple-line"><strong>Unit:</strong> ${escapeHtml(v)}</div><div class="simple-line"><strong>Desired DP:</strong> ${pct.toFixed(2).replace(/\.00$/,'')}%</div><div class="simple-line"><strong>DP Amount:</strong> ${peso(dp)}</div><div class="simple-line"><strong>SRP:</strong> ${peso(x.srp)}</div><div class="simple-heading">Monthly Amortization:</div><div class="simple-monthly">${rows}</div>`}const target=inputNumber('c3_monthly'),months=Number(document.getElementById('c3_term').value),tr=inputNumber('c3_tr'),err=validSimple(x);if(err||target<=0)return err||'Enter a valid desired monthly amortization.';const rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),dp=Math.ceil(rb-target*months*(1+x.dir/100)/(1+tr/100)-1e-10),term=(document.getElementById('c3_term')?.selectedOptions?.[0]?.textContent||'')+` (${months} Months)`;return `<div class="simple-line"><strong>Unit Model:</strong> ${escapeHtml(v)}</div><div class="simple-line"><strong>Loan Term:</strong> ${escapeHtml(term)}</div><div class="simple-line"><strong>Target Monthly:</strong> ${peso(target)}</div><div class="simple-line"><strong>Required DP:</strong> ${peso(dp)}</div><div class="simple-line"><strong>Unit SRP:</strong> ${peso(x.srp)}</div>`}
-  function simpleCopyText(n){const x=getCommon(n),v=variant(n);if(n===1){const dp=inputNumber('c1_dp'),rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return `Unit: ${v}\nDesired DP: ${peso(dp)}\nUnit SRP: ${peso(x.srp)}\n\nMonthly Amortization:\n${SIMPLE_TERMS.map(m=>`${SIMPLE_NAMES[m]} ${peso(calcMonthly(adjusted,m))}`).join('\n')}\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA`}if(n===2){const pct=inputNumber('c2_pct'),dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100),rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return `Unit: ${v}\nDesired DP: ${pct.toFixed(2).replace(/\.00$/,'')}%\nDP Amount: ${peso(dp)}\nSRP: ${peso(x.srp)}\n\nMonthly Amortization:\n${SIMPLE_TERMS.map(m=>`${SIMPLE_NAMES[m]} ${peso(calcMonthly(adjusted,m))}`).join('\n')}\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA`}const months=Number(document.getElementById('c3_term').value),target=inputNumber('c3_monthly'),tr=inputNumber('c3_tr'),rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),dp=Math.ceil(rb-target*months*(1+x.dir/100)/(1+tr/100)-1e-10),term=(document.getElementById('c3_term')?.selectedOptions?.[0]?.textContent||'')+` (${months} Months)`;return `Unit Model: ${v}\nLoan Term: ${term}\nTarget Monthly: ${peso(target)}\nRequired DP: ${peso(dp)}\nUnit SRP: ${peso(x.srp)}\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA`}
+  function simpleCopyText(n){const x=getCommon(n),v=variant(n);if(n===1){const dp=inputNumber('c1_dp'),rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return `Unit: ${v}\nDesired DP: ${peso(dp)}\nUnit SRP: ${peso(x.srp)}\n\nMonthly Amortization:\n${SIMPLE_TERMS.map(m=>`${SIMPLE_NAMES[m]} ${peso(calcMonthly(adjusted,m))}`).join('\n')}\n\n${COPY_RESULT_FOOTER}`}if(n===2){const pct=inputNumber('c2_pct'),dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100),rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return `Unit: ${v}\nDesired DP: ${pct.toFixed(2).replace(/\.00$/,'')}%\nDP Amount: ${peso(dp)}\nSRP: ${peso(x.srp)}\n\nMonthly Amortization:\n${SIMPLE_TERMS.map(m=>`${SIMPLE_NAMES[m]} ${peso(calcMonthly(adjusted,m))}`).join('\n')}\n\n${COPY_RESULT_FOOTER}`}const months=Number(document.getElementById('c3_term').value),target=inputNumber('c3_monthly'),tr=inputNumber('c3_tr'),rb=baseRevenueLocal(x.srp,x.opdp,x.bdp,x.dir),dp=Math.ceil(rb-target*months*(1+x.dir/100)/(1+tr/100)-1e-10),term=(document.getElementById('c3_term')?.selectedOptions?.[0]?.textContent||'')+` (${months} Months)`;return `Unit Model: ${v}\nLoan Term: ${term}\nTarget Monthly: ${peso(target)}\nRequired DP: ${peso(dp)}\nUnit SRP: ${peso(x.srp)}\n\n${COPY_RESULT_FOOTER}`}
   window.writePlainClipboard=writePlainClipboard;
   async function copySimple(n){
     const text=simpleCopyText(n);
