@@ -6,6 +6,7 @@
     {m:48,y:'4 Years (48 Months)',r:49},{m:36,y:'3 Years (36 Months)',r:39},{m:24,y:'2 Years (24 Months)',r:23}
   ];
   const KEY='msi-v2-interest-rates';
+  const COPY_RESULT_FOOTER=window.MSI_COPY_RESULT_FOOTER||'Estimated computation only. Subject to change without prior notice.\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA';
   function rates(){const defaults=Object.fromEntries(TERMS.map(t=>[t.m,t.r]));let saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}window.MSI_INTEREST_RATES=Object.assign({},defaults,saved,window.MSI_INTEREST_RATES||{});return window.MSI_INTEREST_RATES}
   function getRate(m){const r=rates()[Number(m)];return Number.isFinite(Number(r))?Number(r):(TERMS.find(t=>t.m===Number(m))?.r||0)}
   function read(id){const el=document.getElementById(id);const n=Number(String(el?.value??'').replace(/,/g,''));return Number.isFinite(n)?n:0}
@@ -49,7 +50,7 @@
     if(n===1){lines=[`Client Desired DP Amount: ${peso(clientDP)} (${clientDPPct})`,`Unit: ${v}`,`Color: ${colorLabel}`,`Unit SRP: ${peso(srp)} (100%)`,`Official Promo DP: ${officialPromoDP}`,`Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,`Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,`Client Discount: ${peso(discount)} (${discountPct})`,`Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,`Amount Financed: ${peso(amountFinanced)} (${financedPct})`,`Monthly (${termLabel}): ${peso(monthlyAmount)}`,`Bank Interest Rate: ${rateText}`]}
     else if(n===2){lines=[`Client Desired DP (Percentage): ${tdpPct}`,`Unit: ${v}`,`Color: ${colorLabel}`,`Unit SRP: ${peso(srp)} (100%)`,`Official Promo DP: ${officialPromoDP}`,`Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,`Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,`Client Discount: ${peso(discount)} (${discountPct})`,`Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,`Amount Financed: ${peso(amountFinanced)} (${financedPct})`,`Monthly (${termLabel}): ${peso(monthlyAmount)}`,`Bank Interest Rate: ${rateText}`]}
     else {lines=[`Client Desired Monthly (${termLabel}): ${peso(monthlyAmount)}`,`Unit: ${v}`,`Color: ${colorLabel}`,`Unit SRP: ${peso(srp)} (100%)`,`Official Promo DP: ${officialPromoDP}`,`Client Required DP Amount: ${peso(clientDP)} (${clientDPPct})`,`Additional Cashout for White Pearl Color: ${peso(whitePearl)}`,`Client Net DP (Actual Client Cashout): ${peso(netDP)} (${netDPPct})`,`Client Discount: ${peso(discount)} (${discountPct})`,`Total DP Deductible to Unit SRP: ${peso(TDP)} (${tdpPct})`,`Amount Financed: ${peso(amountFinanced)} (${financedPct})`,`Monthly (${termLabel}): ${peso(monthlyAmount)}`,`Bank Interest Rate: ${rateText}`]}
-    lines.push('', 'Prices and promotions are subject to change without prior notice. Financing is subject to bank approval.', '', '🦾 Powered by MSI Framework™ 🚀', 'JUDE DANTE PINEDA');
+    lines.push('', COPY_RESULT_FOOTER);
     return cleanCopyText(lines.join('\n'));
   }
   function toast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
