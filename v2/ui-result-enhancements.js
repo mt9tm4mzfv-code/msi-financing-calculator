@@ -67,7 +67,7 @@
       return [
         line('Client Desired DP (Percentage)',pct(total,4)+'%'),
         line('Unit',v),
-        line('Color','White Pearl'),
+        line('Color',x.white>0?'White Pearl':'-'),
         line('Unit SRP',`${peso(x.srp)} (100%)`),
         line('Official Promo DP',peso(x.opdp)),
         line('Additional Cashout for White Pearl Color',peso(x.white)),
