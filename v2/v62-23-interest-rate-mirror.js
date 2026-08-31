@@ -7,7 +7,7 @@
 
   const ORDER=[84,72,60,48,36,24];
   const TERMS={84:'7 Years (84 Months)',72:'6 Years (72 Months)',60:'5 Years (60 Months)',48:'4 Years (48 Months)',36:'3 Years (36 Months)',24:'2 Years (24 Months)'};
-  const FALLBACK={84:78,72:67,60:57,48:49,36:39,24:23};
+  const FALLBACK={84:78,72:67,60:57,48:49,36:42,24:23};
 
   function rate(months){
     const m=Number(months);
