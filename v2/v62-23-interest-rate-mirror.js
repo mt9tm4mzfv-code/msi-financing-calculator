@@ -109,8 +109,7 @@
         'Monthly Amortization:',
         ...monthlyRows(adjusted).map(r=>r.label+' '+peso(r.amount)+' @ '+r.rate+'%'),
         '',
-        '🦾 Powered by MSI Framework™ 🚀',
-        'JUDE DANTE PINEDA'
+        COPY_RESULT_FOOTER
       ].join('\n');
     }
     if(n===2){
@@ -126,8 +125,7 @@
         'Monthly Amortization:',
         ...monthlyRows(adjusted).map(r=>r.label+' '+peso(r.amount)+' @ '+r.rate+'%'),
         '',
-        '🦾 Powered by MSI Framework™ 🚀',
-        'JUDE DANTE PINEDA'
+        COPY_RESULT_FOOTER
       ].join('\n');
     }
     const months=Number(document.getElementById('c3_term')?.value);
@@ -141,8 +139,7 @@
       'Unit SRP: '+peso(x.srp),
       'Interest Rate: '+rate(months)+'%',
       '',
-      '🦾 Powered by MSI Framework™ 🚀',
-      'JUDE DANTE PINEDA'
+      COPY_RESULT_FOOTER
     ].join('\n');
   }
 
