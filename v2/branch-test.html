@@ -38,9 +38,9 @@ button{padding:10px 14px;margin:4px 8px 4px 0;cursor:pointer}code{word-break:bre
 </div>
 
 <!-- Load the same competing scripts explicitly for branch diagnostics -->
-<script src="ui-result-enhancements.js?v=62.24"></script>
-<script src="interest-rate-controller.js?v=62.24"></script>
-<script src="v62-8-promo-footer-c4.js?v=62.24"></script>
+<script src="ui-result-enhancements.js?v=62.25"></script>
+<script src="interest-rate-controller.js?v=62.25"></script>
+<script src="v62-8-promo-footer-c4.js?v=62.25"></script>
 <script>
 const targets=['ui-result-enhancements.js','interest-rate-controller.js','v62-8-promo-footer-c4.js'];
 function render(){
@@ -51,9 +51,9 @@ function render(){
   }).join('');
   document.getElementById('footer').textContent=window.MSI_COPY_RESULT_FOOTER ?? '(undefined)';
   document.getElementById('copyType').textContent=typeof window.copyResult;
-  const v=document.documentElement.innerHTML.includes('62.24')?'v62.24 loaded':'OLD version';
+  const v=document.documentElement.innerHTML.includes('62.25')?'v62.25 loaded':'OLD version';
   document.getElementById('version').textContent=v;
-  document.getElementById('version').className=v==='v62.24 loaded'?'ok':'bad';
+  document.getElementById('version').className=v==='v62.25 loaded'?'ok':'bad';
   document.getElementById('href').textContent=location.href;
   document.getElementById('ua').textContent=navigator.userAgent;
 }
