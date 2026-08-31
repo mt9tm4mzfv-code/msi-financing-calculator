@@ -96,53 +96,85 @@
     ]).join('');
   }
 
+  function formatSimplePct(value){
+    const n=Number(value)||0;
+    const s=n.toFixed(4).replace(/0+$/,'').replace(/\.$/,'');
+    return (s.split('.')[1]||'').length>2?s:n.toFixed(2);
+  }
+
   function simpleCopyText(n){
     const x=common(n),v=variant(n);
     if(n===1){
-      const dp=read('c1_dp');
+      const dp=read('c1_dp'),white=read('c1_white');
       const adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
+      const discount=x.srp-dp-adjusted,total=dp+discount,net=dp+white;
+      const rate5Y=rate(60),monthly5Y=monthly(adjusted,60);
+      const colorDisplay=white>0?'White Pearl':'-';
       return [
+        'Client Desired DP Amount: '+peso(dp),
         'Unit: '+v,
-        'Desired DP: '+peso(dp),
         'Unit SRP: '+peso(x.srp),
-        '',
-        'Monthly Amortization:',
-        ...monthlyRows(adjusted).map(r=>r.label+' '+peso(r.amount)+' @ '+r.rate+'%'),
+        'Official Promo DP: '+peso(x.opdp),
+        'Color: '+colorDisplay,
+        'Additional Cashout for White Pearl Color: '+peso(white),
+        'Client Net DP (Actual Client Cashout): '+peso(net),
+        'Client Discount: '+peso(discount),
+        'Total DP Deductible to Unit SRP: '+peso(total),
+        'Amount Financed: '+peso(adjusted),
+        'Monthly (5 Years): '+peso(monthly5Y),
+        'Bank Interest Rate: '+rate5Y+'%',
         '',
         COPY_RESULT_FOOTER
       ].join('\n');
     }
     if(n===2){
-      const pct=read('c2_pct');
-      const dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100);
+      const pctInput=read('c2_pct'),white=read('c2_white');
+      const dp=x.opdp+(1+x.dir/100)*x.srp*(pctInput/100-x.bdp/100);
       const adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
+      const discount=x.srp-dp-adjusted,total=dp+discount,net=dp+white;
+      const rate5Y=rate(60),monthly5Y=monthly(adjusted,60);
+      const colorDisplay=white>0?'White Pearl':'-';
       return [
+        'Client Desired DP (Percentage): '+formatSimplePct(pctInput)+'%',
+        'Client Desired DP Amount: '+peso(dp),
         'Unit: '+v,
-        'Desired DP: '+pct.toFixed(2).replace(/\\.00$/,'')+'%',
-        'DP Amount: '+peso(dp),
         'SRP: '+peso(x.srp),
-        '',
-        'Monthly Amortization:',
-        ...monthlyRows(adjusted).map(r=>r.label+' '+peso(r.amount)+' @ '+r.rate+'%'),
+        'Official Promo DP: '+peso(x.opdp),
+        'Color: '+colorDisplay,
+        'Additional Cashout for White Pearl Color: '+peso(white),
+        'Client Net DP (Actual Client Cashout): '+peso(net),
+        'Client Discount: '+peso(discount),
+        'Total DP Deductible to Unit SRP: '+peso(total),
+        'Amount Financed: '+peso(adjusted),
+        'Monthly (5 Years): '+peso(monthly5Y),
+        'Bank Interest Rate: '+rate5Y+'%',
         '',
         COPY_RESULT_FOOTER
       ].join('\n');
     }
     const months=Number(document.getElementById('c3_term')?.value);
-    const target=read('c3_monthly');
+    const target=read('c3_monthly'),white=read('c3_white');
     const dp=Math.ceil(baseRevenue(x)-target*months*(1+x.dir/100)/(1+rate(months)/100)-1e-10);
+    const adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
+    const discount=x.srp-dp-adjusted,total=dp+discount,net=dp+white;
+    const colorDisplay=white>0?'White Pearl':'-';
     return [
+      'Client Desired Monthly (5 Years): '+peso(target),
       'Unit Model: '+v,
-      'Loan Term: '+(TERMS[months]||''),
-      'Target Monthly: '+peso(target),
-      'Required DP: '+peso(dp),
       'Unit SRP: '+peso(x.srp),
+      'Official Promo DP: '+peso(x.opdp),
+      'Color: '+colorDisplay,
+      'Additional Cashout for White Pearl Color: '+peso(white),
+      'Client Required DP Amount: '+peso(dp),
+      'Client Net DP (Actual Client Cashout): '+peso(net),
+      'Client Discount: '+peso(discount),
+      'Total DP Deductible to Unit SRP: '+peso(total),
+      'Amount Financed: '+peso(adjusted),
       'Interest Rate: '+rate(months)+'%',
       '',
       COPY_RESULT_FOOTER
     ].join('\n');
   }
-
   function detailedCopy(n){
     const x=common(n),v=variant(n);
     const pct=(amount,d=2)=>x.srp>0?((Number(amount)||0)/x.srp*100).toFixed(d):Number(0).toFixed(d);
