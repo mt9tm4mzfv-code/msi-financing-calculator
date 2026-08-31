@@ -165,8 +165,11 @@
       ].join('\n');
     }
     const white=read('c3_white'),months=Number(document.getElementById('c3_term')?.value),target=read('c3_monthly'),dp=Math.ceil(baseRevenue(x)-target*months*(1+x.dir/100)/(1+rate(months)/100)-1e-10),adjusted=(baseRevenue(x)-dp)/(1+x.dir/100),discount=x.srp-dp-adjusted,total=dp+discount;
+    const whitePearlCashout=white;
+    const wp=parseFloat(String(whitePearlCashout).replace(/[^0-9.-]/g,''))||0;
+    const colorDisplay=wp>0?'White Pearl':'-';
     return [
-      'Client Desired Monthly ('+(TERMS[months]||'')+'): '+peso(target),'Unit: '+v,'Color: White Pearl','Unit SRP: '+peso(x.srp)+' (100%)','Official Promo DP: '+peso(x.opdp),'Client Required DP Amount: '+peso(dp)+' ('+pct(dp)+'%)','Additional Cashout for White Pearl Color: '+peso(white),'Client Net DP (Actual Client Cashout): '+peso(dp+white)+' ('+pct(dp+white)+'%)','Client Discount: '+peso(discount)+' ('+pct(discount)+'%)','Total DP Deductible to Unit SRP: '+peso(total)+' ('+pct(total,4)+'%)','Amount Financed: '+peso(adjusted)+' ('+pct(adjusted)+'%)','Monthly ('+(TERMS[months]||'')+'): '+peso(target),'Bank Interest Rate: '+rate(months)+'%','',COPY_RESULT_FOOTER
+      'Client Desired Monthly ('+(TERMS[months]||'')+'): '+peso(target),'Unit: '+v,'Color: '+colorDisplay,'Unit SRP: '+peso(x.srp)+' (100%)','Official Promo DP: '+peso(x.opdp),'Client Required DP Amount: '+peso(dp)+' ('+pct(dp)+'%)','Additional Cashout for White Pearl Color: '+peso(white),'Client Net DP (Actual Client Cashout): '+peso(dp+white)+' ('+pct(dp+white)+'%)','Client Discount: '+peso(discount)+' ('+pct(discount)+'%)','Total DP Deductible to Unit SRP: '+peso(total)+' ('+pct(total,4)+'%)','Amount Financed: '+peso(adjusted)+' ('+pct(adjusted)+'%)','Monthly ('+(TERMS[months]||'')+'): '+peso(target),'Bank Interest Rate: '+rate(months)+'%','',COPY_RESULT_FOOTER
     ].join('\n');
   }
 
