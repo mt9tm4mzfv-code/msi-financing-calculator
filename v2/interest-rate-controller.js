@@ -6,6 +6,8 @@
   const ORDER=[84,72,60,48,36,24];
   window.MSI_INTEREST_RATES=Object.assign({},DEFAULT_RATES,window.MSI_INTEREST_RATES||{});
   window.MSI_GET_INTEREST_RATE=function(months){const value=Number(window.MSI_INTEREST_RATES[Number(months)]);return Number.isFinite(value)?value:DEFAULT_RATES[Number(months)];};
+  const COPY_RESULT_FOOTER=window.MSI_COPY_RESULT_FOOTER||'Estimated computation only. Subject to change without prior notice.\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA';
+  function withCopyFooter(lines){return lines.concat(['',COPY_RESULT_FOOTER]).join('\n')}
   function rate(months){return window.MSI_GET_INTEREST_RATE(months)}
   function read(id){const el=document.getElementById(id);const raw=String(el?.value??'').replace(/,/g,'').trim();const n=Number(raw);return Number.isFinite(n)?n:0}
   function peso(v){return '₱'+Math.round(v).toLocaleString('en-PH')}
@@ -47,7 +49,7 @@
     if(n===1){const dp=read('c1_dp'),x={srp,opdp:read('c1_opdp'),bdp:read('c1_bdp'),dir:read('c1_dir')},rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);lines=[`Unit: ${v}`,`Desired DP: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`,'','Monthly Amortization:',...ORDER.map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`)]}
     else if(n===2){const pct=read('c2_pct'),x={srp,opdp:read('c2_opdp'),bdp:read('c2_bdp'),dir:read('c2_dir')},dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);lines=[`Unit: ${v}`,`Desired DP: ${pct.toFixed(2).replace(/\.00$/,'')}%`,`DP Amount: ${peso(dp)}`,`SRP: ${peso(srp)}`,'','Monthly Amortization:',...ORDER.map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`)]}
     else {const target=read('c3_monthly'),months=Number(document.getElementById('c3_term')?.value),x={srp,opdp:read('c3_opdp'),bdp:read('c3_bdp'),dir:read('c3_dir')},rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),dp=Math.ceil(rb-target*months*(1+x.dir/100)/(1+rate(months)/100)-1e-10);lines=[`Unit Model: ${v}`,`Loan Term: ${TERMS[months]||''}`,`Target Monthly: ${peso(target)}`,`Required DP: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`]}
-    return lines.concat(['','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA']).join('\n')
+    return withCopyFooter(lines)
   }
   function simpleText(n){
     const x={srp:read(`c${n}_srp`),opdp:read(`c${n}_opdp`),bdp:read(`c${n}_bdp`),dir:read(`c${n}_dir`)},v=variant(n);
@@ -57,9 +59,9 @@
   }
   function simpleCopyText(n){
     const x={srp:read(`c${n}_srp`),opdp:read(`c${n}_opdp`),bdp:read(`c${n}_bdp`),dir:read(`c${n}_dir`)},v=variant(n);
-    if(n===1){const dp=read('c1_dp'),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return [`Unit: ${v}`,`Desired DP: ${peso(dp)}`,`Unit SRP: ${peso(x.srp)}`,'','Monthly Amortization:',...ORDER.map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`),'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n')}
-    if(n===2){const pct=read('c2_pct'),dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return [`Unit: ${v}`,`Desired DP: ${pct.toFixed(2).replace(/\.00$/,'')}%`,`DP Amount: ${peso(dp)}`,`SRP: ${peso(x.srp)}`,'','Monthly Amortization:',...ORDER.map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`),'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n')}
-    const months=Number(document.getElementById('c3_term')?.value),target=read('c3_monthly'),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),dp=Math.ceil(rb-target*months*(1+x.dir/100)/(1+rate(months)/100)-1e-10);return [`Unit Model: ${v}`,`Loan Term: ${TERMS[months]||''}`,`Target Monthly: ${peso(target)}`,`Required DP: ${peso(dp)}`,`Unit SRP: ${peso(x.srp)}`,'','🦾 Powered by MSI Framework™ 🚀','JUDE DANTE PINEDA'].join('\n')
+    if(n===1){const dp=read('c1_dp'),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return [`Unit: ${v}`,`Desired DP: ${peso(dp)}`,`Unit SRP: ${peso(x.srp)}`,'','Monthly Amortization:',...ORDER.map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`), '', COPY_RESULT_FOOTER].join('\n')}
+    if(n===2){const pct=read('c2_pct'),dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return [`Unit: ${v}`,`Desired DP: ${pct.toFixed(2).replace(/\.00$/,'')}%`,`DP Amount: ${peso(dp)}`,`SRP: ${peso(x.srp)}`,'','Monthly Amortization:',...ORDER.map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`), '', COPY_RESULT_FOOTER].join('\n')}
+    const months=Number(document.getElementById('c3_term')?.value),target=read('c3_monthly'),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),dp=Math.ceil(rb-target*months*(1+x.dir/100)/(1+rate(months)/100)-1e-10);return [`Unit Model: ${v}`,`Loan Term: ${TERMS[months]||''}`,`Target Monthly: ${peso(target)}`,`Required DP: ${peso(dp)}`,`Unit SRP: ${peso(x.srp)}`, '', COPY_RESULT_FOOTER].join('\n')
   }
   function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
   function renderSimple(n){const simple=document.getElementById(`c${n}_simple_results`);if(!simple||!simple.classList.contains('show'))return;const content=simple.querySelector('.simple-content');if(content)content.innerHTML=simpleText(n)}
