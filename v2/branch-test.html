@@ -38,9 +38,9 @@ button{padding:10px 14px;margin:4px 8px 4px 0;cursor:pointer}code{word-break:bre
 </div>
 
 <!-- Load the same competing scripts explicitly for branch diagnostics -->
-<script src="ui-result-enhancements.js?v=62.25"></script>
-<script src="interest-rate-controller.js?v=62.25"></script>
-<script src="v62-8-promo-footer-c4.js?v=62.25"></script>
+<script src="ui-result-enhancements.js?v=62.26"></script>
+<script src="interest-rate-controller.js?v=62.26"></script>
+<script src="v62-8-promo-footer-c4.js?v=62.26"></script>
 <script>
 const targets=['ui-result-enhancements.js','interest-rate-controller.js','v62-8-promo-footer-c4.js'];
 function render(){
@@ -51,45 +51,82 @@ function render(){
   }).join('');
   document.getElementById('footer').textContent=window.MSI_COPY_RESULT_FOOTER ?? '(undefined)';
   document.getElementById('copyType').textContent=typeof window.copyResult;
-  const v=document.documentElement.innerHTML.includes('62.25')?'v62.25 loaded':'OLD version';
+  const v=document.documentElement.innerHTML.includes('62.26')?'v62.26 loaded':'OLD version';
   document.getElementById('version').textContent=v;
-  document.getElementById('version').className=v==='v62.25 loaded'?'ok':'bad';
+  document.getElementById('version').className=v==='v62.26 loaded'?'ok':'bad';
   document.getElementById('href').textContent=location.href;
   document.getElementById('ua').textContent=navigator.userAgent;
 }
 function assess(text){
   const s=document.getElementById('status');
-  if(text.includes('Estimated computation only. Subject to change without prior notice.')){
+  const value=String(text||'');
+  if(value.includes('Estimated computation only')){
     s.textContent='NEW FOOTER OK';s.className='ok';
-  }else if(text.includes('Prices and promotions are subject to change')){
+  }else if(value.includes('Prices and promotions are subject to change')){
     s.textContent='OLD FOOTER STILL ACTIVE';s.className='bad';
   }else{s.textContent='NO DISCLAIMER';s.className='warn';}
 }
 function show(text){
-  const lines=String(text||'').split('\n');
-  const last=lines.slice(-5).join('\n');
-  document.getElementById('output').textContent=last;
-  assess(String(text||''));
+  const value=String(text??'');
+  const lines=value.split('\n');
+  document.getElementById('output').textContent=lines.slice(-5).join('\n');
+  assess(value);
 }
-document.getElementById('detailedBtn').onclick=()=>{
+async function resolveResult(result){
+  if(result && typeof result.then==='function') result=await result;
+  return result;
+}
+async function captureClipboard(run){
+  let captured='';
+  const clipboard=navigator.clipboard;
+  const original=clipboard&&clipboard.writeText;
   try{
-    if(typeof window.detailedCopy==='function') return show(window.detailedCopy(0));
-    if(typeof window.copyResult==='function'){
-      let captured='';
-      const oldWrite=window.navigator.clipboard?.writeText;
-      if(window.navigator.clipboard) window.navigator.clipboard.writeText=(t)=>{captured=t;return Promise.resolve();};
-      const r=window.copyResult(0);
-      setTimeout(()=>{if(oldWrite) window.navigator.clipboard.writeText=oldWrite;show(captured||r||'copyResult produced no capturable text');},50);
-      return;
+    if(clipboard&&typeof original==='function'){
+      clipboard.writeText=async function(text){captured=String(text);};
     }
-    show('No detailedCopy() or window.copyResult() available.');
+    const result=await resolveResult(run());
+    return captured || result || '';
+  }finally{
+    if(clipboard&&original) clipboard.writeText=original;
+  }
+}
+async function tryBuilder(label, fn, args=[0]){
+  if(typeof fn!=='function') return null;
+  const result=await resolveResult(fn(...args));
+  if(result!==undefined && result!==null && String(result)!=='') return {label,text:String(result)};
+  return null;
+}
+document.getElementById('detailedBtn').onclick=async()=>{
+  try{
+    let found=null;
+    found=await tryBuilder('window.detailedCopy(0)',window.detailedCopy,[0]);
+    if(!found && typeof window.copyResult==='function'){
+      const text=await captureClipboard(()=>window.copyResult(0));
+      if(text) found={label:'window.copyResult(0)',text:String(text)};
+    }
+    if(!found) return show('No detailed builder produced text.');
+    show(found.text);
   }catch(e){show('ERROR: '+e.message);}
 };
-document.getElementById('simpleBtn').onclick=()=>{
+document.getElementById('simpleBtn').onclick=async()=>{
   try{
-    if(typeof window.simpleCopyText==='function') return show(window.simpleCopyText(0));
-    if(typeof window.MSI_COPY_SIMPLE==='function') return show(window.MSI_COPY_SIMPLE(0));
-    show('No simpleCopyText() available.');
+    let found=null;
+    const candidates=[
+      ['window.simpleCopyText(0)',window.simpleCopyText,[0]],
+      ['window.buildSimpleCopy(0)',window.buildSimpleCopy,[0]],
+      ['window.simplePlain(0)',window.simplePlain,[0]],
+      ['window.MSI_COPY_SIMPLE(0)',window.MSI_COPY_SIMPLE,[0]]
+    ];
+    for(const [label,fn,args] of candidates){
+      found=await tryBuilder(label,fn,args);
+      if(found) break;
+    }
+    if(!found && typeof window.copyResult==='function'){
+      const text=await captureClipboard(()=>window.copyResult(0));
+      if(text) found={label:'window.copyResult(0)',text:String(text)};
+    }
+    if(!found) return show('No simple builder produced text.');
+    show(found.text);
   }catch(e){show('ERROR: '+e.message);}
 };
 window.addEventListener('load',()=>setTimeout(render,100));
