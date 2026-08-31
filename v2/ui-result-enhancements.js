@@ -19,7 +19,7 @@
 
   function getCommon(n){return{srp:inputNumber(`c${n}_srp`),opdp:inputNumber(`c${n}_opdp`),white:inputNumber(`c${n}_white`),bdp:inputNumber(`c${n}_bdp`),dir:inputNumber(`c${n}_dir`)}}
   function line(label,value){return `${label}: ${value}`}
-  const COPY_RESULT_FOOTER='Estimated computation only. Subject to change without prior notice.\n\n${COPY_RESULT_FOOTER}';
+  const COPY_RESULT_FOOTER='Estimated computation only. Subject to change without prior notice.\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA';
   function buildDetailedCopy(n){
     const v=variant(n),x=getCommon(n);
     const pct=(amount,decimals=2)=>{
