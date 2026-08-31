@@ -52,48 +52,75 @@
 
   function simpleHtml(n){
     const x=common(n),v=variant(n);
-    let adjusted,header=[];
+    const line=(label,value,rateLine=false)=>
+      '<div class="simple-line"><strong>'+escapeHtml(label)+':</strong> '+(rateLine?'<span class="msi-rate-value">'+value+'</span>':value)+'</div>';
 
     if(n===1){
-      const dp=read('c1_dp');
-      adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
-      header=[
-        '<div class="simple-line"><strong>Unit:</strong> '+escapeHtml(v)+'</div>',
-        '<div class="simple-line"><strong>Desired DP:</strong> '+peso(dp)+'</div>',
-        '<div class="simple-line"><strong>Unit SRP:</strong> '+peso(x.srp)+'</div>'
-      ];
-    }else if(n===2){
-      const pct=read('c2_pct');
-      const dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100);
-      adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
-      header=[
-        '<div class="simple-line"><strong>Unit:</strong> '+escapeHtml(v)+'</div>',
-        '<div class="simple-line"><strong>Desired DP:</strong> '+pct.toFixed(2).replace(/\\.00$/,'')+'%</div>',
-        '<div class="simple-line"><strong>DP Amount:</strong> '+peso(dp)+'</div>',
-        '<div class="simple-line"><strong>SRP:</strong> '+peso(x.srp)+'</div>'
-      ];
-    }else{
-      const months=Number(document.getElementById('c3_term')?.value);
-      const target=read('c3_monthly');
-      const dp=Math.ceil(baseRevenue(x)-target*months*(1+x.dir/100)/(1+rate(months)/100)-1e-10);
+      const dp=read('c1_dp'),white=read('c1_white');
+      const adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
+      const discount=x.srp-dp-adjusted,total=dp+discount,net=dp+white;
+      const rate5Y=rate(60),monthly5Y=monthly(adjusted,60);
+      const colorDisplay=white>0?'White Pearl':'-';
       return [
-        '<div class="simple-line"><strong>Unit Model:</strong> '+escapeHtml(v)+'</div>',
-        '<div class="simple-line"><strong>Loan Term:</strong> '+escapeHtml(TERMS[months]||'')+'</div>',
-        '<div class="simple-line"><strong>Target Monthly:</strong> '+peso(target)+'</div>',
-        '<div class="simple-line"><strong>Required DP:</strong> '+peso(dp)+'</div>',
-        '<div class="simple-line"><strong>Unit SRP:</strong> '+peso(x.srp)+'</div>',
-        '<div class="simple-line"><strong>Interest Rate:</strong> <span class="msi-rate-value">'+rate(months)+'%</span></div>'
+        line('Client Desired DP Amount',peso(dp)),
+        line('Unit',escapeHtml(v)),
+        line('Unit SRP',peso(x.srp)),
+        line('Official Promo DP',peso(x.opdp)),
+        line('Color',colorDisplay),
+        line('Additional Cashout for White Pearl Color',peso(white)),
+        line('Client Net DP (Actual Client Cashout)',peso(net)),
+        line('Client Discount',peso(discount)),
+        line('Total DP Deductible to Unit SRP',peso(total)),
+        line('Amount Financed',peso(adjusted)),
+        line('Monthly (5 Years)',peso(monthly5Y)),
+        line('Bank Interest Rate',rate5Y+'%',true)
       ].join('');
     }
 
-    const rows=monthlyRows(adjusted).map(r=>
-      '<div class="msi-rate-monthly"><span class="msi-rate-term">'+r.label+'</span><span class="msi-rate-money">'+peso(r.amount)+'</span><span class="msi-rate-value">'+r.rate+'%</span></div>'
-    ).join('');
+    if(n===2){
+      const pctInput=read('c2_pct'),white=read('c2_white');
+      const dp=x.opdp+(1+x.dir/100)*x.srp*(pctInput/100-x.bdp/100);
+      const adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
+      const discount=x.srp-dp-adjusted,total=dp+discount,net=dp+white;
+      const rate5Y=rate(60),monthly5Y=monthly(adjusted,60);
+      const colorDisplay=white>0?'White Pearl':'-';
+      return [
+        line('Client Desired DP (Percentage)',formatSimplePct(pctInput)+'%'),
+        line('Client Desired DP Amount',peso(dp)),
+        line('Unit',escapeHtml(v)),
+        line('Unit SRP',peso(x.srp)),
+        line('Official Promo DP',peso(x.opdp)),
+        line('Color',colorDisplay),
+        line('Additional Cashout for White Pearl Color',peso(white)),
+        line('Client Net DP (Actual Client Cashout)',peso(net)),
+        line('Client Discount',peso(discount)),
+        line('Total DP Deductible to Unit SRP',peso(total)),
+        line('Amount Financed',peso(adjusted)),
+        line('Monthly (5 Years)',peso(monthly5Y)),
+        line('Bank Interest Rate',rate5Y+'%',true)
+      ].join('');
+    }
 
-    return header.concat([
-      '<div class="simple-heading">Monthly Amortization:</div>',
-      '<div class="simple-monthly">'+rows+'</div>'
-    ]).join('');
+    const months=Number(document.getElementById('c3_term')?.value);
+    const target=read('c3_monthly'),white=read('c3_white');
+    const dp=Math.ceil(baseRevenue(x)-target*months*(1+x.dir/100)/(1+rate(months)/100)-1e-10);
+    const adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
+    const discount=x.srp-dp-adjusted,total=dp+discount,net=dp+white;
+    const colorDisplay=white>0?'White Pearl':'-';
+    return [
+      line('Client Desired Monthly (5 Years)',peso(target)),
+      line('Unit Model',escapeHtml(v)),
+      line('Unit SRP',peso(x.srp)),
+      line('Official Promo DP',peso(x.opdp)),
+      line('Color',colorDisplay),
+      line('Additional Cashout for White Pearl Color',peso(white)),
+      line('Client Required DP Amount',peso(dp)),
+      line('Client Net DP (Actual Client Cashout)',peso(net)),
+      line('Client Discount',peso(discount)),
+      line('Total DP Deductible to Unit SRP',peso(total)),
+      line('Amount Financed',peso(adjusted)),
+      line('Interest Rate',rate(months)+'%',true)
+    ].join('');
   }
 
   function formatSimplePct(value){
