@@ -17,12 +17,70 @@
   function styleBDP(){if(document.getElementById('v628-bdp-style'))return;const s=document.createElement('style');s.id='v628-bdp-style';s.textContent='.promo-bdp-cell{min-width:0}.promo-bdp-cell input{width:100%}#v628-c4{background:#111827;border:1px solid #374151;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 5px 18px rgba(0,0,0,.18)}#v628-c4 h2{margin:0 0 8px;font-size:18px;color:#f5f7fb}#v628-c4 .v628-c4-note{color:#9ca3af;font-size:11px;margin-bottom:12px}#v628-c4 .v628-c4-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}#v628-c4 label{display:block;margin:8px 0 5px;color:#d1d5db;font-size:12px;font-weight:800}#v628-c4 input,#v628-c4 select{width:100%;min-height:47px;padding:11px 12px;border:1px solid #4b5563;border-radius:10px;background:#1f2937;color:#f9fafb;font-size:16px}#v628-c4 button{width:100%;margin-top:12px;padding:13px;border:0;border-radius:11px;background:#f9fafb;color:#111827;font-size:14px;font-weight:900}#v628-c4 .v628-c4-result{display:none;margin-top:12px;padding:13px;border-radius:12px;background:#0f172a;border:1px solid #374151;color:#f9fafb;line-height:1.55;font-size:13px}#v628-c4 .v628-c4-result.show{display:block}@media(max-width:600px){#v628-c4 .v628-c4-grid{grid-template-columns:1fr}}';document.head.appendChild(s)}
   function installC4(){if(document.getElementById('v628-c4'))return;const footer=document.querySelector('footer');if(!footer)return;styleBDP();const c=document.createElement('section');c.id='v628-c4';c.innerHTML='<h2>Calculator 4 — Higher DP vs Standard Low DP</h2><div class="v628-c4-note">Compare estimated monthly amortization and monthly savings.</div><div class="v628-c4-grid"><div><label>Unit SRP</label><input id="v628_c4_srp" type="number" min="0" value="0"></div><div><label>Official Promo DP</label><input id="v628_c4_opdp" type="number" min="0" value="0"></div><div><label>Higher Down Payment</label><input id="v628_c4_highdp" type="number" min="0" value="0"></div><div><label>Dealer's Incentive Rate (%)</label><input id="v628_c4_dir" type="number" value="17" step="0.01"></div><div><label>Promo DP Percentage (%)</label><input id="v628_c4_bdp" type="number" value="20" min="0" max="100" step="0.01"></div><div><label>Loan Term</label><select id="v628_c4_term"><option value="84">7 Years</option><option value="72">6 Years</option><option value="60" selected>5 Years</option><option value="48">4 Years</option><option value="36">3 Years</option><option value="24">2 Years</option></select></div></div><button type="button" id="v628_c4_compute">COMPARE MONTHLY SAVINGS</button><div id="v628_c4_result" class="v628-c4-result"></div>';footer.parentNode.insertBefore(c,footer);document.getElementById('v628_c4_compute').addEventListener('click',function(){const srp=num('v628_c4_srp'),opdp=num('v628_c4_opdp'),high=num('v628_c4_highdp'),dir=num('v628_c4_dir'),bdp=num('v628_c4_bdp'),months=Number(document.getElementById('v628_c4_term').value);const rate=(window.MSI_GET_INTEREST_RATE?window.MSI_GET_INTEREST_RATE(months):RATE[months]);const rb=srp*(1-bdp/100)*(1+dir/100)+opdp;const standard=Math.max(0,(rb-opdp)/(1+dir/100));const highFinanced=Math.max(0,(rb-high)/(1+dir/100));const standardMonthly=Math.ceil(standard*(1+rate/100)/months-1e-10);const highMonthly=Math.ceil(highFinanced*(1+rate/100)/months-1e-10);const savings=standardMonthly-highMonthly;const r=document.getElementById('v628_c4_result');r.innerHTML=`<strong>Standard Low DP Monthly:</strong> ${peso(standardMonthly)}<br><strong>Higher DP Monthly:</strong> ${peso(highMonthly)}<br><strong>Estimated Monthly Savings:</strong> ${peso(savings)}<br><strong>Bank Interest Rate:</strong> ${rate}%`;r.classList.add('show')})}
   function enhanceDetailed(n){const store=window.copyStore?.[n];if(!store)return;const bdp=pct(num(`c${n}_bdp`)),opdp=peso(num(`c${n}_opdp`));const promoLine=`Official Promo DP: ${opdp} (${bdp})`;let text=store;if(/^Official Promo DP:/m.test(text))text=text.replace(/^Official Promo DP:.*$/m,promoLine);else{const lines=text.split('\n');const idx=lines.findIndex(x=>/^Unit SRP:/.test(x));if(idx>=0)lines.splice(idx+1,0,promoLine);text=lines.join('\n')}text=text.replace(/\n\n(?:Prices and promotions are subject to change[^\n]*|Estimated computation only[^\n]*)?(?:\n\n)?🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA/,`\n\n${COPY_RESULT_FOOTER}`);if(!text.includes(COPY_RESULT_FOOTER))text=`${text}\n\n${COPY_RESULT_FOOTER}`;window.copyStore[n]=text}
+  function formatDpPercent(value){
+    const n=Number(value)||0;
+    const four=n.toFixed(4).replace(/0+$/,'').replace(/\.$/,'');
+    const decimals=(four.split('.')[1]||'').length;
+    return decimals>2?four:n.toFixed(2);
+  }
   function simplePlain(n){
-    const v=(document.getElementById(`c${n}_variant`)?.value||'Vehicle').trim()||'Vehicle',srp=num(`c${n}_srp`),opdp=num(`c${n}_opdp`),bdp=num(`c${n}_bdp`),dir=num(`c${n}_dir`),rb=srp*(1-bdp/100)*(1+dir/100)+opdp;
-    const monthly=(adjusted,m)=>Math.ceil(adjusted*(1+(window.MSI_GET_INTEREST_RATE?window.MSI_GET_INTEREST_RATE(m):RATE[m]))/100/m-1e-10);
-    if(n===1){const dp=num('c1_dp'),adjusted=(rb-dp)/(1+dir/100);return simpleWithFooter([`Unit: ${v}`,`Desired DP: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`,'','Monthly Amortization:',...Object.keys(TERMS).map(Number).map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`)])}
-    if(n===2){const p=num('c2_pct'),dp=opdp+(1+dir/100)*srp*(p/100-bdp/100),adjusted=(rb-dp)/(1+dir/100);return [`Unit: ${v}`,`Desired DP: ${p.toFixed(2).replace(/\.00$/,'')}%`,`DP Amount: ${peso(dp)}`,`SRP: ${peso(srp)}`,'','Monthly Amortization:',...Object.keys(TERMS).map(Number).map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`), '', COPY_RESULT_FOOTER].join('\n')}
-    const months=Number(document.getElementById('c3_term')?.value)||60,target=num('c3_monthly'),tr=num('c3_tr'),dp=Math.ceil(rb-target*months*(1+dir/100)/(1+tr/100)-1e-10),term=(document.getElementById('c3_term')?.selectedOptions?.[0]?.textContent||'')+` (${months} Months)`;return [`Unit Model: ${v}`,`Loan Term: ${term}`,`Target Monthly: ${peso(target)}`,`Required DP: ${peso(dp)}`,`Unit SRP: ${peso(srp)}`, '', COPY_RESULT_FOOTER].join('\n')
+    n=Number(n);
+    const authority=window.MSI_V625_MIRROR_VALUES;
+    const data=typeof authority==='function'?authority(n):null;
+    if(!data)return simpleWithFooter(['Unable to read simple computation values.']);
+    const unit=(document.getElementById(`c${n}_variant`)?.value||'Vehicle').trim()||'Vehicle';
+    const color=data.white>0?'White Pearl':'-';
+    const rate5Y=window.MSI_GET_INTEREST_RATE?Number(window.MSI_GET_INTEREST_RATE(60)):(Number(window.MSI_INTEREST_RATES?.[60])||RATE[60]);
+    const monthly5Y=Math.ceil(data.financed*(1+rate5Y/100)/60-1e-10);
+    if(n===1){
+      return simpleWithFooter([
+        `Client Desired DP Amount: ${peso(data.dp)}`,
+        `Unit: ${unit}`,
+        `Unit SRP: ${peso(data.srp)}`,
+        `Official Promo DP: ${peso(data.opdp)}`,
+        `Color: ${color}`,
+        `Additional Cashout for White Pearl Color: ${peso(data.white)}`,
+        `Client Net DP (Actual Client Cashout): ${peso(data.net)}`,
+        `Client Discount: ${peso(data.discount)}`,
+        `Total DP Deductible to Unit SRP: ${peso(data.total)}`,
+        `Amount Financed: ${peso(data.financed)}`,
+        `Monthly (5 Years): ${peso(monthly5Y)}`,
+        `Bank Interest Rate: ${rate5Y}%`
+      ]);
+    }
+    if(n===2){
+      const dpPercent=formatDpPercent(num('c2_pct'));
+      return simpleWithFooter([
+        `Client Desired DP (Percentage): ${dpPercent}%`,
+        `Client Desired DP Amount: ${peso(data.dp)}`,
+        `Unit: ${unit}`,
+        `SRP: ${peso(data.srp)}`,
+        `Official Promo DP: ${peso(data.opdp)}`,
+        `Color: ${color}`,
+        `Additional Cashout for White Pearl Color: ${peso(data.white)}`,
+        `Client Net DP (Actual Client Cashout): ${peso(data.net)}`,
+        `Client Discount: ${peso(data.discount)}`,
+        `Total DP Deductible to Unit SRP: ${peso(data.total)}`,
+        `Amount Financed: ${peso(data.financed)}`,
+        `Monthly (5 Years): ${peso(monthly5Y)}`,
+        `Bank Interest Rate: ${rate5Y}%`
+      ]);
+    }
+    const target=num('c3_monthly');
+    return simpleWithFooter([
+      `Client Desired Monthly (5 Years): ${peso(target)}`,
+      `Unit Model: ${unit}`,
+      `Unit SRP: ${peso(data.srp)}`,
+      `Official Promo DP: ${peso(data.opdp)}`,
+      `Color: ${color}`,
+      `Additional Cashout for White Pearl Color: ${peso(data.white)}`,
+      `Client Required DP Amount: ${peso(data.dp)}`,
+      `Client Net DP (Actual Client Cashout): ${peso(data.net)}`,
+      `Client Discount: ${peso(data.discount)}`,
+      `Total DP Deductible to Unit SRP: ${peso(data.total)}`,
+      `Amount Financed: ${peso(data.financed)}`,
+      `Interest Rate: ${data.tr}%`
+    ]);
   }
   function interceptSimpleCopy(){document.addEventListener('click',function(e){const btn=e.target.closest('.simple-copy');if(!btn)return;const simple=btn.closest('.simple-results');const m=simple?.id?.match(/^c([123])_simple_results$/);if(!m)return;e.preventDefault();e.stopImmediatePropagation();const text=simplePlain(Number(m[1]));if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text);else{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}},true)}
   function wrapCopies(){[1,2,3].forEach(n=>{const name=`calculate${n}`;const f=window[name];if(typeof f==='function'&&!f.__v628PromoFooter){const w=function(){const r=f.apply(this,arguments);setTimeout(()=>enhanceDetailed(n),0);return r};w.__v628PromoFooter=true;window[name]=w}})}
