@@ -8,6 +8,7 @@
   window.MSI_GET_INTEREST_RATE=function(months){const value=Number(window.MSI_INTEREST_RATES[Number(months)]);return Number.isFinite(value)?value:DEFAULT_RATES[Number(months)];};
   const COPY_RESULT_FOOTER=window.MSI_COPY_RESULT_FOOTER||'Estimated computation only. Subject to change without prior notice.\n\n🦾 Powered by MSI Framework™ 🚀\nJUDE DANTE PINEDA';
   function withCopyFooter(lines){return lines.concat(['',COPY_RESULT_FOOTER]).join('\n')}
+  function simpleWithFooter(lines){return withCopyFooter(lines)}
   function rate(months){return window.MSI_GET_INTEREST_RATE(months)}
   function read(id){const el=document.getElementById(id);const raw=String(el?.value??'').replace(/,/g,'').trim();const n=Number(raw);return Number.isFinite(n)?n:0}
   function peso(v){return '₱'+Math.round(v).toLocaleString('en-PH')}
@@ -59,7 +60,7 @@
   }
   function simpleCopyText(n){
     const x={srp:read(`c${n}_srp`),opdp:read(`c${n}_opdp`),bdp:read(`c${n}_bdp`),dir:read(`c${n}_dir`)},v=variant(n);
-    if(n===1){const dp=read('c1_dp'),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return [`Unit: ${v}`,`Desired DP: ${peso(dp)}`,`Unit SRP: ${peso(x.srp)}`,'','Monthly Amortization:',...ORDER.map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`), '', COPY_RESULT_FOOTER].join('\n')}
+    if(n===1){const dp=read('c1_dp'),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return simpleWithFooter([`Unit: ${v}`,`Desired DP: ${peso(dp)}`,`Unit SRP: ${peso(x.srp)}`,'','Monthly Amortization:',...ORDER.map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`)])}
     if(n===2){const pct=read('c2_pct'),dp=x.opdp+(1+x.dir/100)*x.srp*(pct/100-x.bdp/100),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),adjusted=(rb-dp)/(1+x.dir/100);return [`Unit: ${v}`,`Desired DP: ${pct.toFixed(2).replace(/\.00$/,'')}%`,`DP Amount: ${peso(dp)}`,`SRP: ${peso(x.srp)}`,'','Monthly Amortization:',...ORDER.map(m=>`${TERMS[m]} ${peso(monthly(adjusted,m))}`), '', COPY_RESULT_FOOTER].join('\n')}
     const months=Number(document.getElementById('c3_term')?.value),target=read('c3_monthly'),rb=baseRevenue(x.srp,x.opdp,x.bdp,x.dir),dp=Math.ceil(rb-target*months*(1+x.dir/100)/(1+rate(months)/100)-1e-10);return [`Unit Model: ${v}`,`Loan Term: ${TERMS[months]||''}`,`Target Monthly: ${peso(target)}`,`Required DP: ${peso(dp)}`,`Unit SRP: ${peso(x.srp)}`, '', COPY_RESULT_FOOTER].join('\n')
   }
