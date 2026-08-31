@@ -91,7 +91,7 @@
     return [
       line(`Client Desired Monthly (${term})`,peso(target)),
       line('Unit',v),
-      line('Color','White Pearl'),
+      line('Color',x.white>0?'White Pearl':'-'),
       line('Unit SRP',`${peso(x.srp)} (100%)`),
       line('Official Promo DP',peso(x.opdp)),
       line('Client Required DP Amount',`${peso(dp)} (${pct(dp)}%)`),
