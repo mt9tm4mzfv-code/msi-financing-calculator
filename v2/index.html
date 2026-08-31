@@ -65,7 +65,7 @@
 </main>
 <footer>🦾 Powered by <strong>MSI Framework™</strong> 🚀<br><strong>JUDE DANTE PINEDA</strong><br>Estimated computation only. Final required down payment and monthly amortization remain subject to bank approval.</footer>
 <script>
-const DEFAULT_TR={84:78,72:68,60:57,48:49,36:39,24:23};const TERMS={84:"7 Years",72:"6 Years",60:"5 Years",48:"4 Years",36:"3 Years",24:"2 Years"};const copyStore={1:"",2:"",3:""};
+const DEFAULT_TR={84:78,72:68,60:57,48:49,36:42,24:23};const TERMS={84:"7 Years",72:"6 Years",60:"5 Years",48:"4 Years",36:"3 Years",24:"2 Years"};const copyStore={1:"",2:"",3:""};
 function num(id){const v=Number(document.getElementById(id).value);return Number.isFinite(v)?v:0}function peso(v){return "₱"+Math.round(v).toLocaleString("en-PH")}function loadTR(n){const m=Number(document.getElementById(`c${n}_term`).value);document.getElementById(`c${n}_tr`).value=DEFAULT_TR[m]}
 function setStatus(n,type,msg){const e=document.getElementById(`c${n}_status`);e.className=`status ${type}`;e.textContent=msg}function baseRevenue(srp,opdp,bdp,dir){return srp*(1-bdp/100)*(1+dir/100)+opdp}
 function validCommon(srp,opdp,bdp,dir,tr,months){if(srp<=0)return "Enter a valid Unit SRP.";if(opdp<0||opdp>=srp)return "Official Promo DP must be ≥ 0 and below SRP.";if(bdp<0||bdp>=100)return "BDP % must be between 0% and 100%.";if(dir<=-100)return "DIR % must be greater than -100%.";if(tr<=-100)return "TR % must be greater than -100%.";if(!TERMS[months])return "Invalid loan term.";return ""}
