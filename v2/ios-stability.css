@@ -38,3 +38,13 @@ select{
   top:auto!important;
   transform:none!important;
 }
+
+
+/* V62.32 — iOS Safari keyboard zoom stability.
+   UI enhancer converts vehicle fields to textarea, so keep every editable
+   control at Safari's no-auto-zoom threshold. */
+input,
+select,
+textarea{
+  font-size:16px!important;
+}
