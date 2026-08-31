@@ -69,7 +69,7 @@
 
 
   function installCalculatorWrappers(){[1,2,3].forEach(n=>{const name=`calculate${n}`,original=window[name];if(typeof original!=='function'||original.__msiV625Authority)return;const wrapped=function(){const result=original.apply(this,arguments);try{render(n)}catch(e){}startNuclearRepair(n);return result};wrapped.__msiV625Authority=true;window[name]=wrapped})}
-  function startNuclearRepair(n){let attempts=0;const timer=setInterval(()=>{attempts++;try{render(n)}catch(e){}if(attempts>=50)clearInterval(timer)},100)}
+  function startNuclearRepair(n){requestAnimationFrame(()=>{try{render(n)}catch(e){}})}
   function install(){installCalculatorWrappers();[1,2,3].forEach(n=>{if(document.getElementById(`c${n}_results`)?.classList.contains('show'))render(n)})}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
   setTimeout(install,50);setTimeout(install,250);setTimeout(install,750);
