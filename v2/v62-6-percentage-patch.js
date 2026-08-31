@@ -51,14 +51,7 @@
   }
   window.MSI_V626_RENDER_PERCENTAGES=render;
 
-  function repair(n){
-    let attempts=0;
-    const timer=setInterval(()=>{
-      attempts++;
-      try{render(n)}catch(e){}
-      if(attempts>=50)clearInterval(timer);
-    },100);
-  }
+  function repair(n){requestAnimationFrame(()=>{try{render(n)}catch(e){}})}
   function install(){
     [1,2,3].forEach(n=>{
       const name=`calculate${n}`, original=window[name];
