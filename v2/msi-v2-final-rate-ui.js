@@ -2,7 +2,7 @@
 (function(){
   'use strict';
   const KEY='msi-v2-interest-rates';
-  const TERMS=[{m:84,y:'7 Years',r:78},{m:72,y:'6 Years',r:67},{m:60,y:'5 Years',r:57},{m:48,y:'4 Years',r:49},{m:36,y:'3 Years',r:39},{m:24,y:'2 Years',r:23}];
+  const TERMS=[{m:84,y:'7 Years',r:78},{m:72,y:'6 Years',r:67},{m:60,y:'5 Years',r:57},{m:48,y:'4 Years',r:49},{m:36,y:'3 Years',r:42},{m:24,y:'2 Years',r:23}];
   const defaults=Object.fromEntries(TERMS.map(x=>[x.m,x.r]));
   let saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){}
   window.MSI_INTEREST_RATES=Object.assign({},defaults,saved,window.MSI_INTEREST_RATES||{});
