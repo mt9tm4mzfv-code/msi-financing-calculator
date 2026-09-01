@@ -15,6 +15,12 @@
     const n=Number(v);
     return Number.isFinite(n)?n:FALLBACK[m];
   }
+  function selectedMonths(n){
+    const raw=document.getElementById(`c${n}_term`)?.value ?? window.currentLoanTerm;
+    const m=Number(raw);
+    return [84,72,60,48,36,24].includes(m)?m:60;
+  }
+  function selectedYears(n){return selectedMonths(n)/12;}
   function read(id){
     const el=document.getElementById(id);
     const n=Number(String(el?.value??'').replace(/,/g,''));
@@ -59,7 +65,7 @@
       const dp=read('c1_dp'),white=read('c1_white');
       const adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
       const discount=x.srp-dp-adjusted,total=dp+discount,net=dp+white;
-      const rate5Y=rate(60),monthly5Y=monthly(adjusted,60);
+      const months=selectedMonths(n),years=selectedYears(n),selectedRate=rate(months),selectedMonthly=monthly(adjusted,months);
       const colorDisplay=white>0?'White Pearl':'-';
       return [
         line('Client Desired DP Amount',peso(dp)),
@@ -72,8 +78,8 @@
         line('Client Discount',peso(discount)),
         line('Total DP Deductible to Unit SRP',peso(total)),
         line('Amount Financed',peso(adjusted)),
-        line('Monthly (5 Years)',peso(monthly5Y)),
-        line('Bank Interest Rate',rate5Y+'%',true)
+        line('Monthly ('+years+' Years)',peso(selectedMonthly)),
+        line('Bank Interest Rate',selectedRate+'%',true)
       ].join('');
     }
 
@@ -82,7 +88,7 @@
       const dp=x.opdp+(1+x.dir/100)*x.srp*(pctInput/100-x.bdp/100);
       const adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
       const discount=x.srp-dp-adjusted,total=dp+discount,net=dp+white;
-      const rate5Y=rate(60),monthly5Y=monthly(adjusted,60);
+      const months=selectedMonths(n),years=selectedYears(n),selectedRate=rate(months),selectedMonthly=monthly(adjusted,months);
       const colorDisplay=white>0?'White Pearl':'-';
       return [
         line('Client Desired DP (Percentage)',formatSimplePct(pctInput)+'%'),
@@ -96,8 +102,8 @@
         line('Client Discount',peso(discount)),
         line('Total DP Deductible to Unit SRP',peso(total)),
         line('Amount Financed',peso(adjusted)),
-        line('Monthly (5 Years)',peso(monthly5Y)),
-        line('Bank Interest Rate',rate5Y+'%',true)
+        line('Monthly ('+years+' Years)',peso(selectedMonthly)),
+        line('Bank Interest Rate',selectedRate+'%',true)
       ].join('');
     }
 
@@ -135,7 +141,7 @@
       const dp=read('c1_dp'),white=read('c1_white');
       const adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
       const discount=x.srp-dp-adjusted,total=dp+discount,net=dp+white;
-      const rate5Y=rate(60),monthly5Y=monthly(adjusted,60);
+      const months=selectedMonths(n),years=selectedYears(n),selectedRate=rate(months),selectedMonthly=monthly(adjusted,months);
       const colorDisplay=white>0?'White Pearl':'-';
       return [
         'Client Desired DP Amount: '+peso(dp),
@@ -148,8 +154,8 @@
         'Client Discount: '+peso(discount),
         'Total DP Deductible to Unit SRP: '+peso(total),
         'Amount Financed: '+peso(adjusted),
-        'Monthly (5 Years): '+peso(monthly5Y),
-        'Bank Interest Rate: '+rate5Y+'%',
+        'Monthly ('+years+' Years): '+peso(selectedMonthly),
+        'Bank Interest Rate: '+selectedRate+'%',
         '',
         COPY_RESULT_FOOTER
       ].join('\n');
@@ -159,7 +165,7 @@
       const dp=x.opdp+(1+x.dir/100)*x.srp*(pctInput/100-x.bdp/100);
       const adjusted=(baseRevenue(x)-dp)/(1+x.dir/100);
       const discount=x.srp-dp-adjusted,total=dp+discount,net=dp+white;
-      const rate5Y=rate(60),monthly5Y=monthly(adjusted,60);
+      const months=selectedMonths(n),years=selectedYears(n),selectedRate=rate(months),selectedMonthly=monthly(adjusted,months);
       const colorDisplay=white>0?'White Pearl':'-';
       return [
         'Client Desired DP (Percentage): '+formatSimplePct(pctInput)+'%',
@@ -173,8 +179,8 @@
         'Client Discount: '+peso(discount),
         'Total DP Deductible to Unit SRP: '+peso(total),
         'Amount Financed: '+peso(adjusted),
-        'Monthly (5 Years): '+peso(monthly5Y),
-        'Bank Interest Rate: '+rate5Y+'%',
+        'Monthly ('+years+' Years): '+peso(selectedMonthly),
+        'Bank Interest Rate: '+selectedRate+'%',
         '',
         COPY_RESULT_FOOTER
       ].join('\n');
