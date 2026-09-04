@@ -1,0 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body{background:#0e1525}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none}
